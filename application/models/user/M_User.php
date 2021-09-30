@@ -295,12 +295,17 @@
                 $i = 0;
                 foreach($list_menu as $l){
                     $list_menu[$i]['child'] = null;
-                    $list_menu[$i]['child'] = $this->db->select('*')
-                                                        ->from('m_menu')
-                                                        ->where('id_m_menu_parent', $l['id'])
-                                                        ->where('flag_active', 1)
-                                                        ->order_by('nama_menu', 'asc')
-                                                        ->get()->result_array();
+                    $this->db->select('a.*')
+                            ->from('m_menu a')
+                            ->where('a.id_m_menu_parent', $l['id'])
+                            ->where('a.flag_active', 1)
+                            ->order_by('a.nama_menu', 'asc');
+                    if($role_name != 'programmer'){
+                        $this->db->join('m_menu_role b', 'b.id_m_menu = a.id')
+                                ->where('b.id_m_role', $id_role)    
+                                ->where('b.flag_active', 1);    
+                    }
+                    $list_menu[$i]['child'] = $this->db->get()->result_array();
                     $i++;
                 }
             }
@@ -355,6 +360,7 @@
                             ->join('m_role b', 'a.id_m_role = b.id')
                             ->where('a.id_m_user', $id)
                             ->where('a.flag_active', 1)
+                            ->where('b.flag_active', 1)
                             ->order_by('a.is_default', 'desc')
                             ->order_by('b.nama', 'asc')
                             ->get()->result_array();

@@ -20,6 +20,48 @@ class General_library
         $this->nikita->load->model('user/M_User', 'm_user');
     }
 
+    public function isButtonAllowed($button_name){
+        $role_name = $this->getActiveRoleName();
+        $deniedRole = [];
+        if($button_name == 'btn_edit_data_pasien_profile_left'){
+            $deniedRole = [
+                'tindakan', 'admin'
+            ];
+            if(!in_array($role_name, $deniedRole)){
+                return true;
+            }
+        } else if($button_name == 'btn_pendaftaran_baru_profile_left'){
+            $deniedRole = [
+                'tindakan', 'admin'
+            ];
+            if(!in_array($role_name, $deniedRole)){
+                return true;
+            }
+        } else if($button_name == 'btn_edit_pendaftaran_list_pendaftaran'){
+            $deniedRole = [
+                'tindakan', 'admin'
+            ];
+            if(!in_array($role_name, $deniedRole)){
+                return true;
+            }
+        } else if($button_name == 'btn_tagihan_list_pendaftaran'){
+            $deniedRole = [
+                'tindakan', 'admin'
+            ];
+            if(!in_array($role_name, $deniedRole)){
+                return true;
+            }
+        } else if($button_name == 'btn_tindakan_list_pendaftaran'){
+            $deniedRole = [
+                'kasir_dan_registrasi', 'admin'
+            ];
+            if(!in_array($role_name, $deniedRole)){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public function countTagihan($id_pendaftaran){
         $this->nikita->m_tagihan->countTagihan($id_pendaftaran);
     }

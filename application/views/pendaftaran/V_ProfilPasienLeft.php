@@ -96,11 +96,15 @@
             </div>
         </div>
         <div class="col-12 text-center p-2">
-            <button href="#edit_data_pasien" data-toggle="modal" data-tooltip="tooltip_profile_pasien" data-placement="top" title="Edit Data Pasien" onclick="editPasien()" 
-            class="btn btn-sm btn-outline-navy"><i class="fa fa-user-edit"></i></button>
+            <?php if($this->general_library->isButtonAllowed('btn_edit_data_pasien_profile_left')){ ?>
+                <button href="#edit_data_pasien" data-toggle="modal" data-tooltip="tooltip_profile_pasien" data-placement="top" title="Edit Data Pasien" onclick="editPasien()" 
+                class="btn btn-sm btn-outline-navy"><i class="fa fa-user-edit"></i></button>
+            <?php } ?>
 
-            <button id="btn_pendaftaran_baru" class="btn btn-sm btn-outline-navy" data-tooltip="tooltip_profile_pasien" data-placement="top" title="Pendaftaran Baru">
-            <i class="fa fa-plus-square"></i></button>
+            <?php if($this->general_library->isButtonAllowed('btn_edit_data_pasien_profile_left')){ ?>
+                <button id="btn_pendaftaran_baru" class="btn btn-sm btn-outline-navy" data-tooltip="tooltip_profile_pasien" data-placement="top" title="Pendaftaran Baru">
+                <i class="fa fa-plus-square"></i></button>
+            <?php } ?>
         </div>
     </div>
     <div class="card-footer" id="div_detail_pendaftaran" style="display: none;">
