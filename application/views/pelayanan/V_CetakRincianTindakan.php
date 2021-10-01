@@ -95,6 +95,9 @@
                                 $catatan = $rt['keterangan'];
                                 $class_tr = 'td_detail_tindakan';
                                 $class_tr_detail = 'td_detail_tindakan_detail';
+                                if($hasil != ''){
+                                    $hasil = formatTextHasil($hasil, $nilai_normal);
+                                }
                             }
                         ?>
                             <tr>

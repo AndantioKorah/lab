@@ -36,7 +36,7 @@
     border-bottom-right-radius: 5px;
     border-bottom-right-radius: 5px;
     z-index: 10;
-    top: 5%;
+    top: 7%;
     box-shadow: 5px 10px 20px #888888;
     max-height: 300px;
     overflow-y: scroll;
