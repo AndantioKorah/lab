@@ -4,7 +4,7 @@
             .thead_rincian_tindakan_cetakan{
                 font-weight: bold;
                 text-align: center;
-                font-size: 12px;
+                font-size: 20px;
                 border-left: 1px solid black;
                 border-right: 1px solid black;
                 border-bottom: 1px solid black;
@@ -40,16 +40,17 @@
                 vertical-align: top;
                 text-align: center;
                 border-left: 1px solid black;
+                font-size: 18px;
             }
             .div_pemeriksa{
                 width: 100%;
             }
             .span_pemeriksa_cetak_tindakan{
-                font-size: 12px;
+                font-size: 20px;
             }
         </style>
     </head>
-    <body style="font-family: <?=FONT_CETAKAN?>;">
+    <body style="font-family: <?=FONT_CETAKAN?>; ">
         <?php for($i = 1; $i <= $page_count; $i++){ ?>
             <div class="pagebreak">
                 <?php
@@ -68,7 +69,7 @@
                             <th class="thead_rincian_tindakan_cetakan">CATATAN</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody >
                         <?php $j = 0; foreach($rincian_tindakan[$i] as $rt){
                             $jenis_pemeriksaan = '';
                             $hasil = null;
@@ -101,11 +102,11 @@
                             }
                         ?>
                             <tr>
-                                <td style="width: 45%; font-size: 12px;" class="<?=$class_tr?>"><?=$jenis_pemeriksaan?></td>
-                                <td style="width: 10%; font-size: 12px;" class="td_detail_tindakan_detail" style="text-align:center"><?=$hasil?></td>
-                                <td style="width: 15%; font-size: 12px;" class="td_detail_tindakan_detail" style="text-align:center"><?=$nilai_normal?></td>
-                                <td style="width: 10%; font-size: 12px;" class="td_detail_tindakan_detail" style="text-align:center"><?=$satuan?></td>
-                                <td style="width: 20%; font-size: 12px;" class="<?=$class_tr?>" style="text-align:center"><?=$catatan?></td>
+                                <td style="width: 45%; font-size: 20px;" class="<?=$class_tr?>"><?=$jenis_pemeriksaan?></td>
+                                <td style="width: 10%; font-size: 20px;" class="td_detail_tindakan_detail" style="text-align:center"><?=$hasil?></td>
+                                <td style="width: 15%; font-size: 20px;" class="td_detail_tindakan_detail" style="text-align:center"><?=$nilai_normal?></td>
+                                <td style="width: 10%; font-size: 20px;" class="td_detail_tindakan_detail" style="text-align:center"><?=$satuan?></td>
+                                <td style="width: 20%; font-size: 20px;" class="<?=$class_tr?>" style="text-align:center"><?=$catatan?></td>
                             </tr>
                         <?php } ?>
                     </tbody>

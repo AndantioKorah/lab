@@ -9,7 +9,7 @@
         }
         .set_font{
             font-family: "Lucida Console", "Verdana", monospace;
-            font-size: 14px !important;
+            font-size: 18px !important;
         }
         .set_font_custom{
             font-family: Verdana;

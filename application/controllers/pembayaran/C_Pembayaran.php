@@ -9,6 +9,7 @@ class C_Pembayaran extends CI_Controller
         $this->load->model('pembayaran/M_Pembayaran', 'pembayaran');
         $this->load->model('general/M_General', 'general');
         $this->load->model('pendaftaran/M_Pendaftaran', 'pendaftaran');
+        $this->load->model('tagihan/M_Tagihan', 'tagihan');
         if(!$this->general_library->isNotMenu()){
             redirect('logout');
         };
@@ -49,6 +50,7 @@ class C_Pembayaran extends CI_Controller
         $data['pendaftaran'] = $this->pendaftaran->getDataPendaftaran($id_pendaftaran);
         $data['pembayaran'] = $this->general->getOne('t_pembayaran', 'id_t_pendaftaran', $id_pendaftaran, 1);
         $data['tagihan'] = $this->general->getOne('t_tagihan', 'id_t_pendaftaran', $id_pendaftaran, 1);
+        $data['rincian_tagihan'] = $this->pembayaran->getRincianTagihan($id_pendaftaran);
         $this->load->view('pembayaran/V_KwitansiPembayaran', $data);
     }
 

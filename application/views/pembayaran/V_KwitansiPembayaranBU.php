@@ -46,33 +46,26 @@
                 $dokter_pengirim = $pendaftaran['nama_dokter_pengirim'];
                 if($dokter_pengirim == null){
                     $dokter_pengirim = "Atas Permintaan Sendiri";
-                } 
-
-                foreach($rincian_tagihan as $tindakan){ 
-                    $detail_tindakan[] = $tindakan['nm_jns_tindakan'];
                 }
 
-                $untuk_pembayaran  =json_encode($detail_tindakan);
-                $untuk_pembayaran = str_replace( array( '\'', '"' , ';', '[', ']' ), ' ', $untuk_pembayaran);
                
-              
                 $diskon = formatCurrency($pembayaran['diskon_nominal']);
                 if($pembayaran['diskon_presentase'] && $pembayaran['diskon_presentase'] > 0){
                     $diskon = '('.$pembayaran['diskon_presentase'].'%) '.$diskon;
                 }
             ?>
             <center>
-        <table style="width:100%" border="0">
-        <td  style="width:62%"><span>Lab. Klinik PATRA<span><br><span style="font-size:10px;">Kompleks Wanea Plaza<span><br>
+        <table style="width:100%" border="1">
+        <td  style="width:50%"><span>Lab. Klinik PATRA<span><br><span style="font-size:10px;">Kompleks Wanea Plaza<span><br>
         <span style="font-size:10px;">JL. Sam Ratulangi Blok A No.3<span><br>
         <span style="font-size:10px;">Telp./Fax (0431)863113,Manado<span><br>
         </td>
-        <td valign="top"align=><span>KWITANSI</span><br>
+        <td><span>KWITANSI</span><br>
         <span style="font-size:10px;">Nomor Pendaftaran : <?=$pembayaran['nomor_pembayaran']?> </span></td>
 
         </table>
          
-        <table style="width:100%; padding-top:30px;" border="0">
+        <table style="width:100%; padding-top:30px;" border="1">
             <tr>
                 <td style="width:25%;">Terima dari </td>
                 <td  style="width:2%;">:</td>
@@ -85,8 +78,8 @@
             </tr>
             <tr>
             <td>Untuk pembayaran</td>
-            <td>:</td>
-            <td><?=$untuk_pembayaran;?></td>
+            <td></td>
+            <td></td>
             </tr>
             <tr>
             <td>Nama Pasien</td>
@@ -99,24 +92,58 @@
             <td><?=$dokter_pengirim?></td>
             </tr>
         </table>
-    
-     <table style="width:100%;" border="0">
-                    
+
+
+
+
+                <span class="title_kwitansi">KWITANSI PEMBAYARAN</span><br>
+                <span class="title_nomor_pembayaran"><?=$pembayaran['nomor_pembayaran']?></span>
+                <table class="table_content_kwitansi">
+                    <tr>
+                        <td style="width: 35%; vertical-align: top;">TELAH TERIMA UANG DARI</td>
+                        <td style="width: 5%;">:</td>
+                        <td class="parameter_content" style="width: 60%;"><?=$pembayaran['nama_pembayar']?></td>
+                    </tr>
+                    <tr>
+                        <td>PADA TANGGAL</td>
+                        <td>:</td>
+                        <td class="parameter_content"><?=formatDate($pembayaran['tanggal_pembayaran'])?></td>
+                    </tr>
+                    <tr>
+                        <td>UNTUK PEMBAYARAN</td>
+                        <td>:</td>
+                        <td class="parameter_content">TAGIHAN LAB PATRA</td>
+                    </tr>
+                    <tr>
+                        <td>TOTAL TAGIHAN</td>
+                        <td>:</td>
+                        <td class="parameter_content"><?=formatCurrency($tagihan['total_tagihan'])?></td>
+                    </tr>
+                    <tr>
+                        <td>DISKON</td>
+                        <td>:</td>
+                        <td class="parameter_content"><?=$diskon?></td>
+                    </tr>
+                    <tr>
+                        <td>JUMLAH PEMBAYARAN</td>
+                        <td>:</td>
+                        <td class="parameter_content"><?=formatCurrency($pembayaran['jumlah_pembayaran'])?></td>
+                    </tr>
+                    <tr>
+                        <td>TERBILANG</td>
+                        <td>:</td>
+                        <td class="parameter_content"><?=strtoupper(terbilang($pembayaran['jumlah_pembayaran']))?></td>
+                    </tr>
                     <tr>
                         <td></td>
-                        <td style="width:40%;"></td>
+                        <td></td>
                         <td style="text-align: center; vertical-align: bottom;">
                         <br><br><br>
-                            <span class="footer_kwitansi">Manado,  <?= $date = date('d/m/Y'); ?></span><br><br><br><br><br>
+                            <span class="footer_kwitansi">Manado, <?=date('d/m/Y')?></span><br><br><br><br><br>
                             <span class="footer_kwitansi"><u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u></span>
                         </td>
                     </td>
                 </table>
-
-               
             </center>
-            <table  border="1">
-                    <td>Jumlah : <?=formatCurrency($pembayaran['jumlah_pembayaran'])?></td>
-                </table>
     </body>
 </html>
