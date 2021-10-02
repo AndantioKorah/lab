@@ -23,12 +23,12 @@
                padding: 3px;
             }
             .td_tagihan{
-               /* border: 1px solid black;  */
-               border-left: 1px solid black;
-            border-right: 1px solid black;
-               font-weight: bold;
-               /* font-size: 12px; */
-               padding: 3px;
+                border: 1px solid black; 
+                border-left: 1px solid black;
+                border-right: 1px solid black;
+                font-weight: bold;
+                /* font-size: 12px; */
+                padding: 3px;
             }
        
   
@@ -54,6 +54,7 @@
                     </thead>
                     <tbody>
                         <?php $j = 0; foreach($rincian_tagihan[$i] as $rt){
+                            if(!isset($rt['nama_tindakan'])){
                             $tagihan = '';
                             $biaya = null;
                             $tanggal_input = null;
@@ -72,7 +73,7 @@
                                 $chNo++;
                                 $row_num = $pNo.'.'.$chNo;
                                 $class_tr = 'td_tagihan set_font';
-                            } 
+                            }
                         ?>
                             <tr>
                                 <td class="<?=$class_tr?>" style="text-align:center; vertical-align: top;"><?=$row_num?></td>
@@ -80,7 +81,7 @@
                                 <td class="<?=$class_tr?>" style="text-align:center; vertical-align: top;"><?=$biaya?></td>
                                 <td class="<?=$class_tr?>" style="text-align:center; vertical-align: top;"><?=$tanggal_input?></td>
                             </tr>
-                        <?php } ?>
+                        <?php } } ?>
                     </tbody>
                 </table>
             </div>
