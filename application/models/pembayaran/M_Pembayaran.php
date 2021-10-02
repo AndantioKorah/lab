@@ -163,5 +163,22 @@
 
             return $rs;
         }
+
+        public function getRincianTagihan($id_pendaftaran){
+            $detail_tagihan = $this->db->select('a.*, c.id_m_jns_tindakan, d.nm_jns_tindakan')
+            ->from('t_tagihan_detail a')
+            ->join('t_tindakan b', 'a.id_reference = b.id')
+            ->join('m_tindakan c', 'b.id_m_nm_tindakan = c.id')
+            ->join('m_jns_tindakan d', 'c.id_m_jns_tindakan = d.id')
+            ->where('a.id_t_pendaftaran', $id_pendaftaran)
+            ->where('a.flag_active', 1)
+            ->where('b.flag_active', 1)
+            ->order_by('a.id', 'asc')
+            ->group_by('c.id_m_jns_tindakan')
+            ->get()->result_array();
+
+            return $detail_tagihan;
+
+        }
 	}
 ?>

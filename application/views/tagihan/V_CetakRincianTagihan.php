@@ -23,16 +23,15 @@
                padding: 3px;
             }
             .td_tagihan{
-               border: 1px solid black; 
+               /* border: 1px solid black;  */
+               border-left: 1px solid black;
+            border-right: 1px solid black;
                font-weight: bold;
                /* font-size: 12px; */
                padding: 3px;
             }
-            .td_tindakan{
-               border-left: 1px solid black;
-               /* font-size: 12px; */
-               padding: 3px;
-            }
+       
+  
         </style>
     </head>
     <body style="font-family: <?=FONT_CETAKAN?>;">
@@ -73,10 +72,7 @@
                                 $chNo++;
                                 $row_num = $pNo.'.'.$chNo;
                                 $class_tr = 'td_tagihan set_font';
-                            } else if(isset($rt['nama_tindakan'])){
-                                $tagihan = $rt['nama_tindakan'];
-                                $class_tr = 'td_tindakan set_font';
-                            }
+                            } 
                         ?>
                             <tr>
                                 <td class="<?=$class_tr?>" style="text-align:center; vertical-align: top;"><?=$row_num?></td>
