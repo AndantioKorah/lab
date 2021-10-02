@@ -14,6 +14,43 @@ function render($pageContent, $parent_active, $active, $data)
     $CI->load->view('base/V_BaseLayout', $data);
 }
 
+function formatTextHasil($hasil_input, $nilai_normal){
+    $nn = explode(" ",$nilai_normal);
+
+    $hasil = titikGantiKoma($hasil_input);
+    $hasil = clearString($hasil); 
+
+    if($nn[0] == '<' && isset($nn[1])){
+        $max = titikGantiKoma($nn[1]);
+        $max = clearString($max);
+        if($hasil >= $max){
+            return '<strong>'.$hasil_input.'*</strong>';
+        }
+    } else if($nn[0] == '>' && isset($nn[1])){
+        $min = titikGantiKoma($nn[1]);
+        $min = clearString($min);
+        if($hasil <= $min){
+            return '<strong>'.$hasil_input.'*</strong>';
+        }
+    } else if(isset($nn[1]) && $nn[1] == '-' && isset($nn[2])){
+        $min = titikGantiKoma($nn[0]);
+        $min = clearString($min);
+
+        $max = titikGantiKoma($nn[2]);
+        $max = clearString($max);
+        
+        if($hasil < $min || $hasil > $max){
+            return '<strong>'.$hasil_input.'*</strong>';
+        }
+    }
+
+    return $hasil_input;
+}
+
+function titikGantiKoma($string){
+    return str_replace('.','', $string);
+}
+
 function generateNorm($last_norm){
     if($last_norm){
         $cur_count_norm = ltrim($last_norm, '0');
