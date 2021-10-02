@@ -60,12 +60,12 @@
             ?>
             <center>
         <table style="width:100%" border="0">
-        <td style="width:62%"><span>Lab. Klinik PATRA<span><br><span style="font-size:10px;">Kompleks Wanea Plaza<span><br>
-        <span style="font-size:10px;">JL. Sam Ratulangi Blok A No.3<span><br>
-        <span style="font-size:10px;">Telp./Fax (0431)863113,Manado<span><br>
+        <td style="width:62%"><span>Lab. Klinik PATRA<span><br><span style="font-size:14px;">Kompleks Wanea Plaza<span><br>
+        <span style="font-size:14px;">JL. Sam Ratulangi Blok A No.3<span><br>
+        <span style="font-size:14px;">Telp./Fax (0431)863113,Manado<span><br>
         </td>
         <td valign="top"align=><span>KWITANSI</span><br>
-        <span style="font-size:10px;">Nomor Lab : <?=$pembayaran['nomor_pembayaran']?> </span></td>
+        <span style="font-size:14px;">Nomor Lab : <?=$pembayaran['nomor_pembayaran']?> </span></td>
 
         </table>
          
