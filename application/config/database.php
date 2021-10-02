@@ -80,7 +80,7 @@ $query_builder = TRUE;
 
 $hostname = DB_HOST;
 $username = DB_USERNAME;
-$password = encrypt('nikita', DEVELOPER);
+$password = DB_PASSWORD;
 $database = DB_NAME;
 
 $db['default'] = array(
