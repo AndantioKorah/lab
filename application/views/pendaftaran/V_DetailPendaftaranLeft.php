@@ -143,17 +143,20 @@
             <span class="span_status_tagihan" style="background-color: <?=$bg_color?>"><?=strtoupper($pendaftaran['status_tagihan'])?></span>
         </div>
         <div class="col-12 text-center mt-3">
+        <?php if($this->general_library->isButtonAllowed('btn_edit_pendaftaran_list_pendaftaran')){ ?>
             <button href="#edit_data_pendaftaran" data-tooltip="tooltip_detail_pendaftaran_left" data-placement="bottom" title="Edit Pendaftaran" data-toggle="modal"
             class="btn btn-sm btn-outline-navy"
             onclick="openModalEditPendaftaran('<?=$pendaftaran['id']?>', 'loadDetailPendaftaran', 'id_t_pendaftaran')">
             <i class="fa fa-edit"></i></button>
-
-            <button class="btn btn-sm btn-outline-navy" data-tooltip="tooltip_detail_pendaftaran_left" data-placement="bottom" title="Tagihan" onclick="openTagihan('<?=$pendaftaran['id']?>')">
-            <i class="fa fa-cash-register"></i></button>
-
+        <?php } ?>
+        <?php if($this->general_library->isButtonAllowed('btn_tagihan_list_pendaftaran')){ ?>
+                <button class="btn btn-sm btn-outline-navy" data-tooltip="tooltip_detail_pendaftaran_left" data-placement="bottom" title="Tagihan" onclick="openTagihan('<?=$pendaftaran['id']?>')">
+                <i class="fa fa-cash-register"></i></button>
+        <?php } ?>
+        <?php if($this->general_library->isButtonAllowed('btn_tindakan_list_pendaftaran')){ ?>
             <button class="btn btn-sm btn-outline-navy" data-tooltip="tooltip_detail_pendaftaran_left" data-placement="bottom" title="Input Tindakan" onclick="LoadViewInputTindakan('<?=$pendaftaran['id']?>')">
             <i class="fa fa-user-md"></i></button>
-
+        <?php } ?>
         </div>
     </div>
    <!-- tutup tes -->
