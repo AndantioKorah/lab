@@ -5,7 +5,7 @@
                 /* size: A4; */
                 /* margin-top: 150px; */
             }
-            .body_kwitansi_pembayaran{
+            .body_kwitansi_pembayaran span{
                 font-family: Verdana !important;
                 /* width: 100%; */
             }
@@ -20,9 +20,8 @@
             .table_content_kwitansi{
                 font-family: Verdana !important;
                 /* border: 1px solid black; */
-                margin-top: 30px;
                 width: 100%;
-                font-size: 12px; 
+                /* font-size: 12px;  */
             }
             .parameter_content{
                 font-family: Verdana !important;
@@ -40,9 +39,7 @@
         </style>
     </head>
     <body class="body_kwitansi_pembayaran">
-       
             <?php
-         
                 $dokter_pengirim = $pendaftaran['nama_dokter_pengirim'];
                 if($dokter_pengirim == null){
                     $dokter_pengirim = "Atas Permintaan Sendiri";
@@ -63,16 +60,16 @@
             ?>
             <center>
         <table style="width:100%" border="0">
-        <td  style="width:62%"><span>Lab. Klinik PATRA<span><br><span style="font-size:10px;">Kompleks Wanea Plaza<span><br>
-        <span style="font-size:10px;">JL. Sam Ratulangi Blok A No.3<span><br>
-        <span style="font-size:10px;">Telp./Fax (0431)863113,Manado<span><br>
+        <td style="width:62%"><span>Lab. Klinik PATRA<span><br><span style="font-size:14px;">Kompleks Wanea Plaza<span><br>
+        <span style="font-size:14px;">JL. Sam Ratulangi Blok A No.3<span><br>
+        <span style="font-size:14px;">Telp./Fax (0431)863113,Manado<span><br>
         </td>
         <td valign="top"align=><span>KWITANSI</span><br>
-        <span style="font-size:10px;">Nomor Pendaftaran : <?=$pembayaran['nomor_pembayaran']?> </span></td>
+        <span style="font-size:14px;">Nomor Lab : <?=$pembayaran['nomor_pembayaran']?> </span></td>
 
         </table>
          
-        <table style="width:100%; padding-top:30px;" border="0">
+        <table style="width:100%; padding-top:30px;" border="0" class="table_content_kwitansi">
             <tr>
                 <td style="width:25%;">Terima dari </td>
                 <td  style="width:2%;">:</td>
@@ -115,8 +112,8 @@
 
                
             </center>
-            <table  border="1">
-                    <td>Jumlah : <?=formatCurrency($pembayaran['jumlah_pembayaran'])?></td>
+            <table border="1">
+                    <td style="padding: 15px; font-size: 18px; font-family: Verdana;">Jumlah : <?=formatCurrency($pembayaran['jumlah_pembayaran'])?></td>
                 </table>
     </body>
 </html>

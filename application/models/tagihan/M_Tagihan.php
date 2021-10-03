@@ -117,7 +117,7 @@
             return $data;
         }
 
-        public function buildDataRincianTagihan($data){
+        public function buildDataRincianTagihan($data, $new_format = 0){
             $result = null;
             $i = 0;
             foreach($data as $d){
@@ -132,14 +132,19 @@
                         if($dtag['detail_tindakan']){
                             unset($result[$i]['detail_tindakan']);
                             $i++;
-                            foreach($dtag['detail_tindakan'] as $dtin){
-                                $result[$i]['nama_tindakan'] = $dtin;
-                                $result[$i]['page'] = 1;
-                                $i++;
+                            if($new_format != 1){
+                                foreach($dtag['detail_tindakan'] as $dtin){
+                                    $result[$i]['nama_tindakan'] = $dtin;
+                                    $result[$i]['page'] = 1;
+                                    $i++;
+                                }
                             }
                         }
                     }
                 }
+            }
+            if($new_format == 1){
+                return [$result, 0];
             }
             // $pages = intval((count($temp_data) / ROW_PER_PAGE_CETAK_TAGIHAN) + 1);
             $i = 0;

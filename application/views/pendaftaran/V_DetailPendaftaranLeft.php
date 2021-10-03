@@ -1,7 +1,7 @@
 <style>
     .label_pendaftaran{
-        /* font-size: 14px; */
-        font-size: 11px;
+        font-size: 14px;
+        /* font-size: 11px; */
         font-weight: bold;
     }
 
@@ -94,7 +94,7 @@
     </div>
 
     <!-- tes -->
-    <div class="row">
+    <!-- <div class="row">
         <div class="col-12 text-center mb-2">
             <span style="font-size: 17px; font-weight: bold;">DATA PENDAFTARAN</span>
         </div>
@@ -158,7 +158,7 @@
             <i class="fa fa-user-md"></i></button>
         <?php } ?>
         </div>
-    </div>
+    </div> -->
    <!-- tutup tes -->
 
     <script>

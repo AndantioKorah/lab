@@ -10,17 +10,20 @@
                 border-bottom: 1px solid black;
                 border-top: 2px solid black;
                 height: 30px;
+                font-family: Verdana;
             }
             .content_rincian_tagihan{
                 width: 100%;
                 border: 1px solid black;
                 border-collapse: collapse;
+                font-family: Verdana;
                 /* margin-top: 10px; */
             }
             .td_jns_tindakan{
                border-left: 1px solid black;
                padding: 3px;
                font-style: italic;
+               font-family: Verdana;
             }
             .td_tindakan{
                border-left: 1px solid black;
@@ -28,6 +31,7 @@
                padding-bottom: 3px;
                padding-right: 3px;
                padding-left: 20px;
+               font-family: Verdana;
             }
             .td_detail_tindakan{
                border-left: 1px solid black;
@@ -35,12 +39,14 @@
                padding-bottom: 3px;
                padding-right: 3px;
                padding-left: 40px;
+               font-family: Verdana;
             }
             .td_detail_tindakan_detail{
                 vertical-align: top;
                 text-align: center;
                 border-left: 1px solid black;
                 font-size: 18px;
+                font-family: Verdana;
             }
             .div_pemeriksa{
                 width: 100%;
@@ -50,7 +56,7 @@
             }
         </style>
     </head>
-    <body style="font-family: <?=FONT_CETAKAN?>; ">
+    <body style="font-family: <?=FONT_CETAKAN?> !important; ">
         <?php for($i = 1; $i <= $page_count; $i++){ ?>
             <div class="pagebreak">
                 <?php
