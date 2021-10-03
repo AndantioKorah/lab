@@ -78,10 +78,15 @@ $query_builder = TRUE;
 // $password = 'rootnikitalab';
 // $database = 'db_lab';
 
-$hostname = DB_HOST;
-$username = DB_USERNAME;
-$password = encrypt('nikita', DEVELOPER);
-$database = DB_NAME;
+$hostname = 'localhost';
+$username = 'root';
+$password = '';
+$database = 'db_lab';
+
+// $hostname = DB_HOST;
+// $username = DB_USERNAME;
+// $password = encrypt('nikita', DEVELOPER);
+// $database = DB_NAME;
 
 $db['default'] = array(
 	'dsn'	=> '',
