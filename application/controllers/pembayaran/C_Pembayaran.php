@@ -58,6 +58,7 @@ class C_Pembayaran extends CI_Controller
         $data['pendaftaran'] = $this->pendaftaran->getDataPendaftaran($id_pendaftaran);
         $data['uang_muka'] = $this->general->getOne('t_uang_muka', 'id_t_pendaftaran', $id_pendaftaran, 1);
         $data['tagihan'] = $this->general->getOne('t_tagihan', 'id_t_pendaftaran', $id_pendaftaran, 1);
+        $data['rincian_tagihan'] = $this->pembayaran->getRincianTagihan($id_pendaftaran);
         $this->load->view('pembayaran/V_KwitansiUangMuka', $data);
     }
 
