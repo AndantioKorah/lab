@@ -18,7 +18,7 @@
             </div>
             <div class="col-md-2">
                 <label>TANGGAL LAHIR</label>
-                <input autocomplete="off" id="tanggal_lahir" class="form-control form-control-sm" name="tanggal_lahir" />
+                <input autocomplete="off" id="tanggal_lahir_pasien_baru" class="form-control form-control-sm" name="tanggal_lahir" />
             </div>
             <div class="col-md-2">
                 <label>GOLONGAN DARAH</label>
@@ -115,7 +115,7 @@
     $(function(){
         $('.select2_this').select2()
 
-        $("#tanggal_lahir").inputmask("99-99-9999", {
+        $("#tanggal_lahir_pasien_baru").inputmask("99-99-9999", {
             placeholder: "hh-bb-tttt"
         });
     })

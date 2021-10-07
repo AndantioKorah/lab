@@ -525,7 +525,7 @@
     }
 
     public function getDataPasien($id_pendaftaran){
-        $this->db->select('b.tanggal_lahir, b.jenis_kelamin')
+        $this->db->select('b.tanggal_lahir, b.jenis_kelamin, b.id as id_m_pasien')
         ->from('t_pendaftaran as a')
         ->join('m_pasien as b', 'b.norm = a.norm')
         ->where('a.id', $id_pendaftaran)

@@ -359,7 +359,7 @@ function tampilTindakan()
     success:function(data)
     {
 			// $('.simpan').html('Simpan');
-            LoadViewInputTindakan(id_pendaftaran)
+            LoadViewInputTindakan(id_pendaftaran, '0', '<?=$pasien[0]->id_m_pasien?>')
     	// $('#action_alert').html('<h4>Berhasil</h4>')
     }
    })

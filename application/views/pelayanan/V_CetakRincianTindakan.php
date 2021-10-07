@@ -108,11 +108,11 @@
                             }
                         ?>
                             <tr>
-                                <td style="width: 45%; font-size: 20px;" class="<?=$class_tr?>"><?=$jenis_pemeriksaan?></td>
-                                <td style="width: 10%; font-size: 20px;" class="td_detail_tindakan_detail" style="text-align:center"><?=$hasil?></td>
-                                <td style="width: 15%; font-size: 20px;" class="td_detail_tindakan_detail" style="text-align:center"><?=$nilai_normal?></td>
-                                <td style="width: 10%; font-size: 20px;" class="td_detail_tindakan_detail" style="text-align:center"><?=$satuan?></td>
-                                <td style="width: 20%; font-size: 20px;" class="<?=$class_tr?>" style="text-align:center"><?=$catatan?></td>
+                                <td style="width: 35%; font-size: 16px;" class="<?=$class_tr?>"><?=$jenis_pemeriksaan?></td>
+                                <td style="width: 20%; font-size: 16px;" class="td_detail_tindakan_detail" style="text-align:center"><?=$hasil?></td>
+                                <td style="width: 20%; font-size: 16px;" class="td_detail_tindakan_detail" style="text-align:center"><?=$nilai_normal?></td>
+                                <td style="width: 10%; font-size: 16px;" class="td_detail_tindakan_detail" style="text-align:center"><?=$satuan?></td>
+                                <td style="width: 15%; font-size: 16px;" class="<?=$class_tr?>" style="text-align:center"><?=$catatan?></td>
                             </tr>
                         <?php } ?>
                     </tbody>
