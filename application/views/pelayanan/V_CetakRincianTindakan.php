@@ -94,6 +94,9 @@
                                 $nilai_normal = $rt['nilai_normal'];
                                 $satuan = $rt['satuan'];
                                 $catatan = $rt['keterangan'];
+                                if($hasil != ''){
+                                    $hasil = formatTextHasil($hasil, $nilai_normal);
+                                }
                             } else if(isset($rt['id_t_pendaftaran']) && $rt['parent_id_tindakan'] != '0'){
                                 $jenis_pemeriksaan = $rt['nama_tindakan'];
                                 $hasil = $rt['hasil'];

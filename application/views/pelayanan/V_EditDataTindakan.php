@@ -15,6 +15,26 @@
                     <th>Keterangan</th>
                 </thead>
                 <tbody>
+                    <tr>
+                        <input name="id_t_tindakan[]" value="<?=$tindakan['id']?>" type="hidden">
+                        <td colspan=2><strong><?=$tindakan['nama_tindakan'];?></strong></td>
+                        <td><?=$tindakan['hasil'];?></td>
+                        <td>
+                            <?php if($tindakan['nilai_normal']){ ?>
+                                <input class="form-control form-control-sm" value="<?=$tindakan['nilai_normal'];?>" name="nilai_normal[]" />
+                            <?php } ?>
+                        </td>
+                        <td>
+                            <?php if($tindakan['nilai_normal']){ ?>
+                                <input class="form-control form-control-sm" value="<?=$tindakan['satuan'];?>" name="satuan[]" />
+                            <?php } ?>
+                        </td>
+                        <td>
+                            <?php if($tindakan['nilai_normal']){ ?>
+                                <input class="form-control form-control-sm" value="<?=$tindakan['keterangan'];?>" name="keterangan[]" />
+                            <?php } ?>
+                        </td>
+                    </tr>
                     <?php if($detail_tindakan){ $no = 1; foreach($detail_tindakan as $dt){ ?>
                         <tr>
                             <input name="id_t_tindakan[]" value="<?=$dt['id']?>" type="hidden">

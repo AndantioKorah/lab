@@ -70,14 +70,12 @@
                             <td  class="text-center"> <?=$no.'.'.$nmr;?> </td>
                             <td ><b><?=$dt['nama_tindakan']?></b></td>
                             <td >
-                            <input <?=$style;?> name="hasil[]"   autocomplete="off" class="col-12 hsl" type='text' value="<?php if($dt['hasil'] == null) echo ""; else echo $dt['hasil'];?>">
+                            <input <?=$style;?> name="hasil_<?=$dt['id']?>"   autocomplete="off" class="col-12 hsl" type='text' value="<?php if($dt['hasil'] == null) echo ""; else echo $dt['hasil'];?>">
                             <input type="hidden" name="id_t_tindakan[]"  value="<?=$dt['id']?>" />
                             </td>
-                            <!-- <td ><input autocomplete="off" <?=$style;?> name="nilai_normal[]" class="col-12" type='text' value="<?=$dt['nilai_normal']?>" ></td>
-                            <td ><input <?=$style;?> name="satuan[]" class="col-12" type='text' value="<?=$dt['satuan']?>" readonly></td> -->
-                            <td ><?=$dt['nilai_normal']?></td>
-                            <td ><?=$dt['satuan']?></td>
-                            <td ><input <?=$style;?> name="keterangan[]" class="col-12" type='text' value="<?=$dt['keterangan']?>" ></td>
+                            <td ><input autocomplete="off" <?=$style;?> name="nilai_normal_<?=$dt['id']?>" class="col-12" type='text' value="<?=$dt['nilai_normal']?>" ></td>
+                            <td ><input <?=$style;?> name="satuan_<?=$dt['id']?>" class="col-12" type='text' value="<?=$dt['satuan']?>"></td>
+                            <td ><input <?=$style;?> name="keterangan_<?=$dt['id']?>" class="col-12" type='text' value="<?=$dt['keterangan']?>" ></td>
                             <td class="text-right">
                                 <button <?= $styleTagihan;?> type="button" class="btn btn-sm btn-navy" data-toggle="modal" href="#edit_data_tindakan_modal" onclick="editDataTindakan('<?=$dt['id']?>')"><i class="fa fa-edit"></i> Edit</button>
                                 <button <?= $styleTagihan;?> type="button" title="Hapus Tindakan"  class="btn btn-danger btn-sm tombol_hapus_tindakan" data-idtindakan="<?=$dt['id']?>"><i class="fa fa-trash"></i> Hapus</button></td>  
@@ -88,7 +86,7 @@
                         <tr>
                             <td ></td>
                             <td ><?=$d['nama_tindakan']?></td>
-                            <td> <input name="hasil[]"   autocomplete="off" class="col-12 hsl" type='text'value="<?php if($d['hasil'] == null) echo ""; else echo $d['hasil'];?>" ></td>
+                            <td> <input name="hasil_<?=$d['id']?>"   autocomplete="off" class="col-12 hsl" type='text'value="<?php if($d['hasil'] == null) echo ""; else echo $d['hasil'];?>" ></td>
                               <input type="hidden" name="id_t_tindakan[]"  value="<?=$d['id']?>" />
                             </td>
                             <!-- <td><input autocomplete="off" name="nilai_normal[]" class="col-12" type='text' value="<?=$d['nilai_normal']?>" ></td>

@@ -80,6 +80,41 @@ class C_Pelayanan extends CI_Controller
     public function createHasil()
     {
 
+        for ($count = 0; $count < count($_POST['id_t_tindakan']); $count++) {
+            $id_t_tindakan = $_POST['id_t_tindakan'][$count];
+            $data = null;
+            if(isset($_POST['hasil_'.$id_t_tindakan])){
+                $data['hasil'] = $_POST['hasil_'.$id_t_tindakan];
+            }
+            if(isset($_POST['nilai_normal_'.$id_t_tindakan])){
+                $data['nilai_normal'] = $_POST['nilai_normal_'.$id_t_tindakan];
+            }
+            if(isset($_POST['satuan_'.$id_t_tindakan])){
+                $data['satuan'] = $_POST['satuan_'.$id_t_tindakan];
+            }
+            if(isset($_POST['keterangan_'.$id_t_tindakan])){
+                $data['keterangan'] = $_POST['keterangan_'.$id_t_tindakan];
+            }
+            // $data = array(
+            //     'hasil' => $_POST['hasil'][$count],
+            //     'nilai_normal' => $_POST['nilai_normal'][$count],
+            //     'satuan' => $_POST['satuan'][$count],
+            //     'keterangan' => $_POST['keterangan'][$count],
+            // );
+            // var_dump($data);
+            // die();
+            if($data['hasil'] || $data['nilai_normal'] || $data['satuan'] || $data['keterangan']){
+                $this->pelayanan->createHasil($id_t_tindakan, $data);
+            }
+
+        }
+
+        echo json_encode($data);
+    }
+
+    public function createHasilBu()
+    {
+
         for ($count = 0; $count < count($_POST['hasil']); $count++) {
             $id_t_tindakan = $_POST['id_t_tindakan'][$count];
             $data = [];
@@ -101,7 +136,6 @@ class C_Pelayanan extends CI_Controller
             //     'satuan' => $_POST['satuan'][$count],
             //     'keterangan' => $_POST['keterangan'][$count],
             // );
-            // dd($data);
             // var_dump($data);
             // die();
             $this->pelayanan->createHasil($id_t_tindakan, $data);
