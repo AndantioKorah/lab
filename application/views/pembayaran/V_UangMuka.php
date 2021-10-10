@@ -107,7 +107,7 @@
                 return prefix == undefined ? rupiah : rupiah ? rupiah : "";
             }
 
-            $('.format_currency_thiss').on('keyup', function(){
+            $('.format_currency_this').on('keyup', function(){
                 $(this).val(formatRupiah($(this).val()))
             })
 

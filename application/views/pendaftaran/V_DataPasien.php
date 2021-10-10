@@ -60,7 +60,7 @@
         $('#label_card_header').html(title.toUpperCase())
     }
 
-    function openTagihan(id_t_pendaftaran){
+    function openTagihan(id_t_pendaftaran, id_pasien = 0){
         setHeader('tagihan')
         $('[data-tooltip="tooltip_detail_pendaftaran_left"]').tooltip('hide')
         loadDetailPendaftaran(id_t_pendaftaran)
@@ -71,7 +71,7 @@
         })
     }
 
-    function LoadViewInputTindakan(id = 0, callback = 0){
+    function LoadViewInputTindakan(id = 0, callback = 0, id_pasien = 0){
         setHeader('tindakan')
         $('[data-tooltip="tooltip_detail_pendaftaran_left"]').tooltip('hide')
         loadDetailPendaftaran(id)
