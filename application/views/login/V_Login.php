@@ -58,7 +58,8 @@
   <!-- /.login-logo -->
   <div class="card shadow-lg p-3 mb-5 bg-white rounded" style="opacity: 1; transition: .2s">
     <div class="card-body login-card-body">
-      <p class="login-box-msg text-navy"><strong><?=TITLES?></strong></p>
+      <img src="<?=base_url('assets/img/logo-putih-biru.png')?>" style="width: 288px; height: 288px; margin-bottom: 20px;" />
+      <!-- <p class="login-box-msg text-navy"><strong><?=TITLES?></strong></p> -->
 
       <form action="<?=base_url('login/C_Login/authenticateAdmin')?>" method="post">
         <div class="input-group mb-3">
