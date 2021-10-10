@@ -16,10 +16,12 @@ function render($pageContent, $parent_active, $active, $data)
 
 function formatTextHasil($hasil_input, $nilai_normal){
     $nn = explode(" ",$nilai_normal);
-
+    
     $hasil = titikGantiKoma($hasil_input);
     $hasil = clearString($hasil); 
-
+    // if($hasil_input == '5,5'){
+    //     dd($hasil);
+    // }
     if($nn[0] == '<' && isset($nn[1])){
         $max = titikGantiKoma($nn[1]);
         $max = clearString($max);

@@ -143,7 +143,7 @@
         // loadDetailPendaftaran(id)
         $('#content_div_transaksi').html('')
         $('#content_div_transaksi').append(divLoaderNavy)
-        $('#content_div_transaksi').load('<?=base_url("pelayanan/C_Pelayanan/loadViewInputTindakan")?>'+'/'+id, function(){
+        $('#content_div_transaksi').load('<?=base_url("pelayanan/C_Pelayanan/loadViewInputTindakanNew")?>'+'/'+id, function(){
             $('#loader').hide()
         })
   }

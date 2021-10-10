@@ -789,6 +789,20 @@
         }
         return [$final_result, $current_page];
     }
+
+    public function getDataForEditTindakan($id){
+        $parent = $this->db->select('*')
+                        ->from('t_tindakan')
+                        ->where('id', $id)
+                        ->where('flag_active', 1)
+                        ->get()->row_array();
+        $child = $this->db->select('*')
+                        ->from('t_tindakan')
+                        ->where('parent_id_tindakan', $parent['id_m_nm_tindakan'])
+                        ->where('flag_active', 1)
+                        ->get()->result_array();
+        return [$parent, $child];
+    }
        
-	}
+}
 ?>
