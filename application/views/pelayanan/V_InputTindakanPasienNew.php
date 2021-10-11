@@ -29,10 +29,10 @@
                 <th style="width: 5%;" class="text-center" >No</th>
                 <th style="width: 25%;" >Tindakan</th>
                 <th  style="width: 15%;"  class="text-left">Hasil</th>
-                <th  style="width: 15%;"  class="text-left">Nilai Normal</th>
+                <th  style="width: 25%;"  class="text-left">Nilai Normal</th>
                 <th  style="width: 5%;"  class="text-left">Satuan</th>
                 <th  style="width: 15%;"  class="text-left">Keterangan</th>
-                <th style="width: 20%;"  class="text-left"></th>
+                <th style="width: 10%;"  class="text-left"></th>
                
             </thead>
             <tbody class="tbody_rincian_tindakan" id="daftar_tindakan">
@@ -77,8 +77,18 @@
                             <td ><input <?=$style;?> name="satuan_<?=$dt['id']?>" class="col-12" type='text' value="<?=$dt['satuan']?>"></td>
                             <td ><input <?=$style;?> name="keterangan_<?=$dt['id']?>" class="col-12" type='text' value="<?=$dt['keterangan']?>" ></td>
                             <td class="text-right">
-                                <button <?= $styleTagihan;?> type="button" class="btn btn-sm btn-navy" data-toggle="modal" href="#edit_data_tindakan_modal" onclick="editDataTindakan('<?=$dt['id']?>')"><i class="fa fa-edit"></i> Edit</button>
-                                <button <?= $styleTagihan;?> type="button" title="Hapus Tindakan"  class="btn btn-danger btn-sm tombol_hapus_tindakan" data-idtindakan="<?=$dt['id']?>"><i class="fa fa-trash"></i> Hapus</button></td>  
+                            <div class="btn-group dropleft" role="group">
+                                <button id="btnPilihan" type="button" class="btn btn-sm btn-navy dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Pilihan
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="btnPilihan">
+                                <a <?=$styleTagihan;?> data-toggle="modal" class="dropdown-item" href="#edit_data_tindakan_modal" onclick="editDataTindakan('<?=$dt['id']?>')">Edit Tindakan</a>
+                                <a <?=$styleTagihan;?> data-idtindakan="<?=$dt['id']?>" class="dropdown-item tombol_hapus_tindakan" href="#">Hapus Tindakan</a>
+                                </div>
+                            </div>
+                                <!-- <button <?= $styleTagihan;?> type="button" class="btn btn-sm btn-navy" data-toggle="modal" href="#edit_data_tindakan_modal"
+                                onclick="editDataTindakan('<?=$dt['id']?>')"><i class="fa fa-edit"></i> Edit</button>
+                                <button <?= $styleTagihan;?> type="button" title="Hapus Tindakan"  class="btn btn-danger btn-sm tombol_hapus_tindakan" data-idtindakan="<?=$dt['id']?>"><i class="fa fa-trash"></i> Hapus</button></td>   -->
                             </td> 
                         </tr>
                     

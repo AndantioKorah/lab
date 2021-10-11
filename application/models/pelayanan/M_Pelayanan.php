@@ -550,7 +550,7 @@
         ->join('m_jns_tindakan as b', 'b.id = a.id_m_jns_tindakan')
         ->like('nama_tindakan',$params)
         ->where('a.flag_active', '1');
-    return $this->db->get()->result();
+        return $this->db->get()->result();
     }
 
     public function select2Tindakan(){
@@ -698,7 +698,7 @@
                 }
             }
         }
-    }
+        }
         // dd($data);
         // fungsi ini akan berhenti jika $tindakan sudah null; tapi belum ada contoh, jadi belum lanjut
         return $data;
