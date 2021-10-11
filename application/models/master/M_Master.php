@@ -154,10 +154,14 @@
         }
 
         function get_option_parent() {
-            $this->db->select('*');
-            $this->db->from('m_tindakan');
-            $this->db->where('flag_active',1);
-            $this->db->where('nilai_normal',null);
+            $this->db->select('a.*,
+            CONCAT(b.nm_jns_tindakan, " / ", a.nama_tindakan, " / ", a.id ) as nm_tindakan ');
+            
+            
+            $this->db->from('m_tindakan as a');
+            $this->db->join('m_jns_tindakan as b', 'b.id = a.id_m_jns_tindakan');
+            $this->db->where('a.flag_active',1);
+            $this->db->where('a.nilai_normal',null);
             $query = $this->db->get();
             return $query->result();
         }
@@ -195,6 +199,13 @@
 
             $this->db->where('id', $id_tindakan)
                     ->update('m_tindakan', $data);
+
+                    $this->db->where('id', $id_tindakan)
+                    ->update('m_tindakan',
+                    [
+                        'updated_by' => $this->general_library->getId()
+                    ]); 
+                    
 
             if($this->db->trans_status() == FALSE){
                 $this->db->trans_rollback();

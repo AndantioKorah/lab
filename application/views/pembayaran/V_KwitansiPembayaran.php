@@ -114,6 +114,6 @@
             </center>
             <table border="1">
                     <td style="padding: 15px; font-size: 18px; font-family: Verdana;">Jumlah : <?=formatCurrency($pembayaran['jumlah_pembayaran'])?></td>
-                </table>
+            </table>
     </body>
 </html>
