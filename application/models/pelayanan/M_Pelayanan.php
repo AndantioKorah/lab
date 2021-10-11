@@ -5,6 +5,8 @@
         {
             parent::__construct();
             $this->db = $this->load->database('main', true);
+            $this->index = 0;
+            $this->child = [];
         }
 
         public function insert($tablename, $data){
@@ -140,7 +142,7 @@
         }
 
 
-        public function insertTindakan(){
+        public function insertTindakanBuss(){
             $res['code'] = 0;
             $res['message'] = 'ok';
             $res['data'] = null;
@@ -149,7 +151,6 @@
             $id_pendaftaran = $this->input->post('id_pendaftaran');
             $id_tagihan = $this->input->post('id_tagihan');
             $id_tindakan = $this->input->post('tindakan');
-        //   dd($id_pendaftaran);
            
             $this->db->trans_begin();
 
@@ -296,7 +297,7 @@
                             $nilai_normal = $tindakan->nilai_normal;
                         }
                     }
-                
+
                     $data = array(
                         'id_t_pendaftaran' => $id_pendaftaran,
                         'id_m_nm_tindakan' => $tindakan->id,
@@ -367,10 +368,93 @@
 
             return $res;
         }
+        
+        public function insertTindakan(){
+            $res['code'] = 0;
+            $res['message'] = 'ok';
+            $res['data'] = null;
 
+           
+            $id_pendaftaran = $this->input->post('id_pendaftaran');
+            $id_tagihan = $this->input->post('id_tagihan');
+            $id_tindakan = $this->input->post('tindakan');
+            $id_tindakan = 51;
+            
+            $this->db->trans_begin();
+
+            $this->db->select('*')
+            ->from('t_tindakan as a')
+            ->where('a.id_m_nm_tindakan', $id_tindakan)
+            ->where('a.id_t_pendaftaran', $id_pendaftaran)
+            ->where('a.flag_active', 1);
+             $cekTindakanDouble =  $this->db->get()->result();
+
+             if($cekTindakanDouble){
+                $res['code'] = 1;
+                $res['message'] = 'Tindakan Sudah ada';
+                return $res;
+             }
+
+            $this->db->select('*')
+                ->from('m_tindakan as a')
+                ->where('a.parent_id', $id_tindakan)
+                ->where('a.flag_active', 1);
+            $cekTindakan = $this->db->get()->result();
+            
+            $data = null;
+            if($cekTindakan){
+                foreach($cekTindakan as $ct){
+                    $data[$ct->id] = $ct;
+                    $data[$ct->id]->child = $this->buildChildren($ct->id);
+                }
+            }
+            // dd($this->index);
+            dd($data);
+
+            if($this->db->trans_status() == FALSE){
+                $this->db->trans_rollback();
+            } else {
+                $this->db->trans_commit();
+            }
+
+            return $res;
+        }
+
+        public function buildChildren($parent_id, $array = ()){
+            $w = $this->db->query("SELECT * from tbl_menu where id_parent='".$parent."'");
+            if(($w->num_rows())>0)
+            {
+                $hasil .= "<ul>";
+            }
+            foreach($w->result() as $h)
+            {
+
+                $hasil .= "<li>".$h->menu;
+                $hasil = $this->menu($h->id_menu,$hasil);
+                $hasil .= "</li>";
+            }
+            if(($w->num_rows)>0)
+            {
+                $hasil .= "</ul>";
+            }
+            return $hasil;
+        }
 
         
-
+        public function getChildren($id){
+            $return = null;
+            return $this->db->select('*')
+                            ->from('m_tindakan')
+                            ->where('parent_id', $id)
+                            ->where('flag_active', 1)
+                            ->get()->result_array();
+            // if(count($result) > 0){
+            //     foreach($result as $rs){
+            //         $return[] = $rs;
+            //     }
+            // }
+            // return $return;
+        }
 
         public function getTindakanPasienOld($id_pendaftaran)
     {
