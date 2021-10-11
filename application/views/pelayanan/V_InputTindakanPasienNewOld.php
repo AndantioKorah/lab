@@ -43,32 +43,89 @@
                     ?>
                     <tr style="cursor: pointer;">
                         <td class="text-center"><b style="font-size: 18px;"><?=$no;?></b></td>
-                        <td ><b style="font-size: 18px;"><?=$rt['nama_tindakan']?></b></td>
+                        <td ><b style="font-size: 18px;"><?=$rt['nm_jns_tindakan']?></b></td>
                         <td  class="text-center"></td>
                         <td  class="text-center"></td>
                         <td  class="text-center"></td>
                         <td  class="text-center"></td>
                         <td  class="text-center"></td>
-                        <?php if(count($rt['children']) > 0){ ?>
-                        <?php } ?>
+                      <!-- tes -->
+                      <?php 
+                      
+                        if(isset($rt['tindakan'])){  
+                            $nmr=1;
+                            $styleTagihan = null;                       
+                        
+                            if($id_tagihan['0']->id_m_status_tagihan == 2) $styleTagihan="style='display:none;'"; else $styleTagihan="style=''";  
+                            foreach($rt['tindakan'] as $dt){  
+                                if(isset($dt['detail_tindakan'])){
+                                    $flagHasil=1;
+                                } else{
+                                    $flagHasil=0;
+                                }
+                            // if ($dt['nilai_normal'] == "" ) { $style="style='display:none;'"; } else {$style="style=''";}  
+                            if ($flagHasil == 1 ) { $style="style='display:none;'"; } else {$style="style=''";}  
+                          ;?>
+                        <tr  style="cursor: pointer;">
+                            <td  class="text-center"> <?=$no.'.'.$nmr;?> </td>
+                            <td ><b><?=$dt['nama_tindakan']?></b></td>
+                            <td >
+                            <input <?=$style;?> name="hasil_<?=$dt['id']?>"   autocomplete="off" class="col-12 hsl" type='text' value="<?php if($dt['hasil'] == null) echo ""; else echo $dt['hasil'];?>">
+                            <input type="hidden" name="id_t_tindakan[]"  value="<?=$dt['id']?>" />
+                            </td>
+                            <td ><input autocomplete="off" <?=$style;?> name="nilai_normal_<?=$dt['id']?>" class="col-12" type='text' value="<?=$dt['nilai_normal']?>" ></td>
+                            <td ><input <?=$style;?> name="satuan_<?=$dt['id']?>" class="col-12" type='text' value="<?=$dt['satuan']?>"></td>
+                            <td ><input <?=$style;?> name="keterangan_<?=$dt['id']?>" class="col-12" type='text' value="<?=$dt['keterangan']?>" ></td>
+                            <td class="text-right">
+                            <div class="btn-group dropleft" role="group">
+                                <button id="btnPilihan" type="button" class="btn btn-sm btn-navy dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Pilihan
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="btnPilihan">
+                                <a <?=$styleTagihan;?> data-toggle="modal" class="dropdown-item" href="#edit_data_tindakan_modal" onclick="editDataTindakan('<?=$dt['id']?>')">Edit Tindakan</a>
+                                <a <?=$styleTagihan;?> data-idtindakan="<?=$dt['id']?>" class="dropdown-item tombol_hapus_tindakan" href="#">Hapus Tindakan</a>
+                                </div>
+                            </div>
+                                <!-- <button <?= $styleTagihan;?> type="button" class="btn btn-sm btn-navy" data-toggle="modal" href="#edit_data_tindakan_modal"
+                                onclick="editDataTindakan('<?=$dt['id']?>')"><i class="fa fa-edit"></i> Edit</button>
+                                <button <?= $styleTagihan;?> type="button" title="Hapus Tindakan"  class="btn btn-danger btn-sm tombol_hapus_tindakan" data-idtindakan="<?=$dt['id']?>"><i class="fa fa-trash"></i> Hapus</button></td>   -->
+                            </td> 
+                        </tr>
+                    
+                        <?php  if(isset($dt['detail_tindakan'])){ foreach($dt['detail_tindakan'] as $d) { ?>
+                        <tr>
+                            <td ></td>
+                            <td ><?=$d['nama_tindakan']?></td>
+                            <td> <input name="hasil_<?=$d['id']?>"   autocomplete="off" class="col-12 hsl" type='text'value="<?php if($d['hasil'] == null) echo ""; else echo $d['hasil'];?>" ></td>
+                              <input type="hidden" name="id_t_tindakan[]"  value="<?=$d['id']?>" />
+                            </td>
+                            <!-- <td><input autocomplete="off" name="nilai_normal[]" class="col-12" type='text' value="<?=$d['nilai_normal']?>" ></td>
+                            <td><input name="satuan[]" class="col-12" type='text' value="<?=$d['satuan']?>" readonly></td> -->
+                            <td ><?=$d['nilai_normal']?></td>
+                            <td ><?=$d['satuan']?></td>
+                            <td colspan=2><?=$d['keterangan']?></td>
+                        </tr>
+                        <?php } } $nmr++; } } ?>
+                        <!-- tes -->
+                      
                     </tr>
                     <?php $no++; ?> 
                     <script>
-                        function cetakHasil() {
-                            $("#print_div").load('<?= base_url('pelayanan/C_Pelayanan/cetakHasil/'.$id_pendaftaran)?>',
-                                function () {
-                                    printSpace('print_div');
-                                });
-                        }
+                    function cetakHasil() {
+                        $("#print_div").load('<?= base_url('pelayanan/C_Pelayanan/cetakHasil/'.$id_pendaftaran)?>',
+                            function () {
+                                printSpace('print_div');
+                            });
+                    }
 
-                        function printSpace(elementId) {
-                            var isi = document.getElementById(elementId).innerHTML;
-                            window.frames["print_frame"].document.title = document.title;
-                            window.frames["print_frame"].document.body.innerHTML = isi;
-                            window.frames["print_frame"].window.focus();
-                            window.frames["print_frame"].window.print();
-                        }
-                    </script>
+                    function printSpace(elementId) {
+                        var isi = document.getElementById(elementId).innerHTML;
+                        window.frames["print_frame"].document.title = document.title;
+                        window.frames["print_frame"].document.body.innerHTML = isi;
+                        window.frames["print_frame"].window.focus();
+                        window.frames["print_frame"].window.print();
+                    }
+                </script>
                 <?php } } else { ?>
                     <tr>
                         <td colspan="4">BELUM ADA DATA</td>
