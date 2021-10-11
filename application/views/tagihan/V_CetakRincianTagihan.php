@@ -17,12 +17,14 @@
             }
 
             .td_jns_tindakan{
+                /* line-height: 10pt; */
                 padding: 3px;
                 font-size: 12px;
                 border-right: 1px solid black;
             }
 
             .td_tagihan{
+                /* line-height: 10pt; */
                 padding: 3px;
                 font-size: 12px;
                 border-right: 1px solid black;
@@ -34,6 +36,7 @@
             }
 
             .td_tagihan_biaya{
+                /* line-height: 10pt; */
                 font-family: Verdana;
                 padding: 3px;
                 font-size: 12px;
@@ -46,12 +49,18 @@
             }
 
             .td_perincian{
-                font-size: 12px;
+                vertical-align: top;
+                font-size: 10px;
             }
 
             .text_footer{
-                font-size: 10px;
+                font-size: 8px;
                 font-family: Verdana;
+            }
+
+            .smaller_font{
+                font-size: 9px !important;
+                line-height: 6pt !important;
             }
         </style>
     </head>
@@ -90,7 +99,7 @@
                     <tr>
                         <td class="rt_content_cetakan" style="width: 20%;">Umur</td>
                         <td class="rt_content_cetakan" style="width: 5%;">:</td>
-                        <td class="rt_content_cetakan" style="width: 75%;"><?=countDiffDateLengkap($pendaftaran['tanggal_lahir'], date('Y-m-d'), ['tahun'])?></td>
+                        <td class="rt_content_cetakan" style="width: 75%;"><?=countDiffDateLengkap($pendaftaran['tanggal_lahir'], $pendaftaran['tanggal_pendaftaran'], ['tahun'])?></td>
                     </tr>
                     <tr>
                         <td class="rt_content_cetakan" style="width: 20%;">Kelamin</td>
@@ -137,6 +146,8 @@
                 $tagihan = '';
                 $biaya = null;
                 $class_tr = '';
+                $smaller_font = '';
+                
                 if(isset($rt['nm_jns_tindakan'])){
                     $tagihan = strtoupper($rt['nm_jns_tindakan']);
                     $class_tr = 'td_jns_tindakan set_font';
@@ -145,10 +156,14 @@
                     $biaya = formatCurrencyWithoutRp($rt['biaya']);
                     $class_tr = 'td_tagihan set_font';
                 }
+                if(count($rincian_tagihan) > 15){
+                    $smaller_font = 'smaller_font';
+                    $class_tr = $class_tr.' '.$smaller_font;
+                }
             ?>
                 <tr>
                     <td style="width: 35%; vertical-align: top;" class="<?=$class_tr?>"><?=$tagihan?></td>
-                    <td style="width: 15%; vertical-align: top; text-align: right;" class="td_tagihan_biaya"><?=$biaya?></td>
+                    <td style="width: 15%; vertical-align: top; text-align: right;" class="td_tagihan_biaya <?=$smaller_font?>"><?=$biaya?></td>
                     <?php if($i == 0){ ?>
                         <td style="width: 50%;" rowspan=<?=count($rincian_tagihan)?>>
                             <table class="table_perincian" style="width: 80%; margin-left: 10px;">

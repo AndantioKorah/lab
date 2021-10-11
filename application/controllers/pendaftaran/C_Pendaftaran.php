@@ -141,5 +141,14 @@ class C_Pendaftaran extends CI_Controller
         echo json_encode($this->pendaftaran->delTindakanPendaftaran());
     }
 
+    public function menuListPendaftaran(){
+        render('pendaftaran/V_MenuListPendaftaran', '', 'list_pendaftaran', null);
+    }
+
+    public function searchMenuListPendaftaran(){
+        $data['list_pendaftaran'] = $this->pendaftaran->searchMenuListPendaftaran($this->input->post());
+        $this->load->view('pendaftaran/V_ResultMenuListPendaftaran', $data);
+
+    }
 
 }

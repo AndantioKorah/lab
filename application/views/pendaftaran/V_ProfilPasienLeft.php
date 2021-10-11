@@ -97,12 +97,12 @@
         </div>
         <div class="col-12 text-center p-2">
             <?php if($this->general_library->isButtonAllowed('btn_edit_data_pasien_profile_left')){ ?>
-                <button href="#edit_data_pasien" data-toggle="modal" data-tooltip="tooltip_profile_pasien" data-placement="top" title="Edit Data Pasien" onclick="editPasien()" 
+                <button href="#edit_data_pasien" data-toggle="modal" data-tooltip="tooltip_profile_pasien" data-placement="bottom" title="Edit Data Pasien" onclick="editPasien()" 
                 class="btn btn-sm btn-outline-navy"><i class="fa fa-user-edit"></i></button>
             <?php } ?>
 
             <?php if($this->general_library->isButtonAllowed('btn_edit_data_pasien_profile_left')){ ?>
-                <button id="btn_pendaftaran_baru" class="btn btn-sm btn-outline-navy" data-tooltip="tooltip_profile_pasien" data-placement="top" title="Pendaftaran Baru">
+                <button id="btn_pendaftaran_baru" class="btn btn-sm btn-outline-navy" data-tooltip="tooltip_profile_pasien" data-placement="bottom" title="Pendaftaran Baru">
                 <i class="fa fa-plus-square"></i></button>
             <?php } ?>
         </div>

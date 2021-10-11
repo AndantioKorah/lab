@@ -530,7 +530,7 @@
     }
 
     public function getDataPasien($id_pendaftaran){
-        $this->db->select('b.tanggal_lahir, b.jenis_kelamin')
+        $this->db->select('b.tanggal_lahir, b.jenis_kelamin, b.id as id_m_pasien')
         ->from('t_pendaftaran as a')
         ->join('m_pasien as b', 'b.norm = a.norm')
         ->where('a.id', $id_pendaftaran)
@@ -694,7 +694,7 @@
                                     ->where('a.flag_active', 1)
                                     ->group_by('a.id')
                                     ->get()->result_array();
-                                    // dd($tindakan);
+                                    // dd(json_encode($tindakan));
        
         if($tindakan){
             $i = 0;
@@ -825,6 +825,20 @@
         }
         return [$final_result, $current_page];
     }
+
+    public function getDataForEditTindakan($id){
+        $parent = $this->db->select('*')
+                        ->from('t_tindakan')
+                        ->where('id', $id)
+                        ->where('flag_active', 1)
+                        ->get()->row_array();
+        $child = $this->db->select('*')
+                        ->from('t_tindakan')
+                        ->where('parent_id_tindakan', $parent['id_m_nm_tindakan'])
+                        ->where('flag_active', 1)
+                        ->get()->result_array();
+        return [$parent, $child];
+    }
        
-	}
+}
 ?>

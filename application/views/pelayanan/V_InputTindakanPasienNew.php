@@ -30,9 +30,9 @@
                 <th style="width: 25%;" >Tindakan</th>
                 <th  style="width: 15%;"  class="text-left">Hasil</th>
                 <th  style="width: 15%;"  class="text-left">Nilai Normal</th>
-                <th  style="width: 10%;"  class="text-left">Satuan</th>
-                <th  style="width: 25%;"  class="text-left">Keterangan</th>
-                <th style="width: 5%;"  class="text-left"></th>
+                <th  style="width: 5%;"  class="text-left">Satuan</th>
+                <th  style="width: 15%;"  class="text-left">Keterangan</th>
+                <th style="width: 20%;"  class="text-left"></th>
                
             </thead>
             <tbody class="tbody_rincian_tindakan" id="daftar_tindakan">
@@ -70,28 +70,30 @@
                             <td  class="text-center"> <?=$no.'.'.$nmr;?> </td>
                             <td ><b><?=$dt['nama_tindakan']?></b></td>
                             <td >
-                            <input <?=$style;?> name="hasil[]"   autocomplete="off" class="col-12 hsl" type='text' value="<?php if($dt['hasil'] == null) echo ""; else echo $dt['hasil'];?>">
+                            <input <?=$style;?> name="hasil_<?=$dt['id']?>"   autocomplete="off" class="col-12 hsl" type='text' value="<?php if($dt['hasil'] == null) echo ""; else echo $dt['hasil'];?>">
                             <input type="hidden" name="id_t_tindakan[]"  value="<?=$dt['id']?>" />
                             </td>
-                            <td ><input autocomplete="off" <?=$style;?> name="nilai_normal[]" class="col-12" type='text' value="<?=$dt['nilai_normal']?>" ></td>
-                            <td ><input <?=$style;?> name="satuan[]" class="col-12" type='text' value="<?=$dt['satuan']?>" readonly></td>
-                            <td ><input <?=$style;?> name="keterangan[]" class="col-12" type='text' value="<?=$dt['keterangan']?>" ></td>
-                            <td >
-                            <input <?= $styleTagihan;?> type="button" title="Hapus Tindakan"  class="btn btn-danger btn-sm tombol_hapus_tindakan" data-idtindakan="<?=$dt['id']?>"  value="Hapus"></td>  
-                        </td> 
+                            <td ><input autocomplete="off" <?=$style;?> name="nilai_normal_<?=$dt['id']?>" class="col-12" type='text' value="<?=$dt['nilai_normal']?>" ></td>
+                            <td ><input <?=$style;?> name="satuan_<?=$dt['id']?>" class="col-12" type='text' value="<?=$dt['satuan']?>"></td>
+                            <td ><input <?=$style;?> name="keterangan_<?=$dt['id']?>" class="col-12" type='text' value="<?=$dt['keterangan']?>" ></td>
+                            <td class="text-right">
+                                <button <?= $styleTagihan;?> type="button" class="btn btn-sm btn-navy" data-toggle="modal" href="#edit_data_tindakan_modal" onclick="editDataTindakan('<?=$dt['id']?>')"><i class="fa fa-edit"></i> Edit</button>
+                                <button <?= $styleTagihan;?> type="button" title="Hapus Tindakan"  class="btn btn-danger btn-sm tombol_hapus_tindakan" data-idtindakan="<?=$dt['id']?>"><i class="fa fa-trash"></i> Hapus</button></td>  
+                            </td> 
                         </tr>
                     
                         <?php  if(isset($dt['detail_tindakan'])){ foreach($dt['detail_tindakan'] as $d) { ?>
                         <tr>
                             <td ></td>
                             <td ><?=$d['nama_tindakan']?></td>
-                            <td> <input name="hasil[]"   autocomplete="off" class="col-12 hsl" type='text'value="<?php if($d['hasil'] == null) echo ""; else echo $d['hasil'];?>" ></td>
+                            <td> <input name="hasil_<?=$d['id']?>"   autocomplete="off" class="col-12 hsl" type='text'value="<?php if($d['hasil'] == null) echo ""; else echo $d['hasil'];?>" ></td>
                               <input type="hidden" name="id_t_tindakan[]"  value="<?=$d['id']?>" />
                             </td>
-                            <td><input autocomplete="off" name="nilai_normal[]" class="col-12" type='text' value="<?=$d['nilai_normal']?>" ></td>
-                            <td><input name="satuan[]" class="col-12" type='text' value="<?=$d['satuan']?>" readonly></td>
-                            <td ><input name="keterangan[]" class="col-12" type='text' value="<?=$d['keterangan']?>" ></td>
-                            <td></td>
+                            <!-- <td><input autocomplete="off" name="nilai_normal[]" class="col-12" type='text' value="<?=$d['nilai_normal']?>" ></td>
+                            <td><input name="satuan[]" class="col-12" type='text' value="<?=$d['satuan']?>" readonly></td> -->
+                            <td ><?=$d['nilai_normal']?></td>
+                            <td ><?=$d['satuan']?></td>
+                            <td colspan=2><?=$d['keterangan']?></td>
                         </tr>
                         <?php } } $nmr++; } } ?>
                         <!-- tes -->
@@ -129,7 +131,20 @@
        </form>
        </div>
 
-
+<div class="modal fade" id="edit_data_tindakan_modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div id="modal-dialog" class="modal-dialog modal-xl">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h6 class="modal-title">EDIT DATA TINDAKAN</h6>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div id="edit_data_tindakan_modal_content" class="modal-body">
+          </div>
+      </div>
+  </div>
+</div>
 <script>
 
 $(function(){
@@ -142,6 +157,14 @@ $(function(){
     $('.hsl').on('keyup', function(){
                 $(this).val(formatRupiah($(this).val()))
             })
+
+    function editDataTindakan(id){
+        $('#edit_data_tindakan_modal_content').html('')
+        $('#edit_data_tindakan_modal_content').append(divLoaderNavy)
+        $('#edit_data_tindakan_modal_content').load('<?=base_url("pelayanan/C_Pelayanan/loadDataEditTindakan")?>'+'/'+id, function(){
+            // $('#loader').hide()
+        })
+    }
 
     function formatRupiah(angka, prefix = "Rp ") {
                 var number_string = angka.replace(/[^,\d]/g, "").toString(),
@@ -377,7 +400,7 @@ function tampilTindakan()
         // loadDetailPendaftaran(id)
         $('#content_div_transaksi').html('')
         $('#content_div_transaksi').append(divLoaderNavy)
-        $('#content_div_transaksi').load('<?=base_url("pelayanan/C_Pelayanan/loadViewInputTindakan")?>'+'/'+id, function(){
+        $('#content_div_transaksi').load('<?=base_url("pelayanan/C_Pelayanan/loadViewInputTindakanNew")?>'+'/'+id, function(){
             $('#loader').hide()
         })
   }

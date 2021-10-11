@@ -13,17 +13,17 @@
 
             <div class="col-md-4">
                 <label>Nomor Telepon</label>
-                <input required autocomplete="off" type="number" id="nomor_telepon"  class="form-control form-control-sm" name="nomor_telepon" value="<?=$dokter['nomor_telepon']?>" />
+                <input autocomplete="off" type="number" id="nomor_telepon"  class="form-control form-control-sm" name="nomor_telepon" value="<?=$dokter['nomor_telepon']?>" />
             </div>
 
             <div class="col-md-4">
                 <label>Alamat</label>
-                <input required  autocomplete="off" id="alamat"  class="form-control form-control-sm" name="alamat" value="<?=$dokter['alamat']?>" />
+                <input autocomplete="off" id="alamat"  class="form-control form-control-sm" name="alamat" value="<?=$dokter['alamat']?>" />
             </div>
 
             <div class="col-md-4">
                 <label>Fee</label>
-                <input required  autocomplete="off" id="fee"  class="form-control form-control-sm" name="fee" value="<?=$dokter['fee']?>" />
+                <input required autocomplete="off" id="fee"  class="form-control form-control-sm" name="fee" value="<?=$dokter['fee']?>" />
             </div>
 
             <div class="col-md-12"><hr></div>

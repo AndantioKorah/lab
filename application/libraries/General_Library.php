@@ -53,7 +53,7 @@ class General_library
             }
         } else if($button_name == 'btn_tindakan_list_pendaftaran'){
             $deniedRole = [
-                'kasir_dan_registrasi', 'admin'
+                'admin'
             ];
             if(!in_array($role_name, $deniedRole)){
                 return true;

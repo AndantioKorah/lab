@@ -15,7 +15,9 @@
 </style>
 <div class="row">
     <div class="col-12 mt-3 mb-3 text-left">
-        <button class="btn btn-sm btn-navy" onclick="cetakRincianTagihan()"><i class="fa fa-print"></i> Cetak Rincian Tagihan</button>
+        <?php if($rincian_tagihan){ ?>
+            <button class="btn btn-sm btn-navy" onclick="cetakRincianTagihan()"><i class="fa fa-print"></i> Cetak Rincian Tagihan</button>
+        <?php } ?>
     </div>
     <div class="col-12">
         <table class="table table-sm table-hover">
