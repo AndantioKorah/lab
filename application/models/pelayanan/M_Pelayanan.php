@@ -284,10 +284,12 @@
                             ->where('a.kategori_pasien', null)
                             ->where('a.flag_active', 1);
                             $masterNilaiNormalNonJK =  $this->db->get()->result();
-                            $nilai_normal = '';
                             if($masterNilaiNormalNonJK){
                                 $nilai_normal = $masterNilaiNormalNonJK[0]->nilai_normal;
+                            } else {
+                                $nilai_normal = $tindakan->nilai_normal;
                             }
+                           
                             }
                            
                         } else {
@@ -553,13 +555,14 @@
         return $this->db->get()->result();
     }
 
-    public function select2Tindakan(){
+    public function select2TindakanBU(){
         $params = $this->input->post('search_param'); 
 
         
         $this->db->select('a.id')
         ->from('m_tindakan as a')
         ->where('a.parent_id', 0);
+        // ->where('a.flag_active', 1);
         $cekTindakan =  $this->db->get()->result();
         
          if($cekTindakan){
@@ -574,11 +577,41 @@
         ->from('m_tindakan as a')
         ->join('m_jns_tindakan as b', 'b.id = a.id_m_jns_tindakan')
         ->like('nama_tindakan',$params)
-        ->or_like('b.nm_jns_tindakan',$params)
+        // ->or_like('b.nm_jns_tindakan',$params)
         ->where_in('a.parent_id', $list_id)
         ->where('a.flag_active', 1);
     return $this->db->get()->result();
     }
+
+    public function select2Tindakan(){
+        $params = $this->input->post('search_param'); 
+
+        
+        $this->db->select('a.id')
+        ->from('m_tindakan as a')
+        ->where('a.parent_id', 0);
+        // ->where('a.flag_active', 1);
+        $cekTindakan =  $this->db->get()->result();
+        
+         if($cekTindakan){
+            foreach($cekTindakan as $tindakan){
+            $list_id[] = $tindakan->id;  
+            }
+         }
+        //  $list_id = ['1','2','8'];
+
+        $this->db->select('a.*,a.id as id_tindakan,
+        CONCAT(b.nm_jns_tindakan, " / ", (SELECT nama_tindakan FROM m_tindakan WHERE id = a.parent_id), " / ", a.nama_tindakan ) as nm_tindakan ')
+        ->from('m_tindakan as a')
+        ->join('m_jns_tindakan as b', 'b.id = a.id_m_jns_tindakan')
+        ->like('nama_tindakan',$params)
+        // ->or_like('b.nm_jns_tindakan',$params)
+        // ->where_in('a.parent_id', $list_id)
+        ->where('a.biaya is not null')
+        ->where('a.flag_active', 1);
+    return $this->db->get()->result();
+    }
+
 
 
     public function selesaiTindakan(){

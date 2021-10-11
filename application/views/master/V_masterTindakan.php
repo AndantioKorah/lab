@@ -52,7 +52,7 @@
                         <option value=""></option> 
                         <option value="0">Tidak ada</option>                    
                             <?php foreach($get_parent as $row) { ?>
-                                <option value="<?php echo $row->id;?>,<?php echo $row->nama_tindakan;?>"><?php echo $row->nama_tindakan;?></option>
+                                <option value="<?php echo $row->id;?>,<?php echo $row->nama_tindakan;?>"><?php echo $row->nm_tindakan;?></option>
                             <?php } ?>
 
                         </Select>
