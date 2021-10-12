@@ -149,7 +149,7 @@
             $id_pendaftaran = $this->input->post('id_pendaftaran');
             $id_tagihan = $this->input->post('id_tagihan');
             $id_tindakan = $this->input->post('tindakan');
-           
+
             $this->db->trans_begin();
 
             $this->db->select('*')
@@ -313,7 +313,7 @@
                     $data = array(
                         'id_t_pendaftaran' => $id_pendaftaran,
                         'id_m_nm_tindakan' => $tindakan->id,
-                        'parent_id_tindakan' => $id_tindakan,
+                        'parent_id_tindakan' => $tindakan->parent_id,
                         'nama_tindakan' => $tindakan->nama_tindakan,
                         'nilai_normal' => $nilai_normal,
                         'satuan' => $tindakan->satuan,
@@ -674,7 +674,7 @@
     }
 
 
-    public function getRincianTindakanBu($id_pendaftaran){
+    public function getRincianTindakanss($id_pendaftaran){
         $list_parent_id = null;
         $data = null;
         $detail_tindakan = $this->db->select('a.*, b.nilai_normal, b.satuan, b.id_m_jns_tindakan, b.id as id_m_tindakan, b.parent_id, b.nama_tindakan')
@@ -713,7 +713,7 @@
         return $data;
     }
 
-    public function getRincianTindakanss($id_pendaftaran){
+    public function getRincianTindakanBu($id_pendaftaran){
         $data = null;
         $list_parent = null;
         $list_id_top_parent = null;
@@ -839,11 +839,37 @@
                 }
             }
         }
-        dd($data);
-        return $data;
+        // echo "<pre>";
+        // print_r($data);
+        // echo "</pre>";
+        // dd('');
+        // dd($data);
+        $final_data = $this->fetch_recursive($data);
+        if($final_data){
+            $i = 0;
+            $cip = 0;
+            $list_padding = null;
+            foreach($final_data as $f){
+                if(isset($f['id_m_jns_tindakan']) && $f['id_m_jns_tindakan'] == 0){
+                    $final_data[$i]['padding-left'] = 0;
+                } else {
+                    $list_padding[$f['id_m_nm_tindakan']] = 5;
+                    if($f['parent_id_tindakan'] == 0){
+                        $final_data[$i]['padding-left'] = 5;
+                    } else {
+                        $final_data[$i]['padding-left'] = floatval($list_padding[$f['parent_id_tindakan']]) + 5;
+                    }
+                    $list_padding[$f['id_m_nm_tindakan']] = $final_data[$i]['padding-left'];
+                }
+                $i++;
+            }
+        }
+        dd($final_data);
+        return $final_data;
     }
+    
 
-    function fetch_recursive($tree, $parent_id, $parentfound = false, $list = array())
+    function fetch_recursive($tree, $parent_id = 0, $parentfound = false, $list = array())
     {
         foreach($tree as $k => $v)
         {
@@ -854,11 +880,11 @@
                     if($field != 'children')
                         $rowdata[$field] = $value;
                 $list[] = $rowdata;
-                if($v['children'])
-                    $list = array_merge($list, fetch_recursive($v['children'], $parent_id, true));
+                if(count($v['children']) > 0)
+                    $list = array_merge($list, $this->fetch_recursive($v['children'], $parent_id, true));
             }
-            elseif($v['children'])
-                $list = array_merge($list, fetch_recursive($v['children'], $parent_id));
+            elseif(count($v['children']) > 0)
+                $list = array_merge($list, $this->fetch_recursive($v['children'], $parent_id));
         }
         return $list;
     }
