@@ -527,6 +527,28 @@
             return $res;
         }
 
+        public function buildChildren($parent_id, $hasil =[]){
+            $w = $this->getChildren($parent_id);
+            if(count($w) > 0){ 
+                $hasil = array_merge($hasil,$w);
+                $i=0;
+                foreach($w as $h){
+                    $hasil = $this->buildChildren($h->id, $hasil);
+                    $i++;
+                }
+            }
+            return $hasil;
+        }
+        
+        public function getChildren($id){
+            $return = null;
+            return $this->db->select('*')
+                            ->from('m_tindakan')
+                            ->where('parent_id', $id)
+                            ->where('flag_active', 1)
+                            ->get()->result();
+        }
+
 
         public function insertTindakanPendaftaran(){
         
@@ -557,6 +579,20 @@
                 ->where('a.parent_id', $id_tindakan)
                 ->where('a.flag_active', 1);
             $cekTindakan =  $this->db->get()->result();
+
+            $data = null;
+            if($cekTindakan){
+                foreach($cekTindakan as $ct){
+                    $data[] = $ct;
+                    $child = $this->buildChildren($ct->id, []);
+                    if($child){
+                        foreach($child as $c){
+                            $data[] = $c;
+                        }
+                    }
+                }
+            }
+            $cekTindakan = $data;
           
             $dateOfBirth = $this->input->post('tanggal_lahir');
             $today = date("Y-m-d");
@@ -669,7 +705,11 @@
                             ->where('a.kategori_pasien', null)
                             ->where('a.flag_active', 1);
                             $masterNilaiNormalNonJK =  $this->db->get()->result();
-                            $nilai_normal = $masterNilaiNormalNonJK[0]->nilai_normal;
+                            if($masterNilaiNormalNonJK){
+                                $nilai_normal = $masterNilaiNormalNonJK[0]->nilai_normal;
+                            } else {
+                                $nilai_normal = $tindakan->nilai_normal;
+                            }
                             }
                         } else {
                             $nilai_normal = $tindakan->nilai_normal;
@@ -681,7 +721,7 @@
                         'session_id' => $session_id,
                         'id_m_nm_tindakan' => $tindakan->id,
                         'nama_tindakan' => $tindakan->nama_tindakan,
-                        'parent_id_tindakan' => $id_tindakan,    
+                        'parent_id_tindakan' => $tindakan->parent_id,    
                         'nama_tindakan' => $tindakan->nama_tindakan,
                         'nilai_normal' => $nilai_normal,
                         'satuan' => $tindakan->satuan,

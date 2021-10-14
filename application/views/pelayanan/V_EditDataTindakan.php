@@ -7,7 +7,6 @@
             <form id="form_edit_data_tindakan">
             <table class="table table-hover">
                 <thead>
-                    <th>No</th>
                     <th>Nama Tindakan</th>
                     <th>Hasil</th>
                     <th>Nilai Normal</th>
@@ -15,40 +14,39 @@
                     <th>Keterangan</th>
                 </thead>
                 <tbody>
+                    <?php foreach($rincian_tindakan as $rt){
+                        $style_rincian_tindakan = "padding-left: ".$rt['padding-left']."px;";
+                        if(isset($rt['id_m_jns_tindakan'])){
+                            if($rt['id_m_jns_tindakan'] == 0){
+                                $style_rincian_tindakan .= "font-size: 18px; text-transform: uppercase;";
+                            }
+                            $style_rincian_tindakan .= "font-weight: bold;";
+                        } 
+                    ?>
                     <tr>
-                        <input name="id_t_tindakan[]" value="<?=$tindakan['id']?>" type="hidden">
-                        <td colspan=2><strong><?=$tindakan['nama_tindakan'];?></strong></td>
-                        <td><?=$tindakan['hasil'];?></td>
+                        <input type="hidden" name="id_t_tindakan[]"  value="<?=$rt['id']?>" />
+                        <td style="<?=$style_rincian_tindakan?>"><?=$rt['nama_tindakan']?></td>
+                        <td><?=isset($rt['hasil']) ? $rt['hasil'] : ''?></td>
                         <td>
-                            <?php if($tindakan['nilai_normal']){ ?>
-                                <input class="form-control form-control-sm" value="<?=$tindakan['nilai_normal'];?>" name="nilai_normal[]" />
+                            <?php if($rt['nilai_normal']){ ?>
+                                <input class="form-control form-control-sm" value="<?=$rt['nilai_normal'];?>" name="nilai_normal_<?=$rt['id']?>" />
                             <?php } ?>
                         </td>
                         <td>
-                            <?php if($tindakan['nilai_normal']){ ?>
-                                <input class="form-control form-control-sm" value="<?=$tindakan['satuan'];?>" name="satuan[]" />
+                            <?php if($rt['nilai_normal']){ ?>
+                                <input class="form-control form-control-sm" value="<?=$rt['satuan'];?>" name="satuan_<?=$rt['id']?>" />
                             <?php } ?>
                         </td>
                         <td>
-                            <?php if($tindakan['nilai_normal']){ ?>
-                                <input class="form-control form-control-sm" value="<?=$tindakan['keterangan'];?>" name="keterangan[]" />
+                            <?php if($rt['nilai_normal']){ ?>
+                                <input class="form-control form-control-sm" value="<?=$rt['keterangan'];?>" name="keterangan_<?=$rt['id']?>" />
                             <?php } ?>
                         </td>
                     </tr>
-                    <?php if($detail_tindakan){ $no = 1; foreach($detail_tindakan as $dt){ ?>
-                        <tr>
-                            <input name="id_t_tindakan[]" value="<?=$dt['id']?>" type="hidden">
-                            <td><?=$no++;?></td>
-                            <td><?=$dt['nama_tindakan'];?></td>
-                            <td><?=$dt['hasil'];?></td>
-                            <td><input class="form-control form-control-sm" value="<?=$dt['nilai_normal'];?>" name="nilai_normal[]" /></td>
-                            <td><input class="form-control form-control-sm" value="<?=$dt['satuan'];?>" name="satuan[]" /></td>
-                            <td><input class="form-control form-control-sm" value="<?=$dt['keterangan'];?>" name="keterangan[]" /></td>
-                        </tr>
-                    <?php } } ?>
+                    <?php } ?>
                 </tbody>
             </table>
-            <button type="submit" class="btn btn-block btn-navy"><i class="fa fa-save"></i> SIMPAN</button>
+            <button style="position: fixed; bottom: 0; right: 0;" type="submit" class="btn btn-block btn-navy"><i class="fa fa-save"></i> SIMPAN</button>
             </form>
         </div>
     </div>
@@ -56,7 +54,7 @@
         $('#form_edit_data_tindakan').on('submit', function(e){
             e.preventDefault()
             $.ajax({
-                url:"<?=base_url("pelayanan/C_Pelayanan/editDataTindakan")?>",
+                url:"<?=base_url("pelayanan/C_Pelayanan/editDataTindakan")?>"+"/"+'<?=$tindakan['id_t_pendaftaran']?>',
                 method:"post",
                 data: $(this).serialize(),
                 success:function(data){

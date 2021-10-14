@@ -149,6 +149,10 @@
             $id_pendaftaran = $this->input->post('id_pendaftaran');
             $id_tagihan = $this->input->post('id_tagihan');
             $id_tindakan = $this->input->post('tindakan');
+            
+            // $id_pendaftaran = 2;
+            // $id_tagihan = 2;
+            // $id_tindakan = 7;
 
             $this->db->trans_begin();
 
@@ -428,8 +432,97 @@
         return $this->db->get()->result_array();
     }
 
+    public function buildChildrenForDelete($parent_id, $hasil = [], $id_pendaftaran = 0){
+        $w = $this->getChildrenForDelete($parent_id, $id_pendaftaran);
+        if(count($w) > 0){ 
+            $hasil = array_merge($hasil,$w);
+            $i=0;
+            foreach($w as $h){
+                $hasil = $this->buildChildrenForDelete($h->id, $hasil, $id_pendaftaran);
+                $i++;
+            }
+        }
+        return $hasil;
+    }
 
+    public function getChildrenForDelete($id, $id_pendaftaran){
+        $return = null;
+        return $this->db->select('a.id_m_nm_tindakan, b.id, a.id as id_t_tindakan')
+                        ->from('t_tindakan as a')
+                        ->join('m_tindakan b', 'a.id_m_nm_tindakan = b.id')
+                        ->where('a.id_t_pendaftaran', $id_pendaftaran)
+                        ->where('b.parent_id', $id)
+                        ->where('a.flag_active', 1)
+                        ->get()->result();
+        // return $this->db->select('*')
+        //                 ->from('m_tindakan')
+        //                 ->where('parent_id', $id)
+        //                 ->where('flag_active', 1)
+        //                 ->get()->result();
+    }
+    
     public function delTindakanPasien(){
+        $res['code'] = 0;
+        $res['message'] = 'ok';
+        $res['data'] = null;
+    
+        $id_tindakan = $this->input->post('idtindakan');
+        $id_pendaftaran = $this->input->post('id_pendaftaran');
+
+        $this->db->select('a.id_m_nm_tindakan, b.id, a.id as id_t_tindakan')
+                ->from('t_tindakan as a')
+                ->join('m_tindakan b', 'a.id_m_nm_tindakan = b.id')
+                ->where('a.id_t_pendaftaran', $id_pendaftaran)
+                ->where('a.id', $id_tindakan)
+                ->where('a.nilai_normal', null)
+                ->where('a.flag_active', 1);
+        $cekTindakan =  $this->db->get()->result();
+
+        $data_lengkap = null;
+        if($cekTindakan){
+            foreach($cekTindakan as $ct){
+                $data_lengkap[] = $ct;
+                $child = $this->buildChildrenForDelete($ct->id, [], $id_pendaftaran);
+                if($child){
+                    foreach($child as $c){
+                        $data_lengkap[] = $c;
+                    }
+                }
+            }
+        }
+
+        $list_id_tindakan = null;
+        if($data_lengkap){
+            foreach($data_lengkap as $d){
+                $list_id_tindakan[] = $d->id_t_tindakan;
+            }
+            $this->db->where_in('id', $list_id_tindakan)
+                     ->update('t_tindakan', [
+                         'updated_by' => $this->general_library->getId(),
+                         'flag_active' => 0
+                     ]);
+            
+            $this->db->where('id_reference', $id_tindakan)
+                    ->where('id_t_pendaftaran', $id_pendaftaran)
+                    ->update('t_tagihan_detail', [
+                        'updated_by' => $this->general_library->getId(),
+                        'flag_active' => 0
+                    ]);
+        }
+ 
+        if($this->db->trans_status() == FALSE){
+            $this->db->trans_rollback();
+            $res['code'] = 1;
+            $res['message'] = 'Terjadi Kesalahan';
+            $res['data'] = null;
+        } else {
+            $this->db->trans_commit();
+        }
+
+        return $res;
+    }
+
+    public function delTindakanPasienBu(){
         $res['code'] = 0;
         $res['message'] = 'ok';
         $res['data'] = null;
@@ -454,7 +547,6 @@
         ->where('a.nilai_normal', null)
         ->where('a.flag_active', 1);
          $cekTindakan =  $this->db->get()->result();
-       
          
          if($cekTindakan){
          foreach($cekTindakan as $tindakan){
@@ -786,7 +878,7 @@
     public function getRincianTindakan($id_pendaftaran){
         $data = null;
         
-        $parents = $this->db->select('a.*, b.parent_id, b.id_m_jns_tindakan, b.id as id_m_tindakan, a.nilai_normal')
+        $parents = $this->db->select('a.*, b.parent_id, b.id_m_jns_tindakan, b.id as id_m_tindakan, a.nilai_normal, b.biaya')
                             ->from('t_tindakan a')
                             ->join('m_tindakan b', 'a.id_m_nm_tindakan = b.id')
                             ->where('a.id_t_pendaftaran', $id_pendaftaran)
@@ -795,7 +887,7 @@
                             ->group_by('a.id')
                             ->get()->result_array();
 
-        $src_arr = $this->db->select('a.*, b.no_urut')
+        $src_arr = $this->db->select('a.*, b.no_urut, a.id as id_t_tindakan')
                             ->from('t_tindakan a')
                             ->join('m_tindakan b', 'a.id_m_nm_tindakan = b.id')
                             ->where('a.id_t_pendaftaran', $id_pendaftaran)
@@ -844,27 +936,30 @@
         // echo "</pre>";
         // dd('');
         // dd($data);
-        $final_data = $this->fetch_recursive($data);
-        if($final_data){
-            $i = 0;
-            $cip = 0;
-            $list_padding = null;
-            foreach($final_data as $f){
-                if(isset($f['id_m_jns_tindakan']) && $f['id_m_jns_tindakan'] == 0){
-                    $final_data[$i]['padding-left'] = 0;
-                } else {
-                    $list_padding[$f['id_m_nm_tindakan']] = 5;
-                    if($f['parent_id_tindakan'] == 0){
-                        $final_data[$i]['padding-left'] = 5;
+        $final_data = null;
+        if($data){
+            $final_data = $this->fetch_recursive($data);
+            if($final_data){
+                $i = 0;
+                $cip = 0;
+                $list_padding = null;
+                foreach($final_data as $f){
+                    if(isset($f['id_m_jns_tindakan']) && $f['id_m_jns_tindakan'] == 0){
+                        $final_data[$i]['padding-left'] = 0;
                     } else {
-                        $final_data[$i]['padding-left'] = floatval($list_padding[$f['parent_id_tindakan']]) + 5;
+                        $list_padding[$f['id_m_nm_tindakan']] = 10;
+                        if($f['parent_id_tindakan'] == 0){
+                            $final_data[$i]['padding-left'] = 10;
+                        } else {
+                            $final_data[$i]['padding-left'] = floatval($list_padding[$f['parent_id_tindakan']]) + 10;
+                        }
+                        $list_padding[$f['id_m_nm_tindakan']] = $final_data[$i]['padding-left'];
                     }
-                    $list_padding[$f['id_m_nm_tindakan']] = $final_data[$i]['padding-left'];
+                    $i++;
                 }
-                $i++;
             }
         }
-        dd($final_data);
+        // dd($final_data);
         return $final_data;
     }
     
@@ -904,9 +999,10 @@
         return $tree;
     }
 
-    public function createHasil($id_t_tindakan, $data)
+    public function createHasil($id_t_tindakan, $data, $id_pendaftaran)
     {
-        $this->db->where('id', $id_t_tindakan);
+        $this->db->where('id', $id_t_tindakan)
+                ->where('id_t_pendaftaran', $id_pendaftaran);
         $result = $this->db->update('t_tindakan', $data);        
     }
 
@@ -993,18 +1089,78 @@
         return [$final_result, $current_page];
     }
 
+    public function buildDataPrintTindakanNew($data){
+        $result = null;
+        $i = 0;
+        foreach($data as $d){
+            $result[$i] = $d;
+            $result[$i]['page'] = 1;
+            $i++;
+        }
+        $i = 0;
+        $last_parent_index = 0;
+        $last_jns_index = 0;
+        $current_page = 0;
+        $final_result = null;
+        foreach($result as $rs){
+            if(isset($result[$i]['nm_jns_tindakan'])){
+                $last_jns_index = $i;
+                if($result[$i]['id'] == 27){
+                    unset($result[$i]);
+                }
+            }
+           
+            if(isset($result[$i]['id_t_pendaftaran']) && $result[$i]['parent_id_tindakan'] == '0'){
+                $last_parent_index = $i;
+                if($result[$i]['id_m_jns_tindakan'] == 27){
+                    unset($result[$i]);
+                }
+               
+            }
+
+            //hitung sekarang page berapa
+            $result[$i]['page'] = intval(($i / ROW_PER_PAGE_CETAK_TINDAKAN) + 1);
+            $current_page = $result[$i]['page'];
+            //masukkan data ke index final_result dimana index == page 
+            $final_result[$current_page][] = $result[$i];
+            //jika halaman data current index != data current index sebelumnya, samakan halaman data ini dengan parent dari data ini
+            if(isset($result[$i-1]) && 
+                (intval($result[$i]['page']) != intval($result[$i-1]['page']))
+            ){
+                $final_result[$current_page] = null;
+                //jika data sebelum parent ini adalah data jns, samakan halaman data jns dengan data parent ini  
+                if(($last_parent_index - 1) == $last_jns_index){
+                    $result[$last_jns_index]['page'] = $current_page;
+                    $final_result[$current_page][] = $result[$last_jns_index];
+                    //hapus data jns di halaman sebelumnya
+                    unset($final_result[$current_page-1][$last_jns_index]);
+                }
+                //ambil data parent, dan samakan halaman dengan data ini
+                for($j = $last_parent_index; $j <= $i; $j++){
+                    $result[$j]['page'] = $result[$i]['page'];
+                    $final_result[$current_page][] = $result[$j];
+                    //hapus data parent di halaman sebelumnya
+                    unset($final_result[$current_page-1][$j]);
+                }
+            }
+            $i++;
+           
+        }
+        return [$final_result, $current_page];
+    }
+
     public function getDataForEditTindakan($id){
         $parent = $this->db->select('*')
                         ->from('t_tindakan')
                         ->where('id', $id)
                         ->where('flag_active', 1)
                         ->get()->row_array();
-        $child = $this->db->select('*')
-                        ->from('t_tindakan')
-                        ->where('parent_id_tindakan', $parent['id_m_nm_tindakan'])
-                        ->where('flag_active', 1)
-                        ->get()->result_array();
-        return [$parent, $child];
+        // $child = $this->db->select('*')
+        //                 ->from('t_tindakan')
+        //                 ->where('parent_id_tindakan', $parent['id_m_nm_tindakan'])
+        //                 ->where('flag_active', 1)
+        //                 ->get()->result_array();
+        return [$parent, null];
     }
        
 }

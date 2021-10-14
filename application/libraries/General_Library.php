@@ -27,39 +27,32 @@ class General_library
             $deniedRole = [
                 'tindakan', 'admin'
             ];
-            if(!in_array($role_name, $deniedRole)){
-                return true;
-            }
         } else if($button_name == 'btn_pendaftaran_baru_profile_left'){
             $deniedRole = [
                 'tindakan', 'admin'
             ];
-            if(!in_array($role_name, $deniedRole)){
-                return true;
-            }
         } else if($button_name == 'btn_edit_pendaftaran_list_pendaftaran'){
             $deniedRole = [
                 'tindakan', 'admin'
             ];
-            if(!in_array($role_name, $deniedRole)){
-                return true;
-            }
         } else if($button_name == 'btn_tagihan_list_pendaftaran'){
             $deniedRole = [
                 'tindakan', 'admin'
             ];
-            if(!in_array($role_name, $deniedRole)){
-                return true;
-            }
         } else if($button_name == 'btn_tindakan_list_pendaftaran'){
             $deniedRole = [
                 'admin'
             ];
-            if(!in_array($role_name, $deniedRole)){
-                return true;
-            }
+        } else if($button_name == 'btn_simpan_hasil_tindakan'){
+            $deniedRole = [
+                'admin', 'kasir_dan_registrasi'
+            ];
         }
-        return false;
+        if(!in_array($role_name, $deniedRole)){
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function countTagihan($id_pendaftaran){

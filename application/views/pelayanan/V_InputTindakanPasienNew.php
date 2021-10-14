@@ -1,3 +1,15 @@
+<style>
+    .dropdown-item-edit:hover{
+        background-color: #bd9402 !important;
+        color: white !important;
+    }
+
+    .dropdown-item-delete:hover{
+        background-color: #c10606 !important;
+        color: white !important;
+    }
+</style>
+
 <div class="col-12 mt-2">
         <form id="form_input_tindakan">
         <input  class="col-12" type='hidden'  id='id_m_status_tagihan' value=<?php echo $id_tagihan['0']->id_m_status_tagihan;?>>
@@ -26,61 +38,64 @@
   <form method="post" id="form_hasil">        
   <table class="table table-sm table-hover" border="0">
             <thead class="thead_rincian_tindakan">
-                <th style="width: 5%;" class="text-center" >No</th>
-                <th style="width: 25%;" >Tindakan</th>
+                <th style="width: 30%;" >Tindakan</th>
                 <th  style="width: 15%;"  class="text-left">Hasil</th>
-                <th  style="width: 25%;"  class="text-left">Nilai Normal</th>
-                <th  style="width: 5%;"  class="text-left">Satuan</th>
+                <th  style="width: 25%;"  class="text-center">Nilai Normal</th>
+                <th  style="width: 5%;"  class="text-center">Satuan</th>
                 <th  style="width: 15%;"  class="text-left">Keterangan</th>
                 <th style="width: 10%;"  class="text-left"></th>
-               
             </thead>
             <tbody class="tbody_rincian_tindakan" id="daftar_tindakan">
-                <?php if(isset($rincian_tindakan)){ 
-                    $no=1; 
-                    
-                    foreach($rincian_tindakan as $rt){ 
+                <?php if($rincian_tindakan){ ?>
+                    <?php foreach($rincian_tindakan as $rt){
+                        $style_rincian_tindakan = "padding-left: ".$rt['padding-left']."px;";
+                        if(isset($rt['id_m_jns_tindakan'])){
+                            if($rt['id_m_jns_tindakan'] == 0){
+                                $style_rincian_tindakan .= "font-size: 18px; text-transform: uppercase;";
+                            }
+                            $style_rincian_tindakan .= "font-weight: bold;";
+                        } 
                     ?>
-                    <tr style="cursor: pointer;">
-                        <td class="text-center"><b style="font-size: 18px;"><?=$no;?></b></td>
-                        <td ><b style="font-size: 18px;"><?=$rt['nama_tindakan']?></b></td>
-                        <td  class="text-center"></td>
-                        <td  class="text-center"></td>
-                        <td  class="text-center"></td>
-                        <td  class="text-center"></td>
-                        <td  class="text-center"></td>
-                        <?php if(count($rt['children']) > 0){ ?>
-                        <?php } ?>
-                    </tr>
-                    <?php $no++; ?> 
-                    <script>
-                        function cetakHasil() {
-                            $("#print_div").load('<?= base_url('pelayanan/C_Pelayanan/cetakHasil/'.$id_pendaftaran)?>',
-                                function () {
-                                    printSpace('print_div');
-                                });
-                        }
-
-                        function printSpace(elementId) {
-                            var isi = document.getElementById(elementId).innerHTML;
-                            window.frames["print_frame"].document.title = document.title;
-                            window.frames["print_frame"].document.body.innerHTML = isi;
-                            window.frames["print_frame"].window.focus();
-                            window.frames["print_frame"].window.print();
-                        }
-                    </script>
-                <?php } } else { ?>
+                        <tr>    
+                            <input type="hidden" name="id_t_tindakan[]"  value="<?=$rt['id']?>" />
+                            <td style="<?=$style_rincian_tindakan?>"><?=$rt['nama_tindakan']?></td>
+                            <td>
+                                <?php if(isset($rt['nilai_normal']) && $rt['nilai_normal']){ ?>
+                                    <input name="hasil_<?=$rt['id']?>" autocomplete="off" class="col-12 hsl" type='text' value="<?= isset($rt['hasil']) ? $rt['hasil'] : ''?>">
+                                <?php } ?>
+                            </td>
+                            <td class="text-center"><?=isset($rt['nilai_normal']) ? $rt['nilai_normal'] : ''?></td>
+                            <td class="text-center"><?=isset($rt['satuan']) ? $rt['satuan'] : ''?></td>
+                            <td><?=isset($rt['keterangan']) ? $rt['keterangan'] : ''?></td>
+                            <td>
+                                <?php if(isset($rt['biaya']) && $rt['biaya'] > 0){ ?>
+                                    <div class="btn-group dropleft" role="group">
+                                        <button id="btnGroupOption" type="button" class="btn btn-navy btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Pilihan
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="btnGroupOption">
+                                        <a class="dropdown-item dropdown-item-edit" href="#edit_data_tindakan_modal" onclick="editDataTindakan('<?=$rt['id']?>')" data-toggle="modal"><i class="fa fa-edit"></i> Edit Tindakan</a>
+                                        <?php if($id_tagihan['0']->id_m_status_tagihan != 2){ ?>
+                                            <a class="dropdown-item dropdown-item-delete tombol_hapus_tindakan" data-idtindakan="<?=$rt['id']?>" href="#"><i class="fa fa-trash"></i> Hapus Tindakan</a>
+                                        <?php } ?>
+                                        </div>
+                                    </div>
+                                <?php } ?>
+                            </td>
+                        </tr>
+                    <?php } ?>
+                <?php } else { ?>
                     <tr>
                         <td colspan="4">BELUM ADA DATA</td>
                     </tr>
                 <?php   } ?>
             </tbody>
         </table> 
-        <?php if($rincian_tindakan){ ?>
+        <?php if($rincian_tindakan){ if($this->general_library->isButtonAllowed('btn_simpan_hasil_tindakan')){?>
             <button 
             <?php if($id_tagihan[0]->id_m_status_tagihan == 3) echo "style='display:none'" ;?> 
             class="btn btn-navy btn-sm col-12 mt-2 simpan"> Simpan Hasil </button>        
-        <?php } ?>
+        <?php } } ?>
        </form>
        </div>
 
@@ -103,6 +118,21 @@
 $(function(){
     // tampilTindakan()
     })
+    function cetakHasil() {
+        $("#print_div").load('<?= base_url('pelayanan/C_Pelayanan/cetakHasil/'.$id_pendaftaran)?>',
+            function () {
+                printSpace('print_div');
+            });
+    }
+
+    function printSpace(elementId) {
+        var isi = document.getElementById(elementId).innerHTML;
+        window.frames["print_frame"].document.title = document.title;
+        window.frames["print_frame"].document.body.innerHTML = isi;
+        window.frames["print_frame"].window.focus();
+        window.frames["print_frame"].window.print();
+    }
+
     $('.data_table_this').DataTable({
                     responsive: false
     });
@@ -327,7 +357,7 @@ function tampilTindakan()
   {
    var form_data = $(this).serialize();
    $.ajax({
-	url:  base_url + "pelayanan/C_Pelayanan/createHasil",
+	url:  base_url + "pelayanan/C_Pelayanan/createHasil/"+id_pendaftaran,
     // url:"insert.php",
     method:"post",
 	data:form_data,
