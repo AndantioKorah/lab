@@ -40,10 +40,9 @@
             <thead class="thead_rincian_tindakan">
                 <th style="width: 30%;" >Tindakan</th>
                 <th  style="width: 15%;"  class="text-left">Hasil</th>
-                <th  style="width: 25%;"  class="text-center">Nilai Normal</th>
-                <th  style="width: 5%;"  class="text-center">Satuan</th>
+                <th  style="width: 30%;"  class="text-center">Nilai Normal</th>
+                <th  style="width: 10%;"  class="text-center">Satuan</th>
                 <th  style="width: 15%;"  class="text-left">Keterangan</th>
-                <th style="width: 10%;"  class="text-left"></th>
             </thead>
             <tbody class="tbody_rincian_tindakan" id="daftar_tindakan">
                 <?php if($rincian_tindakan){ ?>
@@ -58,18 +57,10 @@
                     ?>
                         <tr>    
                             <input type="hidden" name="id_t_tindakan[]"  value="<?=$rt['id']?>" />
-                            <td style="<?=$style_rincian_tindakan?>"><?=$rt['nama_tindakan']?></td>
-                            <td>
-                                <?php if(isset($rt['nilai_normal']) && $rt['nilai_normal']){ ?>
-                                    <input name="hasil_<?=$rt['id']?>" autocomplete="off" class="col-12 hsl" type='text' value="<?= isset($rt['hasil']) ? $rt['hasil'] : ''?>">
-                                <?php } ?>
-                            </td>
-                            <td class="text-center"><?=isset($rt['nilai_normal']) ? $rt['nilai_normal'] : ''?></td>
-                            <td class="text-center"><?=isset($rt['satuan']) ? $rt['satuan'] : ''?></td>
-                            <td><?=isset($rt['keterangan']) ? $rt['keterangan'] : ''?></td>
-                            <td>
+                            <td style="<?=$style_rincian_tindakan?>">
+                                <?=$rt['nama_tindakan']?>
                                 <?php if(isset($rt['biaya']) && $rt['biaya'] > 0){ ?>
-                                    <div class="btn-group dropleft" role="group">
+                                    <div class="btn-group dropdown" role="group">
                                         <button id="btnGroupOption" type="button" class="btn btn-navy btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         Pilihan
                                         </button>
@@ -82,6 +73,14 @@
                                     </div>
                                 <?php } ?>
                             </td>
+                            <td>
+                                <?php if(isset($rt['nilai_normal']) && $rt['nilai_normal']){ ?>
+                                    <input name="hasil_<?=$rt['id']?>" autocomplete="off" class="col-12 hsl" type='text' value="<?= isset($rt['hasil']) ? $rt['hasil'] : ''?>">
+                                <?php } ?>
+                            </td>
+                            <td class="text-center"><?=isset($rt['nilai_normal']) ? $rt['nilai_normal'] : ''?></td>
+                            <td class="text-center"><?=isset($rt['satuan']) ? $rt['satuan'] : ''?></td>
+                            <td><?=isset($rt['keterangan']) ? $rt['keterangan'] : ''?></td>
                         </tr>
                     <?php } ?>
                 <?php } else { ?>
