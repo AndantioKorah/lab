@@ -16,7 +16,7 @@ function render($pageContent, $parent_active, $active, $data)
 
 function formatTextHasil($hasil_input, $nilai_normal){
     $nn = explode(" ",$nilai_normal);
-    
+
     $hasil = titikGantiKoma($hasil_input);
     $hasil = clearString($hasil); 
     
@@ -40,6 +40,14 @@ function formatTextHasil($hasil_input, $nilai_normal){
         $max = clearString($max);
         
         if($hasil < $min || $hasil > $max){
+            return '<strong>'.$hasil_input.'*</strong>';
+        }
+    } else if($nn[0] == 'Positif'){
+        if(substr($hasil_input, 0, 1) == '-' && strlen($hasil_input) > 1){
+            return '<strong>'.$hasil_input.'*</strong>';
+        }
+    } else if($nn[0] == 'Negatif'){
+        if(substr($hasil_input, 0, 1) != '-' && strlen($hasil_input) >= 1){
             return '<strong>'.$hasil_input.'*</strong>';
         }
     }

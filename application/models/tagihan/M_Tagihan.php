@@ -42,17 +42,18 @@
                                         ->limit(1)
                                         ->get()->row_array();
 
+                $new_total_tagihan = 0;
                 if($detail_tagihan){
                     foreach($detail_tagihan as $dt){
                         $new_total_tagihan += floatval($dt['biaya']);
                     }
-                    $this->db->where('id_t_pendaftaran', $id_t_pendaftaran)
+                }
+                $this->db->where('id_t_pendaftaran', $id_t_pendaftaran)
                             ->update('t_tagihan', 
                         [
                             'total_tagihan' => $new_total_tagihan,
                             'updated_by' => $this->general_library->getId()
                         ]);
-                }
 
                 $sisa_harus_bayar = $new_total_tagihan;
                 if($uang_muka){

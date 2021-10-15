@@ -78,6 +78,8 @@
                     </thead>
                     <tbody >
                         <?php $j = 0; foreach($rincian_tindakan[$i] as $rt){
+                            // dd(count($rincian_tindakan[$i]));
+                            $rt['padding-left'] = intval($rt['padding-left']) + 10;
                             $style_rincian_tindakan = "padding-left: ".$rt['padding-left']."px;";
                             if(isset($rt['id_m_jns_tindakan'])){
                                 if($rt['id_m_jns_tindakan'] == 0){
@@ -95,7 +97,6 @@
                             if($hasil != ''){
                                 $hasil = formatTextHasil($rt['hasil'], $rt['nilai_normal']);
                             }
-
 
                         ?>
                             <tr>

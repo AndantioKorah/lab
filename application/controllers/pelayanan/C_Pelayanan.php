@@ -148,11 +148,12 @@ class C_Pelayanan extends CI_Controller
 
     public function loadDataEditTindakan($id){
         $data['tindakan'] = $this->general->getOne('t_tindakan', 'id', $id, 1);
-        $data['rincian_tindakan'] = $this->pelayanan->getRincianTindakan($data['tindakan']['id_t_pendaftaran']);
+        $data['rincian_tindakan'] = $this->pelayanan->getRincianTindakan($data['tindakan']['id_t_pendaftaran'], $id);
+        // $data['rincian_tindakan'] = $this->pelayanan->getRincianTindakanForEdit($data['tindakan']['id_t_pendaftaran'], $id);
         // dd(json_encode($data['rincian_tindakan']));
-        $this->session->set_userdata([
-            'list_tindakan_pasien' => $data['rincian_tindakan']
-        ]);
+        // $this->session->set_userdata([
+        //     'list_tindakan_pasien' => $data['rincian_tindakan']
+        // ]);
         $this->load->view('pelayanan/V_EditDataTindakan', $data);
     }
 

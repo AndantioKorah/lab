@@ -1,12 +1,15 @@
 <style>
     .dropdown-item-edit:hover{
-        background-color: #bd9402 !important;
-        color: white !important;
+        background-color: #ffef30 !important;
+        /* color: #001f3f !important; */
+        color: black !important;
+        font-weight: bold;
     }
 
     .dropdown-item-delete:hover{
         background-color: #c10606 !important;
         color: white !important;
+        font-weight: bold;
     }
 </style>
 
@@ -137,7 +140,7 @@ $(function(){
     });
 
     $('.hsl').on('keyup', function(){
-                $(this).val(formatRupiah($(this).val()))
+                // $(this).val(formatRupiah($(this).val()))
             })
 
     function editDataTindakan(id){

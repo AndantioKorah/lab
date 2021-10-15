@@ -142,7 +142,7 @@
             <th class="th_cetakan_rincian_tagihan" style="border-left: 1px solid black;">PERINCIAN</th>
         </thead>
         <tbody>
-            <?php $i = 0; foreach($rincian_tagihan as $rt){
+            <?php $i = 0; if($rincian_tagihan) { foreach($rincian_tagihan as $rt){
                 $tagihan = '';
                 $biaya = null;
                 $class_tr = '';
@@ -175,20 +175,28 @@
                                 </tr>
                                 <?php
                                     $jumlah_pembayaran = 0;
+                                    $jumlah_pembayaran_uang_muka = 0;
                                     $cara_bayar = '-';
                                     if($pembayaran){
                                         $jumlah_pembayaran = $pembayaran['jumlah_pembayaran'];
                                         $cara_bayar = strtoupper($pembayaran['cara_pembayaran']);
                                     }
                                     if($uang_muka){
-                                        $jumlah_pembayaran += $jumlah_pembayaran;
+                                        $jumlah_pembayaran_uang_muka += $uang_muka['jumlah_pembayaran'];
+                                        $cara_bayar =  $cara_bayar .' / '.strtoupper($uang_muka['cara_pembayaran']);
                                     }
                                 ?>
                                 <tr>
-                                    <td class="set_font td_perincian" style="width: 40%">Jumlah Bayar</td>
+                                    <td class="set_font td_perincian" style="width: 40%">Pelunasan</td>
                                     <td class="set_font td_perincian" style="width: 5%">:</td>
                                     <td class="set_font td_perincian" style="width: 5%">Rp.</td>
                                     <td class="set_font td_perincian" style="width: 50%; text-align: right"><?=formatCurrencyWithoutRp($jumlah_pembayaran)?></td>
+                                </tr>
+                                <tr>
+                                    <td class="set_font td_perincian" style="width: 40%">Uang Muka</td>
+                                    <td class="set_font td_perincian" style="width: 5%">:</td>
+                                    <td class="set_font td_perincian" style="width: 5%">Rp.</td>
+                                    <td class="set_font td_perincian" style="width: 50%; text-align: right"><?=formatCurrencyWithoutRp($jumlah_pembayaran_uang_muka)?></td>
                                 </tr>
                                 <tr>
                                     <td class="set_font td_perincian" style="width: 40%"></td>
@@ -213,7 +221,7 @@
                         </td>
                     <?php } ?>
                 </tr>
-            <?php $i++; } ?>
+            <?php $i++; } } ?>
         </tbody>
     </table>
     <center>
