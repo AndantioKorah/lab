@@ -58,7 +58,7 @@
             $this->db->select('b.nm_jns_tindakan, a.nama_tindakan, a.biaya, a.nilai_normal, a.satuan,
             a.id as id_tindakan,
             (SELECT (nama_tindakan) FROM m_tindakan where id = a.parent_id and parent_id != 0 and flag_active = 1 limit 1)  as nama_tindakan_parent')
-            ->join('m_jns_tindakan as b', 'b.id = a.id_m_jns_tindakan')
+            ->join('m_jns_tindakanx as b', 'b.id = a.id_m_jns_tindakan')
             ->where('a.flag_active', 1)
             ->order_by('a.id_m_jns_tindakan', 'asc')
             ->from('m_tindakan as a');
@@ -432,6 +432,66 @@
 
             return $rs;
         }
+
+        function tes()
+    {
+        echo $this->menu(99,$h="");
+    }
+
+
+        private function menu($parent,$hasil){
+          
+            $w = $this->db->query("SELECT * from tbl_menu where id_parent='".$parent."'");
+            if(($w->num_rows())>0)
+            {
+                $hasil .= "<ul>";
+            }
+            foreach($w->result() as $h)
+            {
+              
+                $hasil .= "<li>".$h->menu;
+                $hasil = $this->menu($h->id_menu,$hasil);
+                $hasil .= "</li>";
+            }
+            if(($w->num_rows)>0)
+            {
+                $hasil .= "</ul>";
+            }
+            // dd($hasil);
+            return $hasil;
+        }
+
+        public function tessdf(){
+            $this->db->select('*')
+            ->from('m_tindakan as a')
+            ->where('a.id', 984)
+            ->where('a.flag_active', 1);
+        $cekTindakan =  $this->db->get()->result();
+      
+
+        $cari = $this->getchild($cekTindakan[0]->id);
+        dd($cari);
+        }
+
+        public function getchild($id){
+            $this->db->select('*')
+            ->from('m_tindakan as a')
+            ->where('a.parent_id', $id)
+            ->where('a.flag_active', 1);
+        $result =  $this->db->get()->result();
+        $i = 0;
+
+     
+        for($i = 1; $i <=5; $i++){
+           echo "$i";
+        }
+       
+
+        return $i;
+
+        }
+
+        
 
 
     

@@ -123,6 +123,12 @@ class C_Master extends CI_Controller
         echo json_encode($this->master->deleteMasterNilaiNormal($id));
     }
 
+    public function tes(){
+        echo json_encode($this->master->tes());
+    }
+
+
+  
 
     
 

@@ -306,6 +306,10 @@
                         'satuan' => $tindakan->satuan,
                         'created_by' => $this->general_library->getId()
                     );
+
+                        
+
+
                     $this->db->insert('t_tindakan', $data);
                     $detail_tindakan[] = $tindakan->nama_tindakan;  
                 }
