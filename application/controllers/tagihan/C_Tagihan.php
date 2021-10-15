@@ -49,8 +49,8 @@ class C_Tagihan extends CI_Controller
     }
 
     public function cetakRincianTagihan($id_pendaftaran){
-        $rincian_tagihan = $this->session->userdata('data_cetak_rincian_tagihan');
-        list($data['rincian_tagihan'], $data['page_count']) = $this->tagihan->buildDataRincianTagihan($rincian_tagihan, 1);
+        $data['rincian_tagihan'] = $this->session->userdata('data_cetak_rincian_tagihan');
+        // list($data['rincian_tagihan'], $data['page_count']) = $this->tagihan->buildDataRincianTagihan($rincian_tagihan, 1);
         $data['pendaftaran'] = $this->pendaftaran->getDataPendaftaran($id_pendaftaran);
         $data['sisa_harus_bayar'] = $this->tagihan->countTagihan($id_pendaftaran);
         $data['data_tagihan'] = $this->general->getOne('t_tagihan', 'id_t_pendaftaran', $id_pendaftaran, 1);

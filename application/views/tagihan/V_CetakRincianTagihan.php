@@ -28,7 +28,7 @@
                 padding: 3px;
                 font-size: 12px;
                 border-right: 1px solid black;
-                padding-left: 15px;
+                /* padding-left: 15px; */
             }
 
             .table_perincian{
@@ -143,16 +143,16 @@
         </thead>
         <tbody>
             <?php $i = 0; if($rincian_tagihan) { foreach($rincian_tagihan as $rt){
-                $tagihan = '';
-                $biaya = null;
+                $nama_tindakan = isset($rt['nama_tindakan']) ? $rt['nama_tindakan'] : $rt['nama_tagihan'];
+                $biaya = isset($rt['biaya']) && $rt['biaya'] ? formatCurrencyWithoutRp($rt['biaya']) : '';
                 $class_tr = '';
                 $smaller_font = '';
                 
-                if(isset($rt['nm_jns_tindakan'])){
-                    $tagihan = strtoupper($rt['nm_jns_tindakan']);
+                if(isset($rt['nama_tindakan'])){
+                    $nama_tindakan = strtoupper($rt['nama_tindakan']);
                     $class_tr = 'td_jns_tindakan set_font';
                 } else if(isset($rt['nama_tagihan'])){
-                    $tagihan = $rt['nama_tagihan'];
+                    $nama_tindakan = $rt['nama_tagihan'];
                     $biaya = formatCurrencyWithoutRp($rt['biaya']);
                     $class_tr = 'td_tagihan set_font';
                 }
@@ -162,7 +162,7 @@
                 }
             ?>
                 <tr>
-                    <td style="width: 35%; vertical-align: top;" class="<?=$class_tr?>"><?=$tagihan?></td>
+                    <td style="width: 35%; vertical-align: top; padding-left: <?=$rt['padding-left'].'px'?>" class="<?=$class_tr?>"><?=$nama_tindakan?></td>
                     <td style="width: 15%; vertical-align: top; text-align: right;" class="td_tagihan_biaya <?=$smaller_font?>"><?=$biaya?></td>
                     <?php if($i == 0){ ?>
                         <td style="width: 50%;" rowspan=<?=count($rincian_tagihan)?>>

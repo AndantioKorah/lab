@@ -74,7 +74,7 @@
             return $sisa_harus_bayar;
         }
 
-        public function getRincianTagihan($id_pendaftaran){
+        public function getRincianTagihanBu($id_pendaftaran){
             $list_jns_tindakan = null;
             $data = null;
             $temp_data = null;
@@ -116,6 +116,133 @@
             // $pages = intval((count($temp_data) / ROW_PER_PAGE_CETAK_TAGIHAN) + 1);
             // dd($temp_data);
             return $data;
+        }
+
+        public function getRincianTagihan($id_pendaftaran){
+            $ids_parent = null;
+            $data = null;
+            $list_parent = null;
+            $detail_tagihan = $this->db->select('a.*, b.id_m_nm_tindakan, c.id_m_jns_tindakan, c.parent_id')
+                                    ->from('t_tagihan_detail a')
+                                    ->join('t_tindakan b', 'a.id_reference = b.id')
+                                    ->join('m_tindakan c', 'b.id_m_nm_tindakan = c.id')
+                                    ->where('a.id_t_pendaftaran', $id_pendaftaran)
+                                    ->where('a.flag_active', 1)
+                                    ->where('b.flag_active', 1)
+                                    ->order_by('a.created_by', 'desc')
+                                    ->get()->result_array();
+            if($detail_tagihan){
+                foreach($detail_tagihan as $dt){
+                    $ids_parent[] = $dt['parent_id'];
+                }
+                $ids_parent = array_unique($ids_parent);
+            }
+
+            if($ids_parent){
+                $list_parent = $this->db->select('*, id as id_m_nm_tindakan')
+                                        ->from('m_tindakan')
+                                        ->where_in('id', $ids_parent)
+                                        // ->where('flag_active', 1)
+                                        ->get()->result_array();
+                if($list_parent){
+                    $i = 0;
+                    foreach($list_parent as $lp){
+                        $data[$i] = $lp;
+                        $j = 0;
+                        foreach($detail_tagihan as $dt){
+                            if($dt['parent_id'] == $lp['id']){
+                                $data[$i]['children'][] = $dt;
+                                unset($detail_tagihan[$j]);
+                            } else {
+                                $data[$i]['children'][] = $dt;
+                            }
+                            $j++;
+                        }
+                        $i++;
+                    }
+
+                    if(count($detail_tagihan) > 0){
+                        $temp_data = $data;
+                        $data = null;
+                        foreach($temp_data as $d){
+                            $data[] = $this->getAllParents($d);
+                        }
+                    }
+
+                    if($data){
+                        $temp_data = $data;
+                        $data = array();
+                        foreach($temp_data as $d){
+                            $temp = $this->getChild($temp_data, $d['id']);
+                            if($temp){
+                                $list_padding = null;
+                                $j = count($data);
+                                foreach($temp as $t){
+                                    $data[$j] = $t;
+                                    if(isset($t['id_m_jns_tindakan']) && $t['id_m_jns_tindakan'] == 0){
+                                        $data[$j]['padding-left'] = LEFT_PADDING_DEFAULT;
+                                    } else if(isset($t['id_m_jns_tindakan']) && $t['id_m_jns_tindakan'] != 0){
+                                        $data[$j]['padding-left'] = floatval($list_padding[$t['parent_id']] + LEFT_PADDING_RINCIAN_TINDAKAN);
+                                    } else if(isset($t['id_t_tagihan'])){
+                                        $data[$j]['padding-left'] = floatval($list_padding[$t['parent_id']] + LEFT_PADDING_RINCIAN_TINDAKAN);
+                                    }
+                                    $list_padding[$t['id']] = $data[$j]['padding-left'];
+                                    $j++;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return $data;
+        }
+
+        public function getChild($tree, $parent_id = 0, $list = array()){
+            foreach($tree as $t){
+                if(isset($t['parent_id']) && $t['parent_id'] == $parent_id){
+                    $temp = $t;
+                    unset($temp['children']);
+                    $list[] = $temp;
+                    if(isset($t['children']) && count($t['children']) > 0){
+                        // if(!isset($t['id_m_nm_tindakan'])){
+                        //     dd($t);
+                        // }
+                        $list = array_merge($list, $this->getChild($t['children'], $t['id_m_nm_tindakan']));
+                    }
+                } else if (isset($t['parent_id_tindakan']) && $t['parent_id_tindakan'] == $parent_id) {
+                    $temp = $t;
+                    unset($temp['children']);
+                    $list[] = $temp;
+                    if(isset($t['children']) && count($t['children']) > 0){
+                        $list = array_merge($list, $this->getChild($t['children'], $t['id_m_nm_tindakan']));
+                    }
+                } else if($t['id'] == $parent_id) {
+                    $temp = $t;
+                    unset($temp['children']);
+                    $list[] = $temp;
+                    if(isset($t['children']) && count($t['children']) > 0){
+                        $list = array_merge($list, $this->getChild($t['children'], $t['id']));
+                    }
+                }
+                // dd($t);
+            }
+            return $list;
+        }
+
+        public function getAllParents($tree, $list = []){
+            if($tree['parent_id'] != 0){
+                $pr = $this->db->select('*, id as id_m_nm_tindakan')
+                                ->from('m_tindakan')
+                                ->where('id', $tree['parent_id'])
+                                ->get()->row_array();
+                if($pr){
+                    $pr['children'][] = $tree;
+                    $list = $pr;
+                    $this->getAllParents($list, $list);
+                }
+                return $list;
+            }
+            return $tree;
         }
 
         public function buildDataRincianTagihan($data, $new_format = 0){
@@ -211,49 +338,6 @@
             // }
             // dd($final_result);
             return [$final_result, $current_page];
-        }
-
-        public function getRincianTagihanBu($id_pendaftaran){
-            $list_parent_id = null;
-            $data = null;
-            $detail_tagihan = $this->db->select('a.*, c.id_m_jns_tindakan')
-                                    ->from('t_tagihan_detail a')
-                                    ->join('t_tindakan b', 'a.id_reference = b.id')
-                                    ->join('m_tindakan c', 'b.id_m_nm_tindakan = c.id')
-                                    ->where('a.id_t_pendaftaran', $id_pendaftaran)
-                                    ->where('a.flag_active', 1)
-                                    ->where('b.flag_active', 1)
-                                    ->order_by('a.id', 'asc')
-                                    ->get()->result_array();
-        
-            if($detail_tagihan){
-                foreach($detail_tagihan as $dt){
-                        $list_parent_id[] = $dt['id_m_jns_tindakan'];  
-                }
-                $list_parent_id = array_unique($list_parent_id);
-            }
-            // var_dump($list_jns_tindakan);
-            // die();
-
-            if($list_parent_id){
-                $jns_tindakan = $this->db->select('a.id, a.nm_jns_tindakan')
-                                    ->from('m_jns_tindakan as a')
-                                    ->where_in('a.id', $list_parent_id)
-                                    // ->where('a.flag_active', 1)
-                                    ->get()->result_array();
-                if($jns_tindakan){
-                    foreach($jns_tindakan as $j){
-                        $data[$j['id']] = $j;
-                        $data[$j['id']]['total_biaya'] = 0;
-                    }
-                }
-                foreach($detail_tagihan as $dt){
-                    $data[$dt['id_m_jns_tindakan']]['total_biaya'][] += floatval($dt['biaya']);
-                    $data[$dt['id_m_jns_tindakan']]['detail_tagihan'][] = $dt;
-                }
-            }
-            dd($data);
-            return $data;
         }
 	}
 ?>

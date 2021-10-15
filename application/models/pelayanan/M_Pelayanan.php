@@ -998,17 +998,17 @@
                 $list_padding = null;
                 foreach($final_data as $f){
                     if(isset($f['id_m_jns_tindakan']) && $f['id_m_jns_tindakan'] == 0){
-                        $final_data[$i]['padding-left'] = 0;
+                        $final_data[$i]['padding-left'] = LEFT_PADDING_DEFAULT;
                     } else {
-                        $list_padding[$f['id_m_nm_tindakan']] = 10;
+                        $list_padding[$f['id_m_nm_tindakan']] = LEFT_PADDING_RINCIAN_TINDAKAN;
                         if(($f['parent_id_tindakan'] == 0) || (isset($f['id_m_jns_tindakan']) && $f['id_m_jns_tindakan'] != 0)){
                             if(isset($list_padding[$f['parent_id']])){
-                                $final_data[$i]['padding-left'] = floatval($list_padding[$f['parent_id']]) + 10;
+                                $final_data[$i]['padding-left'] = floatval($list_padding[$f['parent_id']]) + LEFT_PADDING_RINCIAN_TINDAKAN;
                             } else {
-                                $final_data[$i]['padding-left'] = 10;
+                                $final_data[$i]['padding-left'] = LEFT_PADDING_RINCIAN_TINDAKAN;
                             }
                         } else {
-                            $final_data[$i]['padding-left'] = floatval($list_padding[$f['parent_id_tindakan']]) + 10;
+                            $final_data[$i]['padding-left'] = floatval($list_padding[$f['parent_id_tindakan']]) + LEFT_PADDING_RINCIAN_TINDAKAN;
                         }
                         $list_padding[$f['id_m_nm_tindakan']] = $final_data[$i]['padding-left'];
                     }
@@ -1095,17 +1095,17 @@
                 $list_padding = null;
                 foreach($final_data as $f){
                     if(isset($f['id_m_jns_tindakan']) && $f['id_m_jns_tindakan'] == 0){
-                        $final_data[$i]['padding-left'] = 0;
+                        $final_data[$i]['padding-left'] = LEFT_PADDING_DEFAULT;
                     } else {
-                        $list_padding[$f['id_m_nm_tindakan']] = 10;
+                        $list_padding[$f['id_m_nm_tindakan']] = LEFT_PADDING_RINCIAN_TINDAKAN;
                         if(($f['parent_id_tindakan'] == 0) || (isset($f['id_m_jns_tindakan']) && $f['id_m_jns_tindakan'] != 0)){
                             if(isset($list_padding[$f['parent_id']])){
-                                $final_data[$i]['padding-left'] = floatval($list_padding[$f['parent_id']]) + 10;
+                                $final_data[$i]['padding-left'] = floatval($list_padding[$f['parent_id']]) + LEFT_PADDING_RINCIAN_TINDAKAN;
                             } else {
-                                $final_data[$i]['padding-left'] = 10;
+                                $final_data[$i]['padding-left'] = LEFT_PADDING_RINCIAN_TINDAKAN;
                             }
                         } else {
-                            $final_data[$i]['padding-left'] = floatval($list_padding[$f['parent_id_tindakan']]) + 10;
+                            $final_data[$i]['padding-left'] = floatval($list_padding[$f['parent_id_tindakan']]) + LEFT_PADDING_RINCIAN_TINDAKAN;
                         }
                         $list_padding[$f['id_m_nm_tindakan']] = $final_data[$i]['padding-left'];
                     }
@@ -1119,14 +1119,10 @@
     public function getChild($tree, $parent_id = 0, $list = array()){
         foreach($tree as $t){
             if(isset($t['parent_id']) && $t['parent_id'] == $parent_id){
-                // dd($t);
                 $temp = $t;
                 unset($temp['children']);
                 $list[] = $temp;
                 if(count($t['children']) > 0){
-                    // if(!isset($t['id_m_nm_tindakan'])){
-                    //     dd($t);
-                    // }
                     $list = array_merge($list, $this->getChild($t['children'], $t['id_m_nm_tindakan']));
                 }
             } else if (isset($t['parent_id_tindakan']) && $t['parent_id_tindakan'] == $parent_id) {
