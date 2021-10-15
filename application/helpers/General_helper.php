@@ -147,10 +147,11 @@ function formatDateForEdit($data)
 }
 
 function array_flatten($array) { 
-    if (!is_array($array)) { 
-      return false; 
-    } 
-    $result = array(); 
+    $result = array();
+
+    if (!is_array($array)) {
+        $array = func_get_args();
+    }
     foreach ($array as $key => $value) { 
       if (is_array($value)) { 
         $result = array_merge($result, array_flatten($value)); 

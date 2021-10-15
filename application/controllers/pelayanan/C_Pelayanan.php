@@ -7,6 +7,7 @@ class C_Pelayanan extends CI_Controller
         parent::__construct();
         
         $this->load->model('pelayanan/M_Pelayanan', 'pelayanan');
+        $this->load->model('general/M_General', 'general');
         $this->load->model('pendaftaran/M_Pendaftaran', 'pendaftaran');
         $this->load->model('tagihan/M_Tagihan', 'tagihan');
         if(!$this->general_library->isNotMenu()){
@@ -77,7 +78,7 @@ class C_Pelayanan extends CI_Controller
     }
 
 
-    public function createHasil()
+    public function createHasil($id_pendaftaran)
     {
 
         for ($count = 0; $count < count($_POST['id_t_tindakan']); $count++) {
@@ -103,8 +104,8 @@ class C_Pelayanan extends CI_Controller
             // );
             // var_dump($data);
             // die();
-            if($data['hasil'] || $data['nilai_normal'] || $data['satuan'] || $data['keterangan']){
-                $this->pelayanan->createHasil($id_t_tindakan, $data);
+            if($data){
+                $this->pelayanan->createHasil($id_t_tindakan, $data, $id_pendaftaran);
             }
 
         }
@@ -146,25 +147,42 @@ class C_Pelayanan extends CI_Controller
     }
 
     public function loadDataEditTindakan($id){
-        list($data['tindakan'], $data['detail_tindakan']) = $this->pelayanan->getDataForEditTindakan($id);
+        $data['tindakan'] = $this->general->getOne('t_tindakan', 'id', $id, 1);
+        $data['rincian_tindakan'] = $this->pelayanan->getRincianTindakan($data['tindakan']['id_t_pendaftaran']);
+        // dd(json_encode($data['rincian_tindakan']));
+        $this->session->set_userdata([
+            'list_tindakan_pasien' => $data['rincian_tindakan']
+        ]);
         $this->load->view('pelayanan/V_EditDataTindakan', $data);
     }
 
-    public function editDataTindakan(){
-        $data = $this->input->post();
-        for ($i = 0; $i < count($data['nilai_normal']); $i++) {
-            $id_t_tindakan = $data['id_t_tindakan'][$i];
-            $data_edit['nilai_normal'] = $data['nilai_normal'][$i];
-            $data_edit['satuan'] = $data['satuan'][$i];
-            $data_edit['keterangan'] = $data['keterangan'][$i];
-            $this->pelayanan->createHasil($id_t_tindakan, $data_edit);
+    public function editDataTindakan($id_pendaftaran){
+        for ($count = 0; $count < count($_POST['id_t_tindakan']); $count++) {
+            $id_t_tindakan = $_POST['id_t_tindakan'][$count];
+            $data_edit = null;
+            if(isset($_POST['hasil_'.$id_t_tindakan])){
+                $data_edit['hasil'] = $_POST['hasil_'.$id_t_tindakan];
+            }
+            if(isset($_POST['nilai_normal_'.$id_t_tindakan])){
+                $data_edit['nilai_normal'] = $_POST['nilai_normal_'.$id_t_tindakan];
+            }
+            if(isset($_POST['satuan_'.$id_t_tindakan])){
+                $data_edit['satuan'] = $_POST['satuan_'.$id_t_tindakan];
+            }
+            if(isset($_POST['keterangan_'.$id_t_tindakan])){
+                $data_edit['keterangan'] = $_POST['keterangan_'.$id_t_tindakan];
+            }
+            if($data_edit){
+                $this->pelayanan->createHasil($id_t_tindakan, $data_edit, $id_pendaftaran);
+            }
         }
     }
 
     public function cetakHasil($id_pendaftaran){
-        list($data['rincian_tindakan'], $data['page_count']) = $this->pelayanan->buildDataPrintTindakan($this->session->userdata('list_tindakan_pasien'));
+        list($data['rincian_tindakan'], $data['page_count']) = $this->pelayanan->buildDataPrintTindakanNew($this->session->userdata('list_tindakan_pasien'));
         $data['pendaftaran'] = $this->pendaftaran->getDataPendaftaran($id_pendaftaran);
-        $this->load->view('pelayanan/V_CetakRincianTindakan', $data);        
+        $this->load->view('pelayanan/V_CetakRincianTindakanNew', $data);        
+        // $this->load->view('pelayanan/V_CetakRincianTindakan', $data);        
     }
 
 }

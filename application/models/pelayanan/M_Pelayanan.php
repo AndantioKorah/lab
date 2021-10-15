@@ -149,8 +149,11 @@
             $id_pendaftaran = $this->input->post('id_pendaftaran');
             $id_tagihan = $this->input->post('id_tagihan');
             $id_tindakan = $this->input->post('tindakan');
-        //   dd($id_pendaftaran);
-           
+            
+            // $id_pendaftaran = 2;
+            // $id_tagihan = 2;
+            // $id_tindakan = 7;
+
             $this->db->trans_begin();
 
             $this->db->select('*')
@@ -171,6 +174,20 @@
                 ->where('a.parent_id', $id_tindakan)
                 ->where('a.flag_active', 1);
             $cekTindakan =  $this->db->get()->result();
+
+            $data = null;
+            if($cekTindakan){
+                foreach($cekTindakan as $ct){
+                    $data[] = $ct;
+                    $child = $this->buildChildren($ct->id, []);
+                    if($child){
+                        foreach($child as $c){
+                            $data[] = $c;
+                        }
+                    }
+                }
+            }
+            $cekTindakan = $data;
 
             $dateOfBirth = $this->input->post('tanggal_lahir');
             $today = date("Y-m-d");
@@ -296,11 +313,11 @@
                             $nilai_normal = $tindakan->nilai_normal;
                         }
                     }
-                
+
                     $data = array(
                         'id_t_pendaftaran' => $id_pendaftaran,
                         'id_m_nm_tindakan' => $tindakan->id,
-                        'parent_id_tindakan' => $id_tindakan,
+                        'parent_id_tindakan' => $tindakan->parent_id,
                         'nama_tindakan' => $tindakan->nama_tindakan,
                         'nilai_normal' => $nilai_normal,
                         'satuan' => $tindakan->satuan,
@@ -372,9 +389,27 @@
             return $res;
         }
 
-
+        public function buildChildren($parent_id, $hasil =[]){
+            $w = $this->getChildren($parent_id);
+            if(count($w) > 0){ 
+                $hasil = array_merge($hasil,$w);
+                $i=0;
+                foreach($w as $h){
+                    $hasil = $this->buildChildren($h->id, $hasil);
+                    $i++;
+                }
+            }
+            return $hasil;
+        }
         
-
+        public function getChildren($id){
+            $return = null;
+            return $this->db->select('*')
+                            ->from('m_tindakan')
+                            ->where('parent_id', $id)
+                            ->where('flag_active', 1)
+                            ->get()->result();
+        }
 
         public function getTindakanPasienOld($id_pendaftaran)
     {
@@ -401,8 +436,97 @@
         return $this->db->get()->result_array();
     }
 
+    public function buildChildrenForDelete($parent_id, $hasil = [], $id_pendaftaran = 0){
+        $w = $this->getChildrenForDelete($parent_id, $id_pendaftaran);
+        if(count($w) > 0){ 
+            $hasil = array_merge($hasil,$w);
+            $i=0;
+            foreach($w as $h){
+                $hasil = $this->buildChildrenForDelete($h->id, $hasil, $id_pendaftaran);
+                $i++;
+            }
+        }
+        return $hasil;
+    }
 
+    public function getChildrenForDelete($id, $id_pendaftaran){
+        $return = null;
+        return $this->db->select('a.id_m_nm_tindakan, b.id, a.id as id_t_tindakan')
+                        ->from('t_tindakan as a')
+                        ->join('m_tindakan b', 'a.id_m_nm_tindakan = b.id')
+                        ->where('a.id_t_pendaftaran', $id_pendaftaran)
+                        ->where('b.parent_id', $id)
+                        ->where('a.flag_active', 1)
+                        ->get()->result();
+        // return $this->db->select('*')
+        //                 ->from('m_tindakan')
+        //                 ->where('parent_id', $id)
+        //                 ->where('flag_active', 1)
+        //                 ->get()->result();
+    }
+    
     public function delTindakanPasien(){
+        $res['code'] = 0;
+        $res['message'] = 'ok';
+        $res['data'] = null;
+    
+        $id_tindakan = $this->input->post('idtindakan');
+        $id_pendaftaran = $this->input->post('id_pendaftaran');
+
+        $this->db->select('a.id_m_nm_tindakan, b.id, a.id as id_t_tindakan')
+                ->from('t_tindakan as a')
+                ->join('m_tindakan b', 'a.id_m_nm_tindakan = b.id')
+                ->where('a.id_t_pendaftaran', $id_pendaftaran)
+                ->where('a.id', $id_tindakan)
+                ->where('a.nilai_normal', null)
+                ->where('a.flag_active', 1);
+        $cekTindakan =  $this->db->get()->result();
+
+        $data_lengkap = null;
+        if($cekTindakan){
+            foreach($cekTindakan as $ct){
+                $data_lengkap[] = $ct;
+                $child = $this->buildChildrenForDelete($ct->id, [], $id_pendaftaran);
+                if($child){
+                    foreach($child as $c){
+                        $data_lengkap[] = $c;
+                    }
+                }
+            }
+        }
+
+        $list_id_tindakan = null;
+        if($data_lengkap){
+            foreach($data_lengkap as $d){
+                $list_id_tindakan[] = $d->id_t_tindakan;
+            }
+            $this->db->where_in('id', $list_id_tindakan)
+                     ->update('t_tindakan', [
+                         'updated_by' => $this->general_library->getId(),
+                         'flag_active' => 0
+                     ]);
+            
+            $this->db->where('id_reference', $id_tindakan)
+                    ->where('id_t_pendaftaran', $id_pendaftaran)
+                    ->update('t_tagihan_detail', [
+                        'updated_by' => $this->general_library->getId(),
+                        'flag_active' => 0
+                    ]);
+        }
+ 
+        if($this->db->trans_status() == FALSE){
+            $this->db->trans_rollback();
+            $res['code'] = 1;
+            $res['message'] = 'Terjadi Kesalahan';
+            $res['data'] = null;
+        } else {
+            $this->db->trans_commit();
+        }
+
+        return $res;
+    }
+
+    public function delTindakanPasienBu(){
         $res['code'] = 0;
         $res['message'] = 'ok';
         $res['data'] = null;
@@ -427,7 +551,6 @@
         ->where('a.nilai_normal', null)
         ->where('a.flag_active', 1);
          $cekTindakan =  $this->db->get()->result();
-       
          
          if($cekTindakan){
          foreach($cekTindakan as $tindakan){
@@ -556,7 +679,7 @@
         ->join('m_jns_tindakan as b', 'b.id = a.id_m_jns_tindakan')
         ->like('nama_tindakan',$params)
         ->where('a.flag_active', '1');
-    return $this->db->get()->result();
+        return $this->db->get()->result();
     }
 
     public function select2TindakanBU(){
@@ -647,7 +770,7 @@
     }
 
 
-    public function getRincianTindakanBu($id_pendaftaran){
+    public function getRincianTindakanss($id_pendaftaran){
         $list_parent_id = null;
         $data = null;
         $detail_tindakan = $this->db->select('a.*, b.nilai_normal, b.satuan, b.id_m_jns_tindakan, b.id as id_m_tindakan, b.parent_id, b.nama_tindakan')
@@ -686,7 +809,7 @@
         return $data;
     }
 
-    public function getRincianTindakan($id_pendaftaran){
+    public function getRincianTindakanBu($id_pendaftaran){
         $data = null;
         $list_parent = null;
         $list_id_top_parent = null;
@@ -718,32 +841,172 @@
                                     ->from('m_jns_tindakan')
                                     ->where_in('id', $list_id_top_parent)
                                     ->get()->result_array();
-        if($list_top_parent){
-            foreach($list_top_parent as $ltp){
-                $data[$ltp['id']] = $ltp;
-            }
-            foreach($list_parent as $lp){
-                $data[$lp['id_m_jns_tindakan']]['tindakan'][$lp['id_m_nm_tindakan']] = $lp;
-                $j = 0;
-                foreach($tindakan as $t){
-                    if($t['parent_id_tindakan'] == $lp['id_m_nm_tindakan']){
-                        $data[$lp['id_m_jns_tindakan']]['tindakan'][$lp['id_m_nm_tindakan']]['detail_tindakan'][] = $t;
-                        array_splice($tindakan, $j, 1);
-                        $j -= 1;
+            if($list_top_parent){
+                foreach($list_top_parent as $ltp){
+                    $data[$ltp['id']] = $ltp;
+                }
+                foreach($list_parent as $lp){
+                    $data[$lp['id_m_jns_tindakan']]['tindakan'][$lp['id_m_nm_tindakan']] = $lp;
+                    $j = 0;
+                    foreach($tindakan as $t){
+                        if($t['parent_id_tindakan'] == $lp['id_m_nm_tindakan']){
+                            $data[$lp['id_m_jns_tindakan']]['tindakan'][$lp['id_m_nm_tindakan']]['detail_tindakan'][$t['id_m_nm_tindakan']] = $t;
+                            array_splice($tindakan, $j, 1);
+                            $j -= 1;
+                        }
+                        $j++;
                     }
-                    $j++;
                 }
             }
         }
-    }
+        $data = $this->keepSearchParent($data, $tindakan);
         // dd($data);
         // fungsi ini akan berhenti jika $tindakan sudah null; tapi belum ada contoh, jadi belum lanjut
         return $data;
     }
 
-    public function createHasil($id_t_tindakan, $data)
+    public function keepSearchParent($data, $tindakan){
+        if($tindakan){
+            $list_parent = null;
+            foreach($tindakan as $t){
+                $list_parent[] = $t['parent_id_tindakan'];
+            }
+            foreach($data as $d){
+                    
+            }
+        } else {
+            return $data;
+        }
+    }
+
+    public function getRincianTindakan($id_pendaftaran){
+        $data = null;
+        
+        $parents = $this->db->select('a.*, b.parent_id, b.id_m_jns_tindakan, b.id as id_m_tindakan, a.nilai_normal, b.biaya')
+                            ->from('t_tindakan a')
+                            ->join('m_tindakan b', 'a.id_m_nm_tindakan = b.id')
+                            ->where('a.id_t_pendaftaran', $id_pendaftaran)
+                            ->where('a.parent_id_tindakan', 0)
+                            ->where('a.flag_active', 1)
+                            ->group_by('a.id')
+                            ->get()->result_array();
+
+        $src_arr = $this->db->select('a.*, b.no_urut, a.id as id_t_tindakan')
+                            ->from('t_tindakan a')
+                            ->join('m_tindakan b', 'a.id_m_nm_tindakan = b.id')
+                            ->where('a.id_t_pendaftaran', $id_pendaftaran)
+                            ->where('a.parent_id_tindakan !=', 0)
+                            ->where('a.flag_active', 1)
+                            ->group_by('a.id')
+                            ->get()->result_array();
+
+        function arraySortByNoUrut($a, $b) {
+            return $a['no_urut'] - $b['no_urut'];
+        }
+
+        $ids_top_parent = null;
+        if($parents && $src_arr){
+            $i = 0;
+            foreach($parents as $pr){
+                $ids_top_parent[] = $pr['parent_id'];
+                $parents[$i]['children'] = $this->buildtree($src_arr, $pr['id_m_nm_tindakan'], []);
+                if($parents[$i]['children']){
+                    usort($parents[$i]['children'], 'arraySortByNoUrut');
+                }
+                $i++;
+            }
+        }
+
+        if($ids_top_parent){
+            $list_top_parent = $this->db->select('*')
+                                    ->from('m_tindakan')
+                                    ->where_in('id', $ids_top_parent)
+                                    ->get()->result_array();
+            if($list_top_parent){
+                $i = 0;
+                foreach($list_top_parent as $lp){
+                    $data[$i] = $lp;
+                    foreach($parents as $pr){
+                        if($lp['id'] == $pr['parent_id']){
+                            $data[$i]['children'][] = $pr;
+                        }
+                    }
+                    $i++;
+                }
+            }
+        }
+        // echo "<pre>";
+        // print_r($data);
+        // echo "</pre>";
+        // dd('');
+        // dd($data);
+        $final_data = null;
+        if($data){
+            $final_data = $this->fetch_recursive($data);
+            if($final_data){
+                $i = 0;
+                $cip = 0;
+                $list_padding = null;
+                foreach($final_data as $f){
+                    if(isset($f['id_m_jns_tindakan']) && $f['id_m_jns_tindakan'] == 0){
+                        $final_data[$i]['padding-left'] = 0;
+                    } else {
+                        $list_padding[$f['id_m_nm_tindakan']] = 10;
+                        if($f['parent_id_tindakan'] == 0){
+                            $final_data[$i]['padding-left'] = 10;
+                        } else {
+                            $final_data[$i]['padding-left'] = floatval($list_padding[$f['parent_id_tindakan']]) + 10;
+                        }
+                        $list_padding[$f['id_m_nm_tindakan']] = $final_data[$i]['padding-left'];
+                    }
+                    $i++;
+                }
+            }
+        }
+        // dd($final_data);
+        return $final_data;
+    }
+    
+
+    function fetch_recursive($tree, $parent_id = 0, $parentfound = false, $list = array())
     {
-        $this->db->where('id', $id_t_tindakan);
+        foreach($tree as $k => $v)
+        {
+            if($parentfound || $k == $parent_id)
+            {
+                $rowdata = array();
+                foreach($v as $field => $value)
+                    if($field != 'children')
+                        $rowdata[$field] = $value;
+                $list[] = $rowdata;
+                if(count($v['children']) > 0)
+                    $list = array_merge($list, $this->fetch_recursive($v['children'], $parent_id, true));
+            }
+            elseif(count($v['children']) > 0)
+                $list = array_merge($list, $this->fetch_recursive($v['children'], $parent_id));
+        }
+        return $list;
+    }
+
+    public function buildtree($src_arr, $parent_id = 0, $tree = array()){
+        foreach($src_arr as $idx => $row)
+        {
+            if($row['parent_id_tindakan'] == $parent_id)
+            {
+                foreach($row as $k => $v)
+                    $tree[$row['id']][$k] = $v;
+                unset($src_arr[$idx]);
+                $tree[$row['id']]['children'] = $this->buildtree($src_arr, $row['id_m_nm_tindakan']);
+            }
+        }
+        ksort($tree);
+        return $tree;
+    }
+
+    public function createHasil($id_t_tindakan, $data, $id_pendaftaran)
+    {
+        $this->db->where('id', $id_t_tindakan)
+                ->where('id_t_pendaftaran', $id_pendaftaran);
         $result = $this->db->update('t_tindakan', $data);        
     }
 
@@ -830,18 +1093,78 @@
         return [$final_result, $current_page];
     }
 
+    public function buildDataPrintTindakanNew($data){
+        $result = null;
+        $i = 0;
+        foreach($data as $d){
+            $result[$i] = $d;
+            $result[$i]['page'] = 1;
+            $i++;
+        }
+        $i = 0;
+        $last_parent_index = 0;
+        $last_jns_index = 0;
+        $current_page = 0;
+        $final_result = null;
+        foreach($result as $rs){
+            if(isset($result[$i]['nm_jns_tindakan'])){
+                $last_jns_index = $i;
+                if($result[$i]['id'] == 27){
+                    unset($result[$i]);
+                }
+            }
+           
+            if(isset($result[$i]['id_t_pendaftaran']) && $result[$i]['parent_id_tindakan'] == '0'){
+                $last_parent_index = $i;
+                if($result[$i]['id_m_jns_tindakan'] == 27){
+                    unset($result[$i]);
+                }
+               
+            }
+
+            //hitung sekarang page berapa
+            $result[$i]['page'] = intval(($i / ROW_PER_PAGE_CETAK_TINDAKAN) + 1);
+            $current_page = $result[$i]['page'];
+            //masukkan data ke index final_result dimana index == page 
+            $final_result[$current_page][] = $result[$i];
+            //jika halaman data current index != data current index sebelumnya, samakan halaman data ini dengan parent dari data ini
+            if(isset($result[$i-1]) && 
+                (intval($result[$i]['page']) != intval($result[$i-1]['page']))
+            ){
+                $final_result[$current_page] = null;
+                //jika data sebelum parent ini adalah data jns, samakan halaman data jns dengan data parent ini  
+                if(($last_parent_index - 1) == $last_jns_index){
+                    $result[$last_jns_index]['page'] = $current_page;
+                    $final_result[$current_page][] = $result[$last_jns_index];
+                    //hapus data jns di halaman sebelumnya
+                    unset($final_result[$current_page-1][$last_jns_index]);
+                }
+                //ambil data parent, dan samakan halaman dengan data ini
+                for($j = $last_parent_index; $j <= $i; $j++){
+                    $result[$j]['page'] = $result[$i]['page'];
+                    $final_result[$current_page][] = $result[$j];
+                    //hapus data parent di halaman sebelumnya
+                    unset($final_result[$current_page-1][$j]);
+                }
+            }
+            $i++;
+           
+        }
+        return [$final_result, $current_page];
+    }
+
     public function getDataForEditTindakan($id){
         $parent = $this->db->select('*')
                         ->from('t_tindakan')
                         ->where('id', $id)
                         ->where('flag_active', 1)
                         ->get()->row_array();
-        $child = $this->db->select('*')
-                        ->from('t_tindakan')
-                        ->where('parent_id_tindakan', $parent['id_m_nm_tindakan'])
-                        ->where('flag_active', 1)
-                        ->get()->result_array();
-        return [$parent, $child];
+        // $child = $this->db->select('*')
+        //                 ->from('t_tindakan')
+        //                 ->where('parent_id_tindakan', $parent['id_m_nm_tindakan'])
+        //                 ->where('flag_active', 1)
+        //                 ->get()->result_array();
+        return [$parent, null];
     }
        
 }
