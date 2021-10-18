@@ -98,6 +98,19 @@
             return $res;
         }
 
+        public function searchDokter(){
+            $result = null;
+            if($this->input->post('search_param') != ''){
+                $result =  $this->db->select('*, CONCAT(id,";",nama_dokter,";",alamat,";",nomor_telepon) as custom_value')
+                                    ->from('m_dokter')
+                                    ->like('nama_dokter', $this->input->post('search_param'))
+                                    ->where('flag_active', 1)
+                                    ->limit(20)
+                                    ->get()->result_array();
+            }
+            return $result;            
+        }
+
         public function searchPasien(){
             $result = null;
             if($this->input->post('search_param') != ''){

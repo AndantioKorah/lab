@@ -70,7 +70,7 @@
                                         <div class="dropdown-menu" aria-labelledby="btnGroupOption">
                                         <a class="dropdown-item dropdown-item-edit" href="#edit_data_tindakan_modal" onclick="editDataTindakan('<?=$rt['id']?>')" data-toggle="modal"><i class="fa fa-edit"></i> Edit Tindakan</a>
                                         <?php if($id_tagihan['0']->id_m_status_tagihan != 2){ ?>
-                                            <a class="dropdown-item dropdown-item-delete tombol_hapus_tindakan" data-idtindakan="<?=$rt['id']?>" href="#"><i class="fa fa-trash"></i> Hapus Tindakan</a>
+                                            <a class="dropdown-item dropdown-item-delete" onclick="deleteTindakanPasien('<?=$rt['id']?>')" href="#"><i class="fa fa-trash"></i> Hapus Tindakan</a>
                                         <?php } ?>
                                         </div>
                                     </div>
@@ -289,6 +289,24 @@ function tampilTindakan()
             }
 
         })        
+    }
+
+    function deleteTindakanPasien(id){
+        if(confirm('Apakah Anda yakin ingin menghapus tindakan?')){
+            $.ajax({
+                url: '<?=base_url("pelayanan/C_Pelayanan/delTindakanPasien")?>',
+                method: 'POST',
+                data: {
+                    idtindakan: id,
+                    id_pendaftaran: $('#id_pendaftaran').val()
+                },
+                success: function(data){
+                    LoadViewInputTindakanAfterSubmit($('#id_pendaftaran').val())                               
+                }, error: function(e){
+                    errortoast('Terjadi Kesalahan')
+                }
+            })
+        }
     }
 
     $('#daftar_tindakan').on('click','.tombol_hapus_tindakan',function(){

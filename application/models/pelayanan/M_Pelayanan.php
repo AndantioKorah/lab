@@ -468,13 +468,15 @@
     
         $id_tindakan = $this->input->post('idtindakan');
         $id_pendaftaran = $this->input->post('id_pendaftaran');
+        // $id_tindakan = 504;
+        // $id_pendaftaran = 41;
 
         $this->db->select('a.id_m_nm_tindakan, b.id, a.id as id_t_tindakan')
                 ->from('t_tindakan as a')
                 ->join('m_tindakan b', 'a.id_m_nm_tindakan = b.id')
                 ->where('a.id_t_pendaftaran', $id_pendaftaran)
                 ->where('a.id', $id_tindakan)
-                ->where('a.nilai_normal', null)
+                // ->where('a.nilai_normal', null)
                 ->where('a.flag_active', 1);
         $cekTindakan =  $this->db->get()->result();
 
@@ -894,7 +896,7 @@
     public function getRincianTindakan($id_pendaftaran, $id_tindakan = 0){
         $data = null;
         $parents = null;
-
+        
         if($id_tindakan == 0){
             $parents = $this->db->select('a.*, b.parent_id, b.id_m_jns_tindakan, b.id as id_m_tindakan, a.nilai_normal, b.biaya')
                                 ->from('t_tindakan a')
@@ -920,7 +922,7 @@
                             ->from('t_tindakan a')
                             ->join('m_tindakan b', 'a.id_m_nm_tindakan = b.id')
                             ->where('a.id_t_pendaftaran', $id_pendaftaran)
-                            ->where('a.parent_id_tindakan !=', 0)
+                            // ->where('a.parent_id_tindakan !=', 0)
                             ->where('a.flag_active', 1)
                             ->group_by('a.id')
                             ->get()->result_array();
@@ -941,7 +943,7 @@
                 $i++;
             }
         }
-
+        // dd($src_arr);
         if($ids_top_parent){
             $list_top_parent = $this->db->select('*, id as id_m_nm_tindakan, parent_id as parent_id_tindakan')
                                     ->from('m_tindakan')
