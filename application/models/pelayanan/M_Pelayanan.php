@@ -953,7 +953,6 @@
                                     ->from('m_tindakan')
                                     ->where_in('id', $ids_top_parent)
                                     ->get()->result_array();
-                                    // dd(json_encode($list_top_parent));
             if($list_top_parent){
                 $i = 0;
                 foreach($list_top_parent as $lp){
@@ -971,12 +970,15 @@
                     $i++;
                 }
                 $temp_data = $data;
+                // dd($temp_data);
                 $i = 0;
                 $data = null;
                 foreach($temp_data as $ttp){
                     $data[$i] = $this->getAllParents($ttp);
                     $i++;
                 }
+                $data = $this->mergeParents($data);
+                // dd($data);
             }
         }
         // echo "<pre>";
@@ -1022,7 +1024,27 @@
                 }
             }
         }
+        // dd($final_data);
         return $final_data;
+    }
+
+    public function mergeParents($data){
+        $i = 0;
+        $list_top_parent = array();
+        $final_result = null;
+        foreach($data as $d){
+            if(isset($final_result[$d['id']])){
+                if(count($d['children']) > 0){
+                    foreach($d['children'] as $ch){
+                        $final_result[$d['id']]['children'][] = $ch;
+                    }
+                }
+            } else {
+                $final_result[$d['id']] = $d;
+            }
+            $i++;
+        }
+        return $final_result;
     }
 
     public function getRincianTindakanForEdit($id_pendaftaran, $id_t_tindakan){
