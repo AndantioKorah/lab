@@ -334,7 +334,7 @@
                                         ->from('t_pendaftaran')
                                         ->where('DATE(tanggal_pendaftaran)', $tanggal_pendaftaran[0])
                                         // ->where('flag_active', 1)
-                                        ->order_by('created_date', 'desc')
+                                        ->order_by('nomor_pendaftaran', 'desc')
                                         ->limit(1)
                                         ->get()->row_array();
             $counter_nomor_pendaftaran = 1;
