@@ -58,7 +58,7 @@
             $this->db->select('b.nm_jns_tindakan, a.nama_tindakan, a.biaya, a.nilai_normal, a.satuan,
             a.id as id_tindakan,
             (SELECT (nama_tindakan) FROM m_tindakan where id = a.parent_id and parent_id != 0 and flag_active = 1 limit 1)  as nama_tindakan_parent')
-            ->join('m_jns_tindakanx as b', 'b.id = a.id_m_jns_tindakan')
+            ->join('m_jns_tindakan as b', 'b.id = a.id_m_jns_tindakan')
             ->where('a.flag_active', 1)
             ->order_by('a.id_m_jns_tindakan', 'asc')
             ->from('m_tindakan as a');
