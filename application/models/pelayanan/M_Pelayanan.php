@@ -472,13 +472,15 @@
     
         $id_tindakan = $this->input->post('idtindakan');
         $id_pendaftaran = $this->input->post('id_pendaftaran');
+        // $id_tindakan = 504;
+        // $id_pendaftaran = 41;
 
         $this->db->select('a.id_m_nm_tindakan, b.id, a.id as id_t_tindakan')
                 ->from('t_tindakan as a')
                 ->join('m_tindakan b', 'a.id_m_nm_tindakan = b.id')
                 ->where('a.id_t_pendaftaran', $id_pendaftaran)
                 ->where('a.id', $id_tindakan)
-                ->where('a.nilai_normal', null)
+                // ->where('a.nilai_normal', null)
                 ->where('a.flag_active', 1);
         $cekTindakan =  $this->db->get()->result();
 
@@ -879,13 +881,158 @@
         }
     }
 
-    public function getRincianTindakan($id_pendaftaran){
+    public function getAllParents($tree, $list = []){
+        if($tree['parent_id'] != 0){
+            $pr = $this->db->select('*, id as id_m_nm_tindakan')
+                            ->from('m_tindakan')
+                            ->where('id', $tree['parent_id'])
+                            ->get()->row_array();
+            if($pr){
+                $pr['children'][] = $tree;
+                $list = $pr;
+                $this->getAllParents($list, $list);
+            }
+            return $list;
+        }
+        return $tree;
+    }
+
+    public function getRincianTindakan($id_pendaftaran, $id_tindakan = 0){
+        $data = null;
+        $parents = null;
+        
+        if($id_tindakan == 0){
+            $parents = $this->db->select('a.*, b.parent_id, b.id_m_jns_tindakan, b.id as id_m_tindakan, a.nilai_normal, b.biaya')
+                                ->from('t_tindakan a')
+                                ->join('m_tindakan b', 'a.id_m_nm_tindakan = b.id')
+                                ->where('a.id_t_pendaftaran', $id_pendaftaran)
+                                ->where('a.parent_id_tindakan', 0)
+                                ->where('a.flag_active', 1)
+                                ->group_by('a.id')
+                                ->get()->result_array();
+        } else {
+            $parents = $this->db->select('a.*, b.parent_id, b.id_m_jns_tindakan, b.id as id_m_tindakan, a.nilai_normal, b.biaya')
+                                ->from('t_tindakan a')
+                                ->join('m_tindakan b', 'a.id_m_nm_tindakan = b.id')
+                                ->where('a.id_t_pendaftaran', $id_pendaftaran)
+                                ->where('a.id', $id_tindakan)
+                                ->where('a.parent_id_tindakan', 0)
+                                ->where('a.flag_active', 1)
+                                ->group_by('a.id')
+                                ->get()->result_array();
+        }
+
+        $src_arr = $this->db->select('a.*, b.no_urut, a.id as id_t_tindakan')
+                            ->from('t_tindakan a')
+                            ->join('m_tindakan b', 'a.id_m_nm_tindakan = b.id')
+                            ->where('a.id_t_pendaftaran', $id_pendaftaran)
+                            // ->where('a.parent_id_tindakan !=', 0)
+                            ->where('a.flag_active', 1)
+                            ->group_by('a.id')
+                            ->get()->result_array();
+
+        function arraySortByNoUrut($a, $b) {
+            return $a['no_urut'] - $b['no_urut'];
+        }
+
+        $ids_top_parent = null;
+        if($parents && $src_arr){
+            $i = 0;
+            foreach($parents as $pr){
+                $ids_top_parent[] = $pr['parent_id'];
+                $parents[$i]['children'] = $this->buildtree($src_arr, $pr['id_m_nm_tindakan'], []);
+                if($parents[$i]['children']){
+                    usort($parents[$i]['children'], 'arraySortByNoUrut');
+                }
+                $i++;
+            }
+        }
+        // dd($src_arr);
+        if($ids_top_parent){
+            $list_top_parent = $this->db->select('*, id as id_m_nm_tindakan, parent_id as parent_id_tindakan')
+                                    ->from('m_tindakan')
+                                    ->where_in('id', $ids_top_parent)
+                                    ->get()->result_array();
+                                    // dd(json_encode($list_top_parent));
+            if($list_top_parent){
+                $i = 0;
+                foreach($list_top_parent as $lp){
+                    $data[$i] = $lp;
+                    // if($i == 0){
+                    //     dd(count($list_top_parent));
+                    // }
+                    // dd(json_encode($list_top_parent));
+                    foreach($parents as $pr){
+                        if($lp['id'] == $pr['parent_id']){
+                            $data[$i]['children'][] = $pr;
+                            // dd(json_encode($data[$i]));
+                        }
+                    }
+                    $i++;
+                }
+                $temp_data = $data;
+                $i = 0;
+                $data = null;
+                foreach($temp_data as $ttp){
+                    $data[$i] = $this->getAllParents($ttp);
+                    $i++;
+                }
+            }
+        }
+        // echo "<pre>";
+        // print_r($data);
+        // echo "</pre>";
+        // dd('');
+        // dd($data);
+        $final_data = null;
+        // dd($data);
+        $i = 0;
+        if($data){
+            foreach($data as $d){
+                // $temp = $this->fetch_recursive($data);
+                $temp = $this->getChild($data, $d['id']);
+                if($temp){
+                    foreach($temp as $t){
+                        $final_data[] = $t; 
+                    }
+                }
+                $i++;
+            }
+            if($final_data){
+                $i = 0;
+                $cip = 0;
+                $list_padding = null;
+                foreach($final_data as $f){
+                    if(isset($f['id_m_jns_tindakan']) && $f['id_m_jns_tindakan'] == 0){
+                        $final_data[$i]['padding-left'] = LEFT_PADDING_DEFAULT;
+                    } else {
+                        $list_padding[$f['id_m_nm_tindakan']] = LEFT_PADDING_RINCIAN_TINDAKAN;
+                        if(($f['parent_id_tindakan'] == 0) || (isset($f['id_m_jns_tindakan']) && $f['id_m_jns_tindakan'] != 0)){
+                            if(isset($list_padding[$f['parent_id']])){
+                                $final_data[$i]['padding-left'] = floatval($list_padding[$f['parent_id']]) + LEFT_PADDING_RINCIAN_TINDAKAN;
+                            } else {
+                                $final_data[$i]['padding-left'] = LEFT_PADDING_RINCIAN_TINDAKAN;
+                            }
+                        } else {
+                            $final_data[$i]['padding-left'] = floatval($list_padding[$f['parent_id_tindakan']]) + LEFT_PADDING_RINCIAN_TINDAKAN;
+                        }
+                        $list_padding[$f['id_m_nm_tindakan']] = $final_data[$i]['padding-left'];
+                    }
+                    $i++;
+                }
+            }
+        }
+        return $final_data;
+    }
+
+    public function getRincianTindakanForEdit($id_pendaftaran, $id_t_tindakan){
         $data = null;
         
         $parents = $this->db->select('a.*, b.parent_id, b.id_m_jns_tindakan, b.id as id_m_tindakan, a.nilai_normal, b.biaya')
                             ->from('t_tindakan a')
                             ->join('m_tindakan b', 'a.id_m_nm_tindakan = b.id')
                             ->where('a.id_t_pendaftaran', $id_pendaftaran)
+                            ->where('a.id', $id_t_tindakan)
                             ->where('a.parent_id_tindakan', 0)
                             ->where('a.flag_active', 1)
                             ->group_by('a.id')
@@ -903,7 +1050,6 @@
         function arraySortByNoUrut($a, $b) {
             return $a['no_urut'] - $b['no_urut'];
         }
-
         $ids_top_parent = null;
         if($parents && $src_arr){
             $i = 0;
@@ -935,27 +1081,37 @@
                 }
             }
         }
-        // echo "<pre>";
-        // print_r($data);
-        // echo "</pre>";
-        // dd('');
-        // dd($data);
+       
         $final_data = null;
+        $i = 0;
         if($data){
-            $final_data = $this->fetch_recursive($data);
+            foreach($data as $d){
+                // $temp = $this->fetch_recursive($data);
+                $temp = $this->getChild($data, $d['id']);
+                if($temp){
+                    foreach($temp as $t){
+                        $final_data[] = $t; 
+                    }
+                }
+                $i++;
+            }
             if($final_data){
                 $i = 0;
                 $cip = 0;
                 $list_padding = null;
                 foreach($final_data as $f){
                     if(isset($f['id_m_jns_tindakan']) && $f['id_m_jns_tindakan'] == 0){
-                        $final_data[$i]['padding-left'] = 0;
+                        $final_data[$i]['padding-left'] = LEFT_PADDING_DEFAULT;
                     } else {
-                        $list_padding[$f['id_m_nm_tindakan']] = 10;
-                        if($f['parent_id_tindakan'] == 0){
-                            $final_data[$i]['padding-left'] = 10;
+                        $list_padding[$f['id_m_nm_tindakan']] = LEFT_PADDING_RINCIAN_TINDAKAN;
+                        if(($f['parent_id_tindakan'] == 0) || (isset($f['id_m_jns_tindakan']) && $f['id_m_jns_tindakan'] != 0)){
+                            if(isset($list_padding[$f['parent_id']])){
+                                $final_data[$i]['padding-left'] = floatval($list_padding[$f['parent_id']]) + LEFT_PADDING_RINCIAN_TINDAKAN;
+                            } else {
+                                $final_data[$i]['padding-left'] = LEFT_PADDING_RINCIAN_TINDAKAN;
+                            }
                         } else {
-                            $final_data[$i]['padding-left'] = floatval($list_padding[$f['parent_id_tindakan']]) + 10;
+                            $final_data[$i]['padding-left'] = floatval($list_padding[$f['parent_id_tindakan']]) + LEFT_PADDING_RINCIAN_TINDAKAN;
                         }
                         $list_padding[$f['id_m_nm_tindakan']] = $final_data[$i]['padding-left'];
                     }
@@ -963,10 +1119,37 @@
                 }
             }
         }
-        // dd($final_data);
         return $final_data;
     }
-    
+
+    public function getChild($tree, $parent_id = 0, $list = array()){
+        foreach($tree as $t){
+            if(isset($t['parent_id']) && $t['parent_id'] == $parent_id){
+                $temp = $t;
+                unset($temp['children']);
+                $list[] = $temp;
+                if(count($t['children']) > 0){
+                    $list = array_merge($list, $this->getChild($t['children'], $t['id_m_nm_tindakan']));
+                }
+            } else if (isset($t['parent_id_tindakan']) && $t['parent_id_tindakan'] == $parent_id) {
+                $temp = $t;
+                unset($temp['children']);
+                $list[] = $temp;
+                if(count($t['children']) > 0){
+                    $list = array_merge($list, $this->getChild($t['children'], $t['id_m_nm_tindakan']));
+                }
+            } else if($t['id'] == $parent_id) {
+                $temp = $t;
+                unset($temp['children']);
+                $list[] = $temp;
+                if(count($t['children']) > 0){
+                    $list = array_merge($list, $this->getChild($t['children'], $t['id']));
+                }
+            }
+            // dd($t);
+        }
+        return $list;
+    }
 
     function fetch_recursive($tree, $parent_id = 0, $parentfound = false, $list = array())
     {
@@ -1107,7 +1290,7 @@
         $current_page = 0;
         $final_result = null;
         foreach($result as $rs){
-            if(isset($result[$i]['nm_jns_tindakan'])){
+            if(isset($result[$i]['id_m_jns_tindakan']) && $result[$i]['id_m_jns_tindakan'] == 0){
                 $last_jns_index = $i;
                 if($result[$i]['id'] == 27){
                     unset($result[$i]);

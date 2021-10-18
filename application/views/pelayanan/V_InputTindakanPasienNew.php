@@ -1,12 +1,15 @@
 <style>
     .dropdown-item-edit:hover{
-        background-color: #bd9402 !important;
-        color: white !important;
+        background-color: #ffef30 !important;
+        /* color: #001f3f !important; */
+        color: black !important;
+        font-weight: bold;
     }
 
     .dropdown-item-delete:hover{
         background-color: #c10606 !important;
         color: white !important;
+        font-weight: bold;
     }
 </style>
 
@@ -67,7 +70,7 @@
                                         <div class="dropdown-menu" aria-labelledby="btnGroupOption">
                                         <a class="dropdown-item dropdown-item-edit" href="#edit_data_tindakan_modal" onclick="editDataTindakan('<?=$rt['id']?>')" data-toggle="modal"><i class="fa fa-edit"></i> Edit Tindakan</a>
                                         <?php if($id_tagihan['0']->id_m_status_tagihan != 2){ ?>
-                                            <a class="dropdown-item dropdown-item-delete tombol_hapus_tindakan" data-idtindakan="<?=$rt['id']?>" href="#"><i class="fa fa-trash"></i> Hapus Tindakan</a>
+                                            <a class="dropdown-item dropdown-item-delete" onclick="deleteTindakanPasien('<?=$rt['id']?>')" href="#"><i class="fa fa-trash"></i> Hapus Tindakan</a>
                                         <?php } ?>
                                         </div>
                                     </div>
@@ -137,7 +140,7 @@ $(function(){
     });
 
     $('.hsl').on('keyup', function(){
-                $(this).val(formatRupiah($(this).val()))
+                // $(this).val(formatRupiah($(this).val()))
             })
 
     function editDataTindakan(id){
@@ -286,6 +289,24 @@ function tampilTindakan()
             }
 
         })        
+    }
+
+    function deleteTindakanPasien(id){
+        if(confirm('Apakah Anda yakin ingin menghapus tindakan?')){
+            $.ajax({
+                url: '<?=base_url("pelayanan/C_Pelayanan/delTindakanPasien")?>',
+                method: 'POST',
+                data: {
+                    idtindakan: id,
+                    id_pendaftaran: $('#id_pendaftaran').val()
+                },
+                success: function(data){
+                    LoadViewInputTindakanAfterSubmit($('#id_pendaftaran').val())                               
+                }, error: function(e){
+                    errortoast('Terjadi Kesalahan')
+                }
+            })
+        }
     }
 
     $('#daftar_tindakan').on('click','.tombol_hapus_tindakan',function(){

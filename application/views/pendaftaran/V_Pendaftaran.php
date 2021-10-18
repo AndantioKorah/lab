@@ -187,11 +187,11 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <label>Dokter Pengirim</label>
-                                            <select class="form-control form-control-sm select2_this select2-navy" data-dropdown-css-class="select2-navy" id="dokter_pengirim" name="dokter_pengirim">
-                                                <option value="0">Atas Permintaan Sendiri</option>
-                                                <?php foreach($dokter as $d){ ?>
+                                            <select class="form-control form-control-sm select2-navy" data-dropdown-css-class="select2-navy" id="dokter_pengirim" name="dokter_pengirim">
+                                                <option value="0" selected>Atas Permintaan Sendiri</option>
+                                                <!-- <?php foreach($dokter as $d){ ?>
                                                     <option value="<?=$d['id'].';'.$d['nama_dokter'].';'.$d['alamat'].';'.$d['nomor_telepon']?>"><?=$d['nama_dokter']?></option>
-                                                <?php } ?>
+                                                <?php } ?> -->
                                             </select>
                                         </div>
                                     </div>
@@ -343,18 +343,46 @@
         })
     })
 
-    $('#dokter_pengirim').on('change', function(){
-        if($(this).val() != '0'){
-            let data_dokter = $(this).val().split(';')
-            $('#data_dokter_pengirim').show()
-            $('#alamat_dokter_pengirim').val(data_dokter[2])
-            $('#nomor_telepon_dokter_pengirim').val(data_dokter[3])
-        } else {
-            $('#data_dokter_pengirim').hide()
-            $('#alamat_dokter_pengirim').val('')
-            $('#nomor_telepon_dokter_pengirim').val('')
+    $("#dokter_pengirim").select2({
+        tokenSeparators: [',', ' '],
+        minimumInputLength: 2,
+        minimumResultsForSearch: 10,
+        ajax: {
+            url: '<?=base_url("pendaftaran/C_Pendaftaran/searchDokter")?>',
+            dataType: "json",
+            type: "POST",
+            data: function (params) {
+
+                var queryParameters = {
+                    search_param: params.term
+                }
+                return queryParameters;
+            },
+            processResults: function (data) {
+                return {
+                    results: $.map(data, function (item) {
+                        return {
+                            text: item.nama_dokter,
+                            id: item.custom_value
+                        }
+                    })
+                };
+            }
         }
-    })
+    });
+
+    // $('#dokter_pengirim').on('change', function(){
+    //     if($(this).val() != '0'){
+    //         let data_dokter = $(this).val().split(';')
+    //         $('#data_dokter_pengirim').show()
+    //         $('#alamat_dokter_pengirim').val(data_dokter[2])
+    //         $('#nomor_telepon_dokter_pengirim').val(data_dokter[3])
+    //     } else {
+    //         $('#data_dokter_pengirim').hide()
+    //         $('#alamat_dokter_pengirim').val('')
+    //         $('#nomor_telepon_dokter_pengirim').val('')
+    //     }
+    // })
 
     $("#search_pasien").select2({
         tokenSeparators: [',', ' '],

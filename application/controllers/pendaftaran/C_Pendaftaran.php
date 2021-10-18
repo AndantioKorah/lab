@@ -19,9 +19,13 @@ class C_Pendaftaran extends CI_Controller
             'session_id' => date("YmdHis")
         ]);
       
-        $data['dokter'] = $this->general->getAllWithOrder('m_dokter', 'nama_dokter', 'asc');
+        $data['dokter'] = $this->general->getWithOrder('m_dokter', 'id', '1', 'created_date', 'desc');
         $data['cara_bayar_detail'] = $this->general->getAllWithOrder('m_cara_bayar_detail', 'nama_cara_bayar_detail', 'asc');
         render('pendaftaran/V_Pendaftaran', '', 'pendaftaran', $data);
+    }
+
+    public function searchDokter(){
+        echo json_encode($this->pendaftaran->searchDokter());
     }
 
     public function loadFormPasienBaru(){
