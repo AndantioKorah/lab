@@ -1005,7 +1005,8 @@
                         $final_data[$i]['padding-left'] = LEFT_PADDING_DEFAULT;
                     } else {
                         $list_padding[$f['id_m_nm_tindakan']] = LEFT_PADDING_RINCIAN_TINDAKAN;
-                        if(($f['parent_id_tindakan'] == 0) || (isset($f['id_m_jns_tindakan']) && $f['id_m_jns_tindakan'] != 0)){
+                        
+                        if((isset($f['parent_id_tindakan']) && $f['parent_id_tindakan'] == 0) || (isset($f['id_m_jns_tindakan']) && $f['id_m_jns_tindakan'] != 0)){
                             if(isset($list_padding[$f['parent_id']])){
                                 $final_data[$i]['padding-left'] = floatval($list_padding[$f['parent_id']]) + LEFT_PADDING_RINCIAN_TINDAKAN;
                             } else {
