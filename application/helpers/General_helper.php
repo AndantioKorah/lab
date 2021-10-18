@@ -55,6 +55,25 @@ function formatTextHasil($hasil_input, $nilai_normal){
     return $hasil_input;
 }
 
+function mergeParents($data){
+    $i = 0;
+    $list_top_parent = array();
+    $final_result = null;
+    foreach($data as $d){
+        if(isset($final_result[$d['id']])){
+            if(count($d['children']) > 0){
+                foreach($d['children'] as $ch){
+                    $final_result[$d['id']]['children'][] = $ch;
+                }
+            }
+        } else {
+            $final_result[$d['id']] = $d;
+        }
+        $i++;
+    }
+    return $final_result;
+}
+
 function titikGantiKoma($string){
     return str_replace('.','', $string);
 }

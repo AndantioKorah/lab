@@ -122,6 +122,7 @@
             $ids_parent = null;
             $data = null;
             $list_parent = null;
+            $final_data = null;
             $detail_tagihan = $this->db->select('a.*, b.id_m_nm_tindakan, c.id_m_jns_tindakan, c.parent_id')
                                     ->from('t_tagihan_detail a')
                                     ->join('t_tindakan b', 'a.id_reference = b.id')
@@ -167,6 +168,7 @@
                         foreach($temp_data as $d){
                             $data[] = $this->getAllParents($d);
                         }
+                        $data = mergeParents($data);
                     }
 
                     if($data){
@@ -175,26 +177,40 @@
                         foreach($temp_data as $d){
                             $temp = $this->getChild($temp_data, $d['id']);
                             if($temp){
-                                $list_padding = null;
-                                $j = count($data);
                                 foreach($temp as $t){
-                                    $data[$j] = $t;
-                                    if(isset($t['id_m_jns_tindakan']) && $t['id_m_jns_tindakan'] == 0){
-                                        $data[$j]['padding-left'] = LEFT_PADDING_DEFAULT;
-                                    } else if(isset($t['id_m_jns_tindakan']) && $t['id_m_jns_tindakan'] != 0){
-                                        $data[$j]['padding-left'] = floatval($list_padding[$t['parent_id']] + LEFT_PADDING_RINCIAN_TINDAKAN);
-                                    } else if(isset($t['id_t_tagihan'])){
-                                        $data[$j]['padding-left'] = floatval($list_padding[$t['parent_id']] + LEFT_PADDING_RINCIAN_TINDAKAN);
-                                    }
-                                    $list_padding[$t['id']] = $data[$j]['padding-left'];
-                                    $j++;
+                                    $final_data[] = $t; 
                                 }
+                            }
+                        }
+
+                        if($final_data){
+                            $i = 0;
+                            $cip = 0;
+                            $list_padding = null;
+                            foreach($final_data as $f){
+                                if(isset($f['id_m_jns_tindakan']) && $f['id_m_jns_tindakan'] == 0){
+                                    $final_data[$i]['padding-left'] = LEFT_PADDING_DEFAULT;
+                                } else {
+                                    $list_padding[$f['id_m_nm_tindakan']] = LEFT_PADDING_RINCIAN_TINDAKAN;
+                                    
+                                    if((isset($f['parent_id_tindakan']) && $f['parent_id_tindakan'] == 0) || (isset($f['id_m_jns_tindakan']) && $f['id_m_jns_tindakan'] != 0)){
+                                        if(isset($list_padding[$f['parent_id']])){
+                                            $final_data[$i]['padding-left'] = floatval($list_padding[$f['parent_id']]) + LEFT_PADDING_RINCIAN_TINDAKAN;
+                                        } else {
+                                            $final_data[$i]['padding-left'] = LEFT_PADDING_RINCIAN_TINDAKAN;
+                                        }
+                                    } else {
+                                        $final_data[$i]['padding-left'] = floatval($list_padding[$f['parent_id_tindakan']]) + LEFT_PADDING_RINCIAN_TINDAKAN;
+                                    }
+                                    $list_padding[$f['id_m_nm_tindakan']] = $final_data[$i]['padding-left'];
+                                }
+                                $i++;
                             }
                         }
                     }
                 }
             }
-            return $data;
+            return $final_data;
         }
 
         public function getChild($tree, $parent_id = 0, $list = array()){
