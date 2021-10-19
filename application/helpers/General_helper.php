@@ -17,28 +17,31 @@ function render($pageContent, $parent_active, $active, $data)
 function formatTextHasil($hasil_input, $nilai_normal){
     $nn = explode(" ",$nilai_normal);
 
-    $hasil = titikGantiKoma($hasil_input);
-    $hasil = clearString($hasil); 
+    $hasil = removeTitikFromRibuan($hasil_input);
+    $hasil = komaGantiTitik($hasil); 
     
     if($nn[0] == '<' && isset($nn[1])){
-        $max = titikGantiKoma($nn[1]);
+        $max = removeTitikFromRibuan($nn[1]);
         $max = clearString($max);
         if($hasil >= $max){
             return '<strong>'.$hasil_input.'*</strong>';
         }
     } else if($nn[0] == '>' && isset($nn[1])){
-        $min = titikGantiKoma($nn[1]);
+        $min = removeTitikFromRibuan($nn[1]);
         $min = clearString($min);
         if($hasil <= $min){
             return '<strong>'.$hasil_input.'*</strong>';
         }
     } else if(isset($nn[1]) && $nn[1] == '-' && isset($nn[2])){
-        $min = titikGantiKoma($nn[0]);
-        $min = clearString($min);
-
-        $max = titikGantiKoma($nn[2]);
-        $max = clearString($max);
+        $min = removeTitikFromRibuan($nn[0]);
+        $min = komaGantiTitik($min);
         
+        $max = removeTitikFromRibuan($nn[2]);
+        $max = komaGantiTitik($max);
+        // if($nn[0] == '37,0'){
+        //     // echo $hasil.'   '.$min;
+        //     // dd($hasil < $min);
+        // }
         if($hasil < $min || $hasil > $max){
             return '<strong>'.$hasil_input.'*</strong>';
         }
@@ -74,7 +77,11 @@ function mergeParents($data){
     return $final_result;
 }
 
-function titikGantiKoma($string){
+function komaGantiTitik($string){
+    return str_replace(',','.', $string);
+}
+
+function removeTitikFromRibuan($string){
     return str_replace('.','', $string);
 }
 
