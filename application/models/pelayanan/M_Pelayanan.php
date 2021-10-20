@@ -876,6 +876,43 @@
             return $data;
         }
     }
+    
+    public function getAllParents1($parent_id){
+        $parent = array();
+        $child = $this->db->select('*')
+                        ->from('m_tindakan')
+                        ->where('id', $parent_id)
+                        ->get()->row_array();
+                        // dd($child);
+        $parent[] = $child;
+        if ($child['parent_id'] == 0) {
+            return $parent;
+        } else {
+            $push = $this->getAllParents1($child['parent_id']);
+            array_push($parent, $push);
+            return $parent;
+        }  
+    }
+
+    public function getAllParentsss($tree, $list = []){
+        // $list = array();
+        if($tree['parent_id'] == 0){
+            return $tree;
+        } else {
+            $pr = $this->db->select('*, id as id_m_nm_tindakan')
+                            ->from('m_tindakan')
+                            ->where('id', $tree['parent_id'])
+                            ->get()->row_array();
+            if($pr){
+                $pr['children'][] = $tree;
+                // $list = $pr;
+                // $this->getAllParents($pr, $list);
+                array_push($list, $this->getAllParents($pr, $list));
+                return $list;
+            }
+        }
+        // return $tree;
+    }
 
     public function getAllParents($tree, $list = []){
         if($tree['parent_id'] != 0){
@@ -970,9 +1007,15 @@
                 $i = 0;
                 $data = null;
                 foreach($temp_data as $ttp){
-                    $data[$i] = $this->getAllParents($ttp);
+                    $data[$i] = $this->getAllParents1($ttp['parent_id']);
+                    dd($data[$i]);
+                    // while($data[$i]['parent_id'] != 0){
+                    //     echo('searching....      ;');
+                    //     $data[$i] = $this->getAllParents($ttp);
+                    // }
                     $i++;
                 }
+                dd($data);
                 $data = $this->mergeParents($data);
                 // dd($data);
             }

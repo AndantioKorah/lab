@@ -109,19 +109,19 @@
                         <?php } ?>
                     </tbody>
                 </table>
-                <table style="width: 100%; margin-top: 20px;">
-                    <tr>
-                        <td style="width: 20%;"></td>
-                        <td style="width: 20%;"></td>
-                        <td style="width: 20%;"></td>
-                        <td style="width: 20%;"></td>
-                        <td style="width: 20%; text-align: center;">
-                            <span class="span_pemeriksa_cetak_tindakan">Lab. Klinik PATRA</span><br>
-                            <span class="span_pemeriksa_cetak_tindakan">Pemeriksa:</span>
-                        </td>
-                    </tr>
-                </table>
             </div>
         <?php } ?>
+        <table style="width: 100%; margin-top: 20px;">
+            <tr>
+                <td style="width: 20%;"></td>
+                <td style="width: 20%;"></td>
+                <td style="width: 20%;"></td>
+                <td style="width: 20%;"></td>
+                <td style="width: 20%; text-align: center;">
+                    <span class="span_pemeriksa_cetak_tindakan">Lab. Klinik PATRA</span><br>
+                    <span class="span_pemeriksa_cetak_tindakan">Pemeriksa:</span>
+                </td>
+            </tr>
+        </table>
     </body>
 </html>

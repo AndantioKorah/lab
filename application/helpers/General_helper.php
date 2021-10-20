@@ -46,13 +46,21 @@ function formatTextHasil($hasil_input, $nilai_normal){
             return '<strong>'.$hasil_input.'*</strong>';
         }
     } else if($nn[0] == 'Positif'){
-        if(substr($hasil_input, 0, 1) == '-' && strlen($hasil_input) > 1){
+        $hasil = explode(" ", $hasil_input);
+        if(isset($hasil[0]) && strcasecmp($hasil[0], $nn[0]) != 0){
             return '<strong>'.$hasil_input.'*</strong>';
         }
+        // if(substr($hasil_input, 0, 1) == '-' && strlen($hasil_input) > 1){
+        //     return '<strong>'.$hasil_input.'*</strong>';
+        // }
     } else if($nn[0] == 'Negatif'){
-        if(substr($hasil_input, 0, 1) != '-' && strlen($hasil_input) >= 1){
+        $hasil = explode(" ", $hasil_input);
+        if(isset($hasil[0]) && strcasecmp($hasil[0], $nn[0]) != 0){
             return '<strong>'.$hasil_input.'*</strong>';
         }
+        // if(substr($hasil_input, 0, 1) != '-' && strlen($hasil_input) >= 1){
+        //     return '<strong>'.$hasil_input.'*</strong>';
+        // }
     }
 
     return $hasil_input;
