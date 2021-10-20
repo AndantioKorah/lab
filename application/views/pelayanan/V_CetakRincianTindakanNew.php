@@ -85,7 +85,7 @@
                                 if($rt['id_m_jns_tindakan'] == 0){
                                     $style_rincian_tindakan .= "font-size: 18px; text-transform: uppercase;";
                                 }
-                                $style_rincian_tindakan .= "font-weight: bold;";
+                                $style_rincian_tindakan .= "font-weight: normal;";
                             } 
 
                             $hasil = isset($rt['hasil']) ? $rt['hasil'] : '';
