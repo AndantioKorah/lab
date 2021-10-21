@@ -147,22 +147,31 @@
                                         ->get()->result_array();
                 if($list_parent){
                     $i = 0;
+                    $data = null;
                     foreach($list_parent as $lp){
-                        $data[$i] = $lp;
-                        $j = 0;
-                        foreach($detail_tagihan as $dt){
-                            if($dt['parent_id'] == $lp['id']){
-                                $data[$i]['children'][] = $dt;
-                                unset($detail_tagihan[$j]);
-                            } else {
-                                $data[$i]['children'][] = $dt;
-                            }
-                            $j++;
-                        }
-                        $i++;
+                        $data[$lp['id']] = $lp;
                     }
 
-                    if(count($detail_tagihan) > 0){
+                    foreach($detail_tagihan as $dt){
+                        $data[$dt['parent_id']]['children'][] = $dt;
+                    }
+                    // dd($data);
+                    // foreach($list_parent as $lp){
+                    //     $data[$i] = $lp;
+                    //     $j = 0;
+                    //     foreach($detail_tagihan as $dt){
+                    //         if($dt['parent_id'] == $lp['id']){
+                    //             $data[$i]['children'][] = $dt;
+                    //             unset($detail_tagihan[$j]);
+                    //         } else {
+                    //             $data[$i]['children'][] = $dt;
+                    //         }
+                    //         $j++;
+                    //     }
+                    //     $i++;
+                    // }
+                    
+                    if(count($data) > 0){
                         $temp_data = $data;
                         $data = null;
                         foreach($temp_data as $d){
@@ -170,7 +179,6 @@
                         }
                         $data = mergeParents($data);
                     }
-
                     if($data){
                         $temp_data = $data;
                         $data = array();

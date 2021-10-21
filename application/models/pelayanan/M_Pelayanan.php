@@ -980,6 +980,7 @@
                     $data[$i] = $this->getAllParents($ttp);
                     $i++;
                 }
+                // dd($data);
                 $data = $this->mergeParents($data);
             }
         }
