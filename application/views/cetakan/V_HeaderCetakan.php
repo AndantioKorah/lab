@@ -26,7 +26,7 @@
     }
     .header_penanggung_jawab{
         width: 100%;
-        margin-left: 50%;
+        margin-left: 40%;
         margin-bottom: 5px;
         font-style: italic;
         text-decoration: underline;
@@ -134,7 +134,7 @@
                         <td class="set_font header_element_value"><?=strtoupper($umur.' / '.$jenis_kelamin)?></td>
                     </tr>
                     <tr>
-                        <td class="set_font header_element_label">No. Pendaftaran</td>
+                        <td class="set_font header_element_label">No. Lab</td>
                         <td class="set_font header_element_colon">:</td>
                         <td class="set_font header_element_value"><?=$pendaftaran['nomor_pendaftaran']?></span></td>
                     </tr>
