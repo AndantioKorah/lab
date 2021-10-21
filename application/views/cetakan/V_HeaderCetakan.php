@@ -26,7 +26,7 @@
     }
     .header_penanggung_jawab{
         width: 100%;
-        margin-left: 50%;
+        margin-left: 40%;
         margin-bottom: 5px;
         font-style: italic;
         text-decoration: underline;
