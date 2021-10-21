@@ -23,13 +23,13 @@ function formatTextHasil($hasil_input, $nilai_normal){
     if($nn[0] == '<' && isset($nn[1])){
         $max = removeTitikFromRibuan($nn[1]);
         $max = clearString($max);
-        if($hasil >= $max && $hasil_input == $nilai_normal){
+        if($hasil >= $max && $hasil_input != $nilai_normal){
             return '<strong>'.$hasil_input.'*</strong>';
         }
     } else if($nn[0] == '>' && isset($nn[1])){
         $min = removeTitikFromRibuan($nn[1]);
         $min = clearString($min);
-        if($hasil <= $min && $hasil_input == $nilai_normal){
+        if($hasil <= $min && $hasil_input != $nilai_normal){
             return '<strong>'.$hasil_input.'*</strong>';
         }
     } else if(isset($nn[1]) && $nn[1] == '-' && isset($nn[2])){
