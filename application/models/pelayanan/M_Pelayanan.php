@@ -205,7 +205,7 @@
                 $kategori_pasien = null;
             }
             
-            
+        
 
             if($cekTindakan) {
                 $this->db->select('a.biaya,a.nama_tindakan,a.nilai_normal, a.satuan')
@@ -223,7 +223,7 @@
 
                 $this->db->insert('t_tindakan', $data);
                 $last_id_tindakan = $this->db->insert_id();
-
+                
                 foreach($cekTindakan as $tindakan){
                  
                     if($umur < 13 ){
@@ -283,7 +283,7 @@
                             $nilai_normal = $tindakan->nilai_normal;
                         }
                     } else {
-                        
+                      
                         if($tindakan->flag_m_nilai_normal == 1){
                             $this->db->select('a.nilai_normal')
                             ->from('m_nilai_normal as a')
@@ -314,6 +314,8 @@
                         }
                     }
 
+                    
+
                     $data = array(
                         'id_t_pendaftaran' => $id_pendaftaran,
                         'id_m_nm_tindakan' => $tindakan->id,
@@ -323,6 +325,10 @@
                         'satuan' => $tindakan->satuan,
                         'created_by' => $this->general_library->getId()
                     );
+
+                        
+
+
                     $this->db->insert('t_tindakan', $data);
                     $detail_tindakan[] = $tindakan->nama_tindakan;  
                 }
@@ -341,18 +347,31 @@
 
             } else {
               
-                $this->db->select('a.biaya,a.nama_tindakan,a.nilai_normal,a.satuan')
+                $this->db->select('a.id,a.biaya,a.nama_tindakan,a.nilai_normal,a.satuan, a.flag_m_nilai_normal')
                 ->from('m_tindakan as a')
                 ->where('a.id', $id_tindakan)
                 ->where('a.flag_active', 1);
                  $dataTindakan =  $this->db->get()->result();
+                 
+                if($dataTindakan[0]->flag_m_nilai_normal == 1){
+                    $this->db->select('a.nilai_normal, a.umur')
+                    ->from('m_nilai_normal as a')
+                    ->where('a.id_m_nm_tindakan', $dataTindakan[0]->id)
+                    ->where('a.jenis_kelamin', $jenis_kelamin)
+                    ->where('a.flag_active', 1)
+                    ->limit(1);
+                    $masterNilaiNormalJK =  $this->db->get()->result();
+                    $nilai_normal = $masterNilaiNormalJK[0]->nilai_normal;
+                }  else {
+                    $nilai_normal = $dataTindakan[0]->nilai_normal;
+                }
                 
-
+            
                  $data = array(
                     'id_t_pendaftaran' => $id_pendaftaran,
                     'id_m_nm_tindakan' => $id_tindakan,
                     'nama_tindakan' => $dataTindakan[0]->nama_tindakan,
-                    'nilai_normal' => $dataTindakan[0]->nilai_normal,
+                    'nilai_normal' => $nilai_normal,
                     'satuan' => $dataTindakan[0]->satuan,
                 );
                 $this->db->insert('t_tindakan', $data);
