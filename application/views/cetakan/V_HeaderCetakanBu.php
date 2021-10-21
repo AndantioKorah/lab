@@ -112,7 +112,7 @@
                     <td style="width: 60%;" class="header_content"><?=strtoupper($umur.' / '.$jenis_kelamin)?></td>
                 </tr>
                 <tr>
-                    <td style="width: 35%;" class="header_label">No. Pendaftaran</td>
+                    <td style="width: 35%;" class="header_label">No. Lab</td>
                     <td style="width: 5%;" class="header_label">:</td>
                     <td style="width: 60%;" class="header_content"><?=$pendaftaran['nomor_pendaftaran']?></td>
                 </tr>

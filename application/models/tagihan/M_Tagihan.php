@@ -245,20 +245,18 @@
             return $list;
         }
 
-        public function getAllParents($tree, $list = []){
+        public function getAllParents($tree){
             if($tree['parent_id'] != 0){
                 $pr = $this->db->select('*, id as id_m_nm_tindakan')
-                                ->from('m_tindakan')
-                                ->where('id', $tree['parent_id'])
-                                ->get()->row_array();
-                if($pr){
-                    $pr['children'][] = $tree;
-                    $list = $pr;
-                    $this->getAllParents($list, $list);
-                }
-                return $list;
+                            ->from('m_tindakan')
+                            ->where('id', $tree['parent_id'])
+                            ->get()->row_array();
+                $pr['children'][] = $tree;
+                $push = $this->getAllParents($pr);
+                return $push;
+            } else {
+                return $tree;
             }
-            return $tree;
         }
 
         public function buildDataRincianTagihan($data, $new_format = 0){

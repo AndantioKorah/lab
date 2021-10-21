@@ -877,44 +877,7 @@
         }
     }
     
-    public function getAllParents1($parent_id){
-        $parent = array();
-        $child = $this->db->select('*')
-                        ->from('m_tindakan')
-                        ->where('id', $parent_id)
-                        ->get()->row_array();
-                        // dd($child);
-        $parent[] = $child;
-        if ($child['parent_id'] == 0) {
-            return $parent;
-        } else {
-            $push = $this->getAllParents1($child['parent_id']);
-            array_push($parent, $push);
-            return $parent;
-        }  
-    }
-
-    public function getAllParentsss($tree, $list = []){
-        // $list = array();
-        if($tree['parent_id'] == 0){
-            return $tree;
-        } else {
-            $pr = $this->db->select('*, id as id_m_nm_tindakan')
-                            ->from('m_tindakan')
-                            ->where('id', $tree['parent_id'])
-                            ->get()->row_array();
-            if($pr){
-                $pr['children'][] = $tree;
-                // $list = $pr;
-                // $this->getAllParents($pr, $list);
-                array_push($list, $this->getAllParents($pr, $list));
-                return $list;
-            }
-        }
-        // return $tree;
-    }
-
-    public function getAllParents($tree, $list = []){
+    public function getAllParents1($tree, $list = []){
         if($tree['parent_id'] != 0){
             $pr = $this->db->select('*, id as id_m_nm_tindakan')
                             ->from('m_tindakan')
@@ -923,11 +886,25 @@
             if($pr){
                 $pr['children'][] = $tree;
                 $list = $pr;
-                $this->getAllParents($list, $list);
+                $this->getAllParents1($list, $list);
             }
             return $list;
         }
         return $tree;
+    }
+
+    function getAllParents($tree){
+        if($tree['parent_id'] != 0){
+            $pr = $this->db->select('*, id as id_m_nm_tindakan')
+                        ->from('m_tindakan')
+                        ->where('id', $tree['parent_id'])
+                        ->get()->row_array();
+            $pr['children'][] = $tree;
+            $push = $this->getAllParents($pr);
+            return $push;
+        } else {
+            return $tree;
+        }
     }
 
     public function getRincianTindakan($id_pendaftaran, $id_tindakan = 0){
@@ -980,7 +957,6 @@
                 $i++;
             }
         }
-        // dd($src_arr);
         if($ids_top_parent){
             $list_top_parent = $this->db->select('*, id as id_m_nm_tindakan, parent_id as parent_id_tindakan')
                                     ->from('m_tindakan')
@@ -990,47 +966,27 @@
                 $i = 0;
                 foreach($list_top_parent as $lp){
                     $data[$i] = $lp;
-                    // if($i == 0){
-                    //     dd(count($list_top_parent));
-                    // }
-                    // dd(json_encode($list_top_parent));
                     foreach($parents as $pr){
                         if($lp['id'] == $pr['parent_id']){
                             $data[$i]['children'][] = $pr;
-                            // dd(json_encode($data[$i]));
                         }
                     }
                     $i++;
                 }
                 $temp_data = $data;
-                // dd($temp_data);
                 $i = 0;
                 $data = null;
                 foreach($temp_data as $ttp){
-                    $data[$i] = $this->getAllParents1($ttp['parent_id']);
-                    dd($data[$i]);
-                    // while($data[$i]['parent_id'] != 0){
-                    //     echo('searching....      ;');
-                    //     $data[$i] = $this->getAllParents($ttp);
-                    // }
+                    $data[$i] = $this->getAllParents($ttp);
                     $i++;
                 }
-                dd($data);
                 $data = $this->mergeParents($data);
-                // dd($data);
             }
         }
-        // echo "<pre>";
-        // print_r($data);
-        // echo "</pre>";
-        // dd('');
-        // dd($data);
         $final_data = null;
-        // dd($data);
         $i = 0;
         if($data){
             foreach($data as $d){
-                // $temp = $this->fetch_recursive($data);
                 $temp = $this->getChild($data, $d['id']);
                 if($temp){
                     foreach($temp as $t){
@@ -1191,6 +1147,9 @@
                 unset($temp['children']);
                 $list[] = $temp;
                 if(count($t['children']) > 0){
+                    // if(!isset($t['id_m_nm_tindakan'])){
+                    //     dd($t);
+                    // }
                     $list = array_merge($list, $this->getChild($t['children'], $t['id_m_nm_tindakan']));
                 }
             } else if (isset($t['parent_id_tindakan']) && $t['parent_id_tindakan'] == $parent_id) {

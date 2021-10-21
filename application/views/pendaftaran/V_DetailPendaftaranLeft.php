@@ -26,7 +26,7 @@
         <div class="col-12 text-center mb-2">
             <span style="font-size: 17px; font-weight: bold;">DATA PENDAFTARAN</span>
         </div>
-        <div class="col-4"><span class="label_pendaftaran">No. Pendaftaran</span></div>
+        <div class="col-4"><span class="label_pendaftaran">No. Lab</span></div>
         <div class="col-1">:</div>
         <div class="col-7">
             <span class="label_pendaftaran_data"><?=$pendaftaran['nomor_pendaftaran']?></span>

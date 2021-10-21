@@ -2,7 +2,7 @@
 <script src="<?=base_url('assets/js/bootstrap-datetimepicker.js')?>"></script>
 <div class="row p-3">
     <div class="col-md-12">
-        <h6>No. Pendaftaran: <strong><?=$pendaftaran['nomor_pendaftaran']?></strong></h6>
+        <h6>No. Lab: <strong><?=$pendaftaran['nomor_pendaftaran']?></strong></h6>
     </div>
     <div class="col-md-12">
         <ul class="nav nav-tabs">
