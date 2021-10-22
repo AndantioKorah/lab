@@ -1320,10 +1320,16 @@
     public function buildDataPrintTindakanNew($data){
         $result = null;
         $i = 0;
+        $flag_tidak_print = 0;
         foreach($data as $d){
-            $result[$i] = $d;
-            $result[$i]['page'] = 1;
-            $i++;
+            if(isset($d['parent_id']) && $d['parent_id'] == 0){
+                $flag_tidak_print = $d['flag_tidak_print'];
+            }
+            if($flag_tidak_print == 0){
+                $result[$i] = $d;
+                $result[$i]['page'] = 1;
+                $i++;
+            }
         }
         $i = 0;
         $last_parent_index = 0;
