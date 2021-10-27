@@ -49,7 +49,7 @@
 <table style="width: 100%;">
     <thead>
         <th>
-            <div class="row">
+            <div class="row" >
                 <div class="col-12 text-center">
                     <span class="card-title-search-result-rekap-harian"><strong>REKAPITULASI HARIAN</strong></span>
                 </div>
@@ -57,23 +57,23 @@
                     <span class="label-text-bigger">Tanggal</span>
                     <span class="text-bigger">: <?=$parameter['range_tanggal']?>
                 </div>
-                <div class="text-center" style="margin-top: 10px;">
+                <div class="text-center" style="margin-top: 10px;display:none">
                     <span class="label-text-bigger">Total Pendaftaran</span>
                     <span class="text-bigger">: <?=formatCurrencyWithoutRp($jumlah_pendaftaran)?>
                 </div>
-                <div class="text-center" style="margin-top: 10px;">
+                <div class="text-center" style="margin-top: 10px;display:none">
                     <span class="label-text-bigger">Total Pelunasan</span>
                     <span class="text-bigger">: <?=formatCurrency($total_pembayaran)?>
                 </div>
-                <div class="text-center" style="margin-top: 10px;">
+                <div class="text-center" style="margin-top: 10px;display:none">
                     <span class="label-text-bigger">Total Uang Muka</span>
                     <span class="text-bigger">: <?=formatCurrency($total_uang_muka)?>
                 </div>
-                <div class="text-center" style="margin-top: 10px;">
+                <div class="text-center" style="margin-top: 10px;display:none">
                     <span class="label-text-bigger">Total Belum Bayar</span>
                     <span class="text-bigger">: <?=formatCurrency($total_belum_bayar)?>
                 </div>
-                <div class="text-center" style="margin-top: 10px; margin-bottom: 10px;">
+                <div class="text-center" style="margin-top: 10px; margin-bottom: 10px;display:none">
                     <span class="label-text-bigger">Total Penerimaan</span>
                     <span class="text-bigger">: <?=formatCurrency($total_penerimaan)?>
                 </div>
@@ -110,8 +110,29 @@
                                 <td class="text-center td-table-rekap-harian"><?=formatCurrency($rs['uang_muka'])?></td>
                                 <td class="text-center td-table-rekap-harian"><?=formatCurrency($rs['jumlah_bayar'])?></td>
                                 <td class="text-center td-table-rekap-harian"><?=formatCurrency($belum_bayar)?></td>
+                                <td>
                             </tr>
+                           
                         <?php } ?>
+                        <tr>
+                            <td class="text-right td-table-rekap-harian" colspan="3">TOTAL</td>
+                            <td class="text-center td-table-rekap-harian"><?=formatCurrency($total_uang_muka)?></td>
+                            <td class="text-center td-table-rekap-harian"><?=formatCurrency($total_pembayaran)?></td>
+                            <td class="text-center td-table-rekap-harian"><?=formatCurrency($total_belum_bayar)?></td>
+                            </tr>
+                            <?php $penerimaan_tunai = $total_uang_muka + $total_pembayaran;?>
+                            <tr>
+                            <td class="text-left td-table-rekap-harian" colspan="3">Penerimaan Tunai</td>
+                            <td class="text-center td-table-rekap-harian"><?=formatCurrency($penerimaan_tunai)?></td>
+                            <td class="text-center td-table-rekap-harian"></td>
+                            <td class="text-center td-table-rekap-harian"></td>
+                            </tr>
+                            <tr>
+                            <td class="text-left td-table-rekap-harian" colspan="3">Jumlah Piutang</td>
+                            <td class="text-center td-table-rekap-harian"></td>
+                            <td class="text-center td-table-rekap-harian"></td>
+                            <td class="text-center td-table-rekap-harian"><?=formatCurrency($total_belum_bayar)?></td>
+                            </tr>
                         </tbody>
                     </table>
                 <?php } else { ?>
