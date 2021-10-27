@@ -30,7 +30,7 @@
             $data = $this->input->post();
             list($tanggal_awal, $tanggal_akhir) = explodeRangeDate($data['range_tanggal']);
 
-            $result = $this->db->select('a.*, b.nama_pasien, c.total_tagihan, c.status_tagihan, d.jumlah_pembayaran as jumlah_bayar, e.jumlah_pembayaran as uang_muka')
+            $result = $this->db->select('a.*, b.nama_pasien, c.total_tagihan, c.status_tagihan, c.id_m_status_tagihan, d.jumlah_pembayaran as jumlah_bayar, e.jumlah_pembayaran as uang_muka')
                             ->from('t_pendaftaran a')
                             ->join('m_pasien b', 'a.norm = b.norm')
                             ->join('t_tagihan c', 'a.id = c.id_t_pendaftaran')
