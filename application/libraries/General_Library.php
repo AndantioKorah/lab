@@ -18,6 +18,7 @@ class General_library
         $this->nikita->load->model('general/M_General', 'm_general');
         $this->nikita->load->model('tagihan/M_Tagihan', 'm_tagihan');
         $this->nikita->load->model('user/M_User', 'm_user');
+        // dd(encrypt('nikita', DEVELOPER));
     }
 
     public function isButtonAllowed($button_name){

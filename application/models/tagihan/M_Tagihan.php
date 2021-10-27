@@ -21,7 +21,7 @@
                                 ->where('a.flag_active', 1)
                                 ->limit(1)
                                 ->get()->row_array();
-            if($tagihan && $tagihan['id_m_status_tagihan'] == 1 && $tagihan['id_m_cara_bayar'] == 1){
+            if($tagihan && $tagihan['id_m_status_tagihan'] == 1){
                 $detail_tagihan = $this->db->select('*')
                                         ->from('t_tagihan_detail')
                                         ->where('id_t_pendaftaran', $id_t_pendaftaran)
@@ -61,6 +61,9 @@
                 }
                 if($pembayaran){
                     $sisa_harus_bayar = $sisa_harus_bayar - floatval($pembayaran['jumlah_pembayaran']) - floatval($pembayaran['diskon_nominal']);
+                }
+                if($tagihan['id_m_cara_bayar'] != 1){
+                    $sisa_harus_bayar = 0;
                 }
             }
 
