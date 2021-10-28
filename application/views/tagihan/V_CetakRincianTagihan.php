@@ -58,6 +58,7 @@
                 padding: 3px;
                 font-size: 12px;
                 padding-right: 20px;
+                padding-left: 20px;
                 border-right: 1px solid black;
             }
 
@@ -212,10 +213,10 @@
                     ?>
                         <tr>
                             <td style="width: 35%; vertical-align: top; padding-left: <?=$rt['padding-left'].'px'?>" class="<?=$class_tr?> <?= $i==0 ? 'first_row' : ''?>"><?=$nama_tindakan?></td>
-                            <td style="width: 15%; vertical-align: top; text-align: right;" class="td_tagihan_biaya <?=$smaller_font?>"><?=$biaya?></td>
+                            <td style="width: 10%; vertical-align: top; text-align: right;" class="td_tagihan_biaya <?=$smaller_font?>"><?=$biaya?></td>
                             <?php if($i == 0){ ?>
-                                <td style="width: 50%;" rowspan=<?=count($rincian_tagihan[$p])?>>
-                                    <table class="table_perincian" style="width: 80%; margin-left: 10px;">
+                                <td style="width: 55%;" rowspan=<?=count($rincian_tagihan[$p])?>>
+                                    <table class="table_perincian" style="width: 90%; margin-left: 10px;">
                                         <tr>
                                             <td class="set_font_perincian td_perincian" style="width: 30%">Total Biaya</td>
                                             <td class="set_font_perincian td_perincian" style="width: 5%">:</td>
