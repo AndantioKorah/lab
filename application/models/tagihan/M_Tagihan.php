@@ -364,5 +364,64 @@
             // dd($final_result);
             return [$final_result, $current_page];
         }
+
+        public function buildDataRincianTagihanNew($data){
+            // dd($data);
+            $final_result = array();
+            $i = 0;
+            $page = 1;
+            $last_index_parent;
+            foreach($data as $d){
+                //masukkan data ke tiap page
+                $final_result[$page][$i] = $d;
+
+                //cek index parent terakhir
+                if($d['parent_id'] == 0){
+                // if(isset($d['jenis_tagihan'])){
+                    $last_index_parent = $i;
+                }
+                // if($d['id'] == 38){
+                //     dd($final_result);
+                // }
+                //cek jika sudah melewati batas maksimum tiap halaman
+                if($i == ROW_PER_PAGE_CETAK_TAGIHAN_NEW){
+                    //pindah halaman berikut
+                    $page++;
+
+                    //dari index parent terakhir sampai pada data sekarang, pindah ke halaman berikut
+                    // $j = 0;
+                    for($j = $last_index_parent ; $j <= $i; $j++){
+                        //masukkan data dari last index parent sampai data sekarang ke halaman berikut
+                        $final_result[$page][] = $final_result[$page - 1][$j];
+                        $nama = isset($final_result[$page - 1][$j]['nama_tindakan']) ? $final_result[$page - 1][$j]['nama_tindakan'] : $final_result[$page - 1][$j]['nama_tagihan']; 
+
+                        //hapus data dari last index parent sampai data saat ini dari halaman sebelumnya
+                        unset($final_result[$page - 1][$j]);
+                    }
+                    
+                    //reset index jadi 1 krna index 0 sudah diisi sebelumnya
+                    $i = 1;
+                    // $i = 0;
+                    $last_index_parent = 0;
+                } 
+                // else {
+                    $i++;
+                // }
+            }
+
+            //jika page terakhir hanya ada kurang dari 3 data, maka pindahkan ke halaman sebelumnya
+            if(count($final_result[$page]) <= 2){
+                foreach($final_result[$page] as $dt){
+                    $final_result[$page-1][] = $dt;
+                }
+
+                //hapus semua data di page terakhir
+                unset($final_result[$page]);
+
+                //jumlah halaman dikurang 1
+                $page--;
+            }
+            return [$final_result, $page];
+        }
 	}
 ?>
