@@ -11,6 +11,12 @@
         color: black;
     }
 
+    .deleted_item{
+        border-bottom: 1px solid #001f3f;
+        background-color: #999292;
+        color: white;
+    }
+
     .span_status_tagihan{
         padding: 3px;
         border-radius: 3px;
@@ -30,16 +36,22 @@
         </div>
         <?php $no = 1; foreach($list_pendaftaran as $l){
              $bg_color = '#ce0000';
+             $status_tagihan = $l['status_tagihan'];
              if($l['id_m_status_tagihan'] == 2){
                  $bg_color = '#001f3f';
              }
+
+             if($l['flag_active'] == 0){
+                $bg_color = '#999292';
+                $status_tagihan = 'Dihapus';
+             }
              ?>
-            <div data-id_pendaftaran="<?=$l['id_t_pendaftaran']?>" class="item_pendaftaran row pt-2 pb-2" id="div_item_pendaftaran_<?=$l['id_t_pendaftaran']?>">
+            <div data-id_pendaftaran="<?=$l['id_t_pendaftaran']?>" class="<?=$l['flag_active'] == 1 ? 'item_pendaftaran' : 'deleted_item' ?> row pt-2 pb-2" id="div_item_pendaftaran_<?=$l['id_t_pendaftaran']?>">
                 <div class="col-1 text-center"><strong><?=$no++;?></strong></div>
                 <div class="col-3 text-center"><strong><?=$l['nomor_pendaftaran']?></strong></div>
                 <div class="col-3 text-center"><strong><?=formatDate($l['tanggal_pendaftaran'])?></strong></div>
                 <div class="col-2 text-center"><strong><?=strtoupper($l['nama_cara_bayar_detail'])?></strong></div>
-                <div class="col-3 text-center"><strong class="span_status_tagihan" style="background-color: <?=$bg_color?>"><?=$l['status_tagihan']?></strong></div>
+                <div class="col-3 text-center"><strong class="span_status_tagihan" style="background-color: <?=$bg_color?>"><?=strtoupper($status_tagihan)?></strong></div>
                 <div class="col-12 mt-2 text-center div_button" id="div_button_<?=$l['id_t_pendaftaran']?>" style="display: none;">
 
                 <?php if($this->general_library->isButtonAllowed('btn_edit_pendaftaran_list_pendaftaran')){ ?>

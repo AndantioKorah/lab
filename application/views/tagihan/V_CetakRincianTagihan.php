@@ -5,12 +5,21 @@
                 .pagebreak{
                     page-break-after: always;
                 }
+
+                body{
+                    height: 13.97cm;
+                    width: 21.00cm;
+                }
+            }
+
+            .pagebreak{
+                /* height: 50%; */
             }
 
             .rt_content_cetakan{
-                font-size: 12px;
+                font-size: 10px;
                 vertical-align: top;
-                font-family: Verdana;
+                font-family: "Calibri";
                 line-height: 8pt;
             }
 
@@ -20,7 +29,7 @@
                 border-top: 1px solid black;
                 border-bottom: 1px solid black;
                 padding: 3px;
-                font-family: Verdana;
+                font-family: "Calibri";
                 line-height: 8pt;
             }
 
@@ -45,7 +54,7 @@
 
             .td_tagihan_biaya{
                 /* line-height: 10pt; */
-                font-family: Verdana;
+                font-family: "Calibri";
                 padding: 3px;
                 font-size: 12px;
                 padding-right: 20px;
@@ -53,22 +62,22 @@
             }
 
             .set_font{
-                font-family: Verdana;
+                font-family: "Calibri";
                 font-size: 9px !important;
-                line-height: 3pt !important;
+                line-height: 4pt !important;
             }
 
             .set_font_header{
-                font-family: Verdana;
+                font-family: "Calibri";
             }
 
             .set_font_perincian{
-                font-family: Verdana;
+                font-family: "Calibri";
                 line-height: 7pt;
             }
 
             set_font_perincian_footer{
-                font-family: Verdana;
+                font-family: "Calibri";
                 line-height: 7pt;
             }
 
@@ -79,7 +88,7 @@
 
             .text_footer{
                 font-size: 8px;
-                font-family: Verdana;
+                font-family: "Calibri";
             }
 
             .smaller_font{
@@ -93,8 +102,13 @@
         </style>
     </head>
     <body style="font-family: <?=FONT_CETAKAN?>">
-        <?php for($p = 1; $p <= $page_count; $p++){ ?>
-        <div class="pagebreak">
+        <?php for($p = 1; $p <= $page_count; $p++){
+        $isPageEven = 0;
+        if(fmod($p, 2) == 0){
+            $isPageEven = 1;
+        }
+        ?>
+        <div class="pagebreak <?=$isPageEven ? 'page_even' : 'page_odd' ?>">
             <table style="width:100%" border="0">
                 <td style="width:62%"><span class="set_font_header">Lab. Klinik PATRA</span><br><span class="set_font_header" style="font-size:14px;">Kompleks Wanea Plaza</span><br>
                 <span class="set_font_header" style="font-size:14px;">JL. Sam Ratulangi Blok A No.3</span><br>
@@ -118,9 +132,9 @@
                                 <td class="rt_content_cetakan" style="width: 75%;"><?=$pendaftaran['alamat']?></td>
                             </tr>
                             <tr>
-                                <td class="rt_content_cetakan" style="width: 20%; color: white;">&nbsp;</td>
-                                <td class="rt_content_cetakan" style="width: 5%;"></td>
-                                <td class="rt_content_cetakan" style="width: 75%;"></td>
+                                <td class="rt_content_cetakan" style="width: 20%;">Halaman</td>
+                                <td class="rt_content_cetakan" style="width: 5%;">:</td>
+                                <td class="rt_content_cetakan" style="width: 75%;"><?=$p." / ".$page_count?></td>
                             </tr>
                         </table>
                     </td>

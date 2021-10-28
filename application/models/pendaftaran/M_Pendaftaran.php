@@ -199,9 +199,9 @@
                             ->from('t_pendaftaran a')
                             ->join('m_pasien b', 'a.norm = b.norm')
                             ->join('t_tagihan c', 'a.id = c.id_t_pendaftaran')
-                            ->where('a.flag_active', 1)
+                            // ->where('a.flag_active', 1)
                             ->where('b.flag_active', 1)
-                            ->where('c.flag_active', 1)
+                            // ->where('c.flag_active', 1)
                             ->where('b.id', $id_m_pasien)
                             ->order_by('a.tanggal_pendaftaran', 'desc')
                             ->group_by('a.id')
@@ -237,6 +237,18 @@
 
             $this->db->where('id_t_pendaftaran', $id)
                     ->update('t_tagihan', [
+                        'updated_by' => $this->general_library->getId(),
+                        'flag_active' => 0
+                    ]);
+
+            $this->db->where('id_t_pendaftaran', $id)
+                    ->update('t_tagihan_detail', [
+                        'updated_by' => $this->general_library->getId(),
+                        'flag_active' => 0
+                    ]);
+
+            $this->db->where('id_t_pendaftaran', $id)
+                    ->update('t_tindakan', [
                         'updated_by' => $this->general_library->getId(),
                         'flag_active' => 0
                     ]);
@@ -913,9 +925,9 @@
                             ->from('t_pendaftaran a')
                             ->join('m_pasien b', 'a.norm = b.norm')
                             ->join('t_tagihan c', 'a.id = c.id_t_pendaftaran')
-                            ->where('a.flag_active', 1)
+                            // ->where('a.flag_active', 1)
                             ->where('b.flag_active', 1)
-                            ->where('c.flag_active', 1)
+                            // ->where('c.flag_active', 1)
                             ->where('a.tanggal_pendaftaran > ', $tanggal_awal.' 00:00:00')
                             ->where('a.tanggal_pendaftaran < ', $tanggal_akhir.' 23:59:59')
                             ->order_by('a.tanggal_pendaftaran', 'desc')
