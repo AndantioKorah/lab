@@ -216,7 +216,7 @@
                             <td style="width: 10%; vertical-align: top; text-align: right;" class="td_tagihan_biaya <?=$smaller_font?>"><?=$biaya?></td>
                             <?php if($i == 0){ ?>
                                 <td style="width: 55%;" rowspan=<?=count($rincian_tagihan[$p])?>>
-                                    <table class="table_perincian" style="width: 90%; margin-left: 10px;">
+                                    <table class="table_perincian" style="width: 100%; padding-left: 30px; padding-right: 30px;">
                                         <tr>
                                             <td class="set_font_perincian td_perincian" style="width: 30%">Total Biaya</td>
                                             <td class="set_font_perincian td_perincian" style="width: 5%">:</td>
