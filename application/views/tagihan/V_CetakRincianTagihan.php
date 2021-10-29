@@ -7,9 +7,8 @@
                 }
 
                 body{
-                    height: 15.5cm;
+                    height: 13.97cm;
                     width: 21.00cm;
-                    /* mar-top: -5px; */
                 }
             }
 
