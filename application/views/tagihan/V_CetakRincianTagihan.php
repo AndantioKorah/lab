@@ -100,6 +100,10 @@
             .first_row{
                 padding-top: 5px;
             }
+
+            .last_row{
+                padding-bottom: 5px;
+            }
         </style>
     </head>
     <body style="font-family: <?=FONT_CETAKAN?>">
@@ -197,6 +201,12 @@
                         $biaya = isset($rt['biaya']) && $rt['biaya'] ? formatCurrencyWithoutRp($rt['biaya']) : '';
                         $class_tr = '';
                         $smaller_font = 'set_font';
+                        $class_row = '';
+                        if($i == 0){
+                            $class_row = 'first_row';
+                        } else if($i == (count($rincian_tagihan[$p])-1)){
+                            $class_row = 'last_row';
+                        }
                         
                         if(isset($rt['nama_tindakan'])){
                             $nama_tindakan = strtoupper($rt['nama_tindakan']);
@@ -212,7 +222,7 @@
                         // }
                     ?>
                         <tr>
-                            <td style="width: 35%; vertical-align: top; padding-left: <?=$rt['padding-left'].'px'?>" class="<?=$class_tr?> <?= $i==0 ? 'first_row' : ''?>"><?=$nama_tindakan?></td>
+                            <td style="width: 35%; vertical-align: top; padding-left: <?=$rt['padding-left'].'px'?>" class="<?=$class_tr.' '.$class_row?>"><?=$nama_tindakan?></td>
                             <td style="width: 10%; vertical-align: top; text-align: right;" class="td_tagihan_biaya <?=$smaller_font?>"><?=$biaya?></td>
                             <?php if($i == 0){ ?>
                                 <td style="width: 55%;" rowspan=<?=count($rincian_tagihan[$p])?>>

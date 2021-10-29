@@ -23,13 +23,13 @@ function formatTextHasil($hasil_input, $nilai_normal){
     if($nn[0] == '<' && isset($nn[1])){
         $max = removeTitikFromRibuan($nn[1]);
         $max = clearString($max);
-        if($hasil >= $max && $hasil_input != $nilai_normal){
+        if($hasil > $max && $hasil_input != $nilai_normal){
             return '<strong>'.$hasil_input.'*</strong>';
         }
     } else if($nn[0] == '>' && isset($nn[1])){
         $min = removeTitikFromRibuan($nn[1]);
         $min = clearString($min);
-        if($hasil <= $min && $hasil_input != $nilai_normal){
+        if($hasil < $min && $hasil_input != $nilai_normal){
             return '<strong>'.$hasil_input.'*</strong>';
         }
     } else if(isset($nn[1]) && $nn[1] == '-' && isset($nn[2])){
@@ -38,12 +38,24 @@ function formatTextHasil($hasil_input, $nilai_normal){
         
         $max = removeTitikFromRibuan($nn[2]);
         $max = komaGantiTitik($max);
-        // if($nn[0] == '37,0'){
-        //     // echo $hasil.'   '.$min;
-        //     // dd($hasil < $min);
-        // }
-        if($hasil < $min || $hasil > $max){
-            return '<strong>'.$hasil_input.'*</strong>';
+
+        $hasil = explode(" ",$hasil_input);
+        if(isset($hasil[1]) && $hasil[1] == '-' && isset($hasil[2])){
+            $hasil_min = removeTitikFromRibuan($hasil[0]);
+            $hasil_min = komaGantiTitik($hasil_min);
+            
+            $hasil_max = removeTitikFromRibuan($hasil[2]);
+            $hasil_max = komaGantiTitik($hasil_max);
+            // echo $hasil_min.' ; '.$min.'     '.$hasil_max.' ; '.$max;
+            // echo $hasil_min < $min;
+            // dd((floatval($hasil_max) > floatval($max)));
+            if((floatval($hasil_min) < floatval($min)) || (floatval($hasil_max) > floatval($max))){
+                return '<strong>'.$hasil_input.'*</strong>';
+            }
+        } else {
+            if($hasil < $min || $hasil > $max){
+                return '<strong>'.$hasil_input.'*</strong>';
+            }
         }
     } else if($nn[0] == 'Positif'){
         $hasil = explode(" ", $hasil_input);
