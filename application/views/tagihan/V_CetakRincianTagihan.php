@@ -7,8 +7,9 @@
                 }
 
                 body{
-                    height: 13.97cm;
+                    height: 15.5cm;
                     width: 21.00cm;
+                    /* mar-top: -5px; */
                 }
             }
 
@@ -17,9 +18,9 @@
             }
 
             .rt_content_cetakan{
-                font-size: 10px;
+                font-size: 12px;
                 vertical-align: top;
-                font-family: "Calibri";
+                font-family: Verdana;
                 line-height: 8pt;
             }
 
@@ -29,7 +30,7 @@
                 border-top: 1px solid black;
                 border-bottom: 1px solid black;
                 padding: 3px;
-                font-family: "Calibri";
+                font-family: Verdana;
                 line-height: 8pt;
             }
 
@@ -54,7 +55,7 @@
 
             .td_tagihan_biaya{
                 /* line-height: 10pt; */
-                font-family: "Calibri";
+                font-family: Verdana;
                 padding: 3px;
                 font-size: 12px;
                 padding-right: 20px;
@@ -63,33 +64,33 @@
             }
 
             .set_font{
-                font-family: "Calibri";
-                font-size: 9px !important;
-                line-height: 4pt !important;
+                font-family: Verdana;
+                font-size: 10px !important;
+                line-height: 5pt !important;
             }
 
             .set_font_header{
-                font-family: "Calibri";
+                font-family: Verdana;
             }
 
             .set_font_perincian{
-                font-family: "Calibri";
+                font-family: Verdana;
                 line-height: 7pt;
             }
 
             set_font_perincian_footer{
-                font-family: "Calibri";
+                font-family: Verdana;
                 line-height: 7pt;
             }
 
             .td_perincian{
                 vertical-align: top;
-                font-size: 10px;
+                font-size: 11px;
             }
 
             .text_footer{
                 font-size: 8px;
-                font-family: "Calibri";
+                font-family: Verdana;
             }
 
             .smaller_font{
