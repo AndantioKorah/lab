@@ -57,7 +57,7 @@
                 format: 'DD/MM/YYYY'
             }
         })
-        submitFormSearchMenuListPendaftaran()
+        // submitFormSearchMenuListPendaftaran()
     }) 
 
     $('#range_tanggal').on('change', function(){

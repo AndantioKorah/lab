@@ -14,6 +14,13 @@ function render($pageContent, $parent_active, $active, $data)
     $CI->load->view('base/V_BaseLayout', $data);
 }
 
+function throwException($e, $isException = 1){
+    $CI = &get_instance();
+    $CI->load->model('general/M_General', 'mgeneral');
+
+    $CI->mgeneral->catchErrorException($e);
+}
+
 function formatTextHasil($hasil_input, $nilai_normal){
     $nn = explode(" ",$nilai_normal);
 

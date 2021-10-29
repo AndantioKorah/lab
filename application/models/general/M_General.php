@@ -174,5 +174,9 @@
             return ['code' => 0];
         }
 
+        public function catchErrorException($e){
+            $log['data'] = json_encode($e);
+            $this->db->insert('t_error_log', $log);
+        }
 	}
 ?>
