@@ -14,7 +14,7 @@ function render($pageContent, $parent_active, $active, $data)
     $CI->load->view('base/V_BaseLayout', $data);
 }
 
-function throwException($e, $isException = 1){
+function throwException($e){
     $CI = &get_instance();
     $CI->load->model('general/M_General', 'mgeneral');
 

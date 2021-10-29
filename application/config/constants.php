@@ -109,6 +109,7 @@ define('DB_BACKUP_FOLDER', 'db/backup/'); //local with xampp
 define('DB_RESTORE_FOLDER', 'db/restore/'); //local with xampp
 
 define('DEVELOPER', 'nikita');
+define('TELEGRAM_ID', '713399901');
 
 define('MARGIN_TOP_CETAKAN', '150px');
 define('PADDING_CETAKAN', '10px');

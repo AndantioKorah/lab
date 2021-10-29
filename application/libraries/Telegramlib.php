@@ -45,9 +45,9 @@ class Telegramlib extends CI_Model{
   public function send_curl_exec($method, $method_telegram, $send_to, $data = [])
   {
     $url = $this->hashTelegram()['url'];
-
+    
     if($method_telegram == 'sendMessage'){
-        $url = $url.$method_telegram.'?chat_id='.$send_to.'&text='.$data['message'];
+        $url = $url.$method_telegram.'?chat_id='.$send_to.'&text='.urlencode($data['message']);
     }
     
     $session = curl_init();

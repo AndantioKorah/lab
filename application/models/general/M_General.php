@@ -8,6 +8,7 @@
             parent::__construct();
             $this->db = $this->load->database('main', true);
             $this->bios_serial_num = shell_exec('wmic bios get serialnumber 2>&1');
+            $this->load->library('telegramlib');
         }
 
         public function validateApps(){
@@ -177,6 +178,13 @@
         public function catchErrorException($e){
             $log['data'] = json_encode($e);
             $this->db->insert('t_error_log', $log);
+
+            // $keys = array_keys($e);
+            // $data_telegram['message'] = "";
+            // foreach($keys as $k){
+            //     $data_telegram['message'] .= $k.": ".$e[$k]." \n\n ";
+            // }
+            // $req = $this->telegramlib->send_curl_exec('GET', 'sendMessage', TELEGRAM_ID, $data_telegram);
         }
 	}
 ?>
