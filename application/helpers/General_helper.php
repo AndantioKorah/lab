@@ -53,6 +53,8 @@ function formatTextHasil($hasil_input, $nilai_normal){
                 return '<strong>'.$hasil_input.'*</strong>';
             }
         } else {
+            $hasil = removeTitikFromRibuan($hasil_input);
+            $hasil = komaGantiTitik($hasil);
             if($hasil < $min || $hasil > $max){
                 return '<strong>'.$hasil_input.'*</strong>';
             }
