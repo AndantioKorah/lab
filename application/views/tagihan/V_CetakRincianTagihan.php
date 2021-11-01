@@ -17,9 +17,9 @@
             }
 
             .rt_content_cetakan{
-                font-size: 10px;
+                font-size: 12px;
                 vertical-align: top;
-                font-family: "Calibri";
+                font-family: Verdana;
                 line-height: 8pt;
             }
 
@@ -29,7 +29,7 @@
                 border-top: 1px solid black;
                 border-bottom: 1px solid black;
                 padding: 3px;
-                font-family: "Calibri";
+                font-family: Verdana;
                 line-height: 8pt;
             }
 
@@ -54,7 +54,7 @@
 
             .td_tagihan_biaya{
                 /* line-height: 10pt; */
-                font-family: "Calibri";
+                font-family: Verdana;
                 padding: 3px;
                 font-size: 12px;
                 padding-right: 20px;
@@ -63,33 +63,33 @@
             }
 
             .set_font{
-                font-family: "Calibri";
-                font-size: 9px !important;
-                line-height: 4pt !important;
+                font-family: Verdana;
+                font-size: 10px !important;
+                line-height: 5pt !important;
             }
 
             .set_font_header{
-                font-family: "Calibri";
+                font-family: Verdana;
             }
 
             .set_font_perincian{
-                font-family: "Calibri";
+                font-family: Verdana;
                 line-height: 7pt;
             }
 
             set_font_perincian_footer{
-                font-family: "Calibri";
+                font-family: Verdana;
                 line-height: 7pt;
             }
 
             .td_perincian{
                 vertical-align: top;
-                font-size: 10px;
+                font-size: 11px;
             }
 
             .text_footer{
                 font-size: 8px;
-                font-family: "Calibri";
+                font-family: Verdana;
             }
 
             .smaller_font{
@@ -226,7 +226,7 @@
                             <td style="width: 10%; vertical-align: top; text-align: right;" class="td_tagihan_biaya <?=$smaller_font?>"><?=$biaya?></td>
                             <?php if($i == 0){ ?>
                                 <td style="width: 55%;" rowspan=<?=count($rincian_tagihan[$p])?>>
-                                    <table class="table_perincian" style="width: 90%; margin-left: 10px;">
+                                    <table class="table_perincian" style="width: 100%; padding-left: 30px; padding-right: 30px;">
                                         <tr>
                                             <td class="set_font_perincian td_perincian" style="width: 30%">Total Biaya</td>
                                             <td class="set_font_perincian td_perincian" style="width: 5%">:</td>

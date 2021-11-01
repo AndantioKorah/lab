@@ -62,3 +62,8 @@ p {
 	</div>
 </body>
 </html>
+<?php 
+	$err['error_type'] = $heading;
+	$err['message'] = $message;
+	throwException($err);
+?>

@@ -42,7 +42,7 @@
                     }
                     ?>
                     <tr>
-                        <!-- <td style="width: 5%;" class="text-center"><b style=""><?=$no;?></b></td> -->
+                        <!-- <td style="width: 5%;" class="text-center"><b style=""></b></td> -->
                         <td style="<?=$style?>"><?=$nama_tindakan?></td>
                         <td class="text-left"><strong><?=$biaya?></strong></td>
                         <td class="text-center"><strong><?=$tanggal_input?></strong></td>

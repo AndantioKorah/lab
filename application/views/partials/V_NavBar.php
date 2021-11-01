@@ -102,11 +102,6 @@
           <a href="#" class="dropdown-item dropdown-footer">See All Nofications</a>
         </div>
       </li> -->
-      <!-- <li class="nav-item">
-        <a class="nav-link" href="#" data-toggle="tooltip" data-placement="bottom" title="<?=countDiffDateLengkap($params_exp_app['parameter_value'], date('Y-m-d H:i:s'), ['tahun', 'bulan', 'hari', 'jam', 'menit'])?>">
-          <i class="fa fa-stopwatch"></i> <?=formatDate($params_exp_app['parameter_value'])?>
-        </a>
-      </li> -->
       <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
           <i class="fa fa-id-badge"></i>
