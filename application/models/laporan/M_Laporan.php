@@ -44,7 +44,6 @@
             $total_pelunasan = 0;
             $total_uang_muka = 0;
             $total_belum_bayar = 0;
-            $belum_bayar = 0;
             if($result){
                 foreach($result as $rs){
                     $belum_bayar = $rs['total_tagihan'] - ($rs['uang_muka'] + $rs['jumlah_bayar']);
