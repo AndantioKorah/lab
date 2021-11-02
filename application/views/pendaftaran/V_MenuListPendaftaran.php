@@ -2,7 +2,14 @@
     <div class="col-12">
         <div class="card card-default">
             <div class="card-header">
-                <h3 class="card-title"><strong>LIST PENDAFTARAN PASIEN</strong></h3>
+                <div class="row">
+                    <div class="col-6" style="top: 50%;">
+                        <h3 class="card-title"><strong>LIST PENDAFTARAN PASIEN</strong></h3>
+                    </div>
+                    <div class="col-6 text-right">
+                        <button class="btn btn-sm btn-navy" onclick="submitFormSearchMenuListPendaftaran()"><i class="fa fa-sync"></i> Refresh Pendaftaran</button>
+                    </div>
+                </div>
             </div>
             <div class="card-body">
                 <div class="row">
@@ -50,7 +57,7 @@
                 format: 'DD/MM/YYYY'
             }
         })
-        submitFormSearchMenuListPendaftaran()
+        // submitFormSearchMenuListPendaftaran()
     }) 
 
     $('#range_tanggal').on('change', function(){
@@ -66,6 +73,8 @@
 
         $('#div_menu').show()
         $('#div_detail').hide()
+
+        submitFormSearchMenuListPendaftaran()
     }
 
     function submitFormSearchMenuListPendaftaran(){

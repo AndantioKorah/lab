@@ -109,11 +109,13 @@ define('DB_BACKUP_FOLDER', 'db/backup/'); //local with xampp
 define('DB_RESTORE_FOLDER', 'db/restore/'); //local with xampp
 
 define('DEVELOPER', 'nikita');
+define('TELEGRAM_ID', '713399901');
 
 define('MARGIN_TOP_CETAKAN', '150px');
 define('PADDING_CETAKAN', '10px');
 define('FONT_CETAKAN', 'Verdana');
 define('ROW_PER_PAGE_CETAK_TAGIHAN', 55);
+define('ROW_PER_PAGE_CETAK_TAGIHAN_NEW', 25);
 define('ROW_PER_PAGE_CETAK_TINDAKAN', 50);
 define('LEFT_PADDING_RINCIAN_TINDAKAN', 10);
 define('LEFT_PADDING_DEFAULT', 5);

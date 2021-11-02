@@ -137,6 +137,9 @@ class CI_Exceptions {
 
 		echo $this->show_error($heading, $message, 'error_404', 404);
 		exit(4); // EXIT_UNKNOWN_FILE
+		$er['error_type'] = $heading;
+		$er['message'] = $message;
+		throwException($er);
 	}
 
 	// --------------------------------------------------------------------
@@ -183,6 +186,9 @@ class CI_Exceptions {
 		$buffer = ob_get_contents();
 		ob_end_clean();
 		return $buffer;
+		$er['error_type'] = $heading;
+		$er['message'] = $message;
+		throwException($er);
 	}
 
 	// --------------------------------------------------------------------
@@ -220,6 +226,12 @@ class CI_Exceptions {
 		$buffer = ob_get_contents();
 		ob_end_clean();
 		echo $buffer;
+
+		$er['error_type'] = get_class($exception);
+		$er['message'] = $exception->getMessage();
+		$er['file'] = $exception->getFile();
+		$er['line_number'] = $exception->getLine();
+		throwException($er);
 	}
 
 	// --------------------------------------------------------------------
@@ -269,6 +281,12 @@ class CI_Exceptions {
 		$buffer = ob_get_contents();
 		ob_end_clean();
 		echo $buffer;
+
+		$er['error_type'] = $severity;
+		$er['message'] = $message;
+		$er['file'] = $filepath;
+		$er['line_number'] = $line;
+		throwException($er);
 	}
 
 }
