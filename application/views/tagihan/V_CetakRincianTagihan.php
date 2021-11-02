@@ -20,7 +20,7 @@
                 font-size: 12px;
                 vertical-align: top;
                 font-family: Verdana;
-                line-height: 8pt;
+                /* line-height: 8pt; */
             }
 
             .th_cetakan_rincian_tagihan{
@@ -30,7 +30,7 @@
                 border-bottom: 1px solid black;
                 padding: 3px;
                 font-family: Verdana;
-                line-height: 8pt;
+                /* line-height: 8pt; */
             }
 
             .td_jns_tindakan{
@@ -49,7 +49,7 @@
             }
 
             .table_perincian{
-                font-size: 12px;
+                font-family: Verdana;
             }
 
             .td_tagihan_biaya{
@@ -74,17 +74,18 @@
 
             .set_font_perincian{
                 font-family: Verdana;
-                line-height: 7pt;
+                
+                /* line-height: 7pt; */
             }
 
             set_font_perincian_footer{
                 font-family: Verdana;
-                line-height: 7pt;
+                /* line-height: 7pt; */
             }
 
             .td_perincian{
                 vertical-align: top;
-                font-size: 11px;
+                font-size: 12px;
             }
 
             .text_footer{
@@ -94,7 +95,7 @@
 
             .smaller_font{
                 font-size: 9px !important;
-                line-height: 2pt !important;
+                /* line-height: 2pt !important; */
             }
 
             .first_row{
@@ -224,7 +225,7 @@
                         <tr>
                             <td style="width: 35%; vertical-align: top; padding-left: <?=$rt['padding-left'].'px'?>" class="<?=$class_tr.' '.$class_row?>"><?=$nama_tindakan?></td>
                             <td style="width: 10%; vertical-align: top; text-align: right;" class="td_tagihan_biaya <?=$smaller_font?>"><?=$biaya?></td>
-                            <?php if($i == 0){ ?>
+                            <?php if($i == 0 && $p == $page_count){ ?>
                                 <td style="width: 55%;" rowspan=<?=count($rincian_tagihan[$p])?>>
                                     <table class="table_perincian" style="width: 100%; padding-left: 30px; padding-right: 30px;">
                                         <tr>
@@ -278,6 +279,9 @@
                                             <td class="set_font_perincian_footer td_perincian" colspan=4 style="width: 100%; text-align: center;">Pembayaran ini sah apabila dibubuhi tanda tangan dan stempel kasir</td>
                                         </tr>
                                     </table>
+                                </td>
+                            <?php } else { ?>
+                                <td>
                                 </td>
                             <?php } ?>
                         </tr>
