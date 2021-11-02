@@ -7,7 +7,7 @@
                 }
 
                 body{
-                    height: 13.97cm;
+                    height: 13.57cm;
                     width: 21.00cm;
                 }
             }

@@ -410,7 +410,7 @@
             }
 
             //jika page terakhir hanya ada kurang dari 3 data, maka pindahkan ke halaman sebelumnya
-            if(count($final_result[$page]) <= 2){
+            if($page > 1 && count($final_result[$page]) <= 2){
                 foreach($final_result[$page] as $dt){
                     $final_result[$page-1][] = $dt;
                 }
