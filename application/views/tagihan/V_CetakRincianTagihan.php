@@ -105,16 +105,21 @@
             .last_row{
                 padding-bottom: 5px;
             }
+
+            .not_first_page{
+                padding-top: 10px;
+            }
         </style>
     </head>
     <body style="font-family: <?=FONT_CETAKAN?>">
         <?php for($p = 1; $p <= $page_count; $p++){
         $isPageEven = 0;
+        $isNotFirstPage = $p != 1 ? 1 : 0 ;
         if(fmod($p, 2) == 0){
             $isPageEven = 1;
         }
         ?>
-        <div class="pagebreak <?=$isPageEven ? 'page_even' : 'page_odd' ?>">
+        <div class="pagebreak <?=$isPageEven ? 'page_even' : 'page_odd' ?> <?=$isNotFirstPage ? 'not_first_page' : '' ?>">
             <table style="width:100%" border="0">
                 <td style="width:62%"><span class="set_font_header">Lab. Klinik PATRA</span><br><span class="set_font_header" style="font-size:14px;">Kompleks Wanea Plaza</span><br>
                 <span class="set_font_header" style="font-size:14px;">JL. Sam Ratulangi Blok A No.3</span><br>
@@ -199,7 +204,8 @@
                 <tbody>
                     <?php $i = 0; if($rincian_tagihan[$p]) { foreach($rincian_tagihan[$p] as $rt){
                         $nama_tindakan = isset($rt['nama_tindakan']) ? $rt['nama_tindakan'] : $rt['nama_tagihan'];
-                        $biaya = isset($rt['biaya']) && $rt['biaya'] ? formatCurrencyWithoutRp($rt['biaya']) : '';
+                        $biaya = '';
+
                         $class_tr = '';
                         $smaller_font = 'set_font';
                         $class_row = '';
@@ -217,13 +223,15 @@
                             $biaya = formatCurrencyWithoutRp($rt['biaya']);
                             $class_tr = 'td_tagihan set_font';
                         }
-                        // if(count($rincian_tagihan) > 15){
-                        //     $smaller_font = 'smaller_font';
-                        //     $class_tr = $class_tr.' '.$smaller_font;
-                        // }
+
+                        if($nama_tindakan != '.'){
+                            $biaya = isset($rt['biaya']) && $rt['biaya'] ? formatCurrencyWithoutRp($rt['biaya']) : '';
+                        } else {
+                            $nama_tindakan = "&nbsp;";
+                        }
                     ?>
                         <tr>
-                            <td style="width: 35%; vertical-align: top; padding-left: <?=$rt['padding-left'].'px'?>" class="<?=$class_tr.' '.$class_row?>"><?=$nama_tindakan?></td>
+                            <td style="width: 35%; vertical-align: top; padding-left: <?=$rt['padding-left'].'px'?>;" class="<?=$class_tr.' '.$class_row?>"><?=$nama_tindakan?></td>
                             <td style="width: 10%; vertical-align: top; text-align: right;" class="td_tagihan_biaya <?=$smaller_font?>"><?=$biaya?></td>
                             <?php if($i == 0 && $p == $page_count){ ?>
                                 <td style="width: 55%;" rowspan=<?=count($rincian_tagihan[$p])?>>

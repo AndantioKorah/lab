@@ -15,10 +15,10 @@ function render($pageContent, $parent_active, $active, $data)
 }
 
 function throwException($e){
-    $CI = &get_instance();
-    $CI->load->model('general/M_General', 'mgeneral');
+    // $CI = &get_instance();
+    // $CI->load->model('general/M_General', 'mgeneral');
 
-    $CI->mgeneral->catchErrorException($e);
+    // $CI->mgeneral->catchErrorException($e);
 }
 
 function formatTextHasil($hasil_input, $nilai_normal){

@@ -377,12 +377,8 @@
 
                 //cek index parent terakhir
                 if($d['parent_id'] == 0){
-                // if(isset($d['jenis_tagihan'])){
                     $last_index_parent = $i;
                 }
-                // if($d['id'] == 38){
-                //     dd($final_result);
-                // }
                 //cek jika sudah melewati batas maksimum tiap halaman
                 if($i == ROW_PER_PAGE_CETAK_TAGIHAN_NEW){
                     //pindah halaman berikut
@@ -392,35 +388,49 @@
                     // $j = 0;
                     for($j = $last_index_parent ; $j <= $i; $j++){
                         //masukkan data dari last index parent sampai data sekarang ke halaman berikut
-                        $final_result[$page][] = $final_result[$page - 1][$j];
-                        $nama = isset($final_result[$page - 1][$j]['nama_tindakan']) ? $final_result[$page - 1][$j]['nama_tindakan'] : $final_result[$page - 1][$j]['nama_tagihan']; 
+                        $final_result[$page][] = $final_result[$page-1][$j];
+                        // $nama = isset($final_result[$page-1][$j]['nama_tindakan']) ? $final_result[$page-1][$j]['nama_tindakan'] : $final_result[$page-1][$j]['nama_tagihan']; 
 
-                        //hapus data dari last index parent sampai data saat ini dari halaman sebelumnya
-                        unset($final_result[$page - 1][$j]);
+                        // hapus data dari last index parent sampai data saat ini dari halaman sebelumnya
+                        // unset($final_result[$page-1][$j]);
+                        $dummy['nama_tindakan'] = '';
+                        $dummy['padding-left'] = '0';
+                        $final_result[$page-1][$j] = $dummy;
                     }
-                    
-                    //reset index jadi 1 krna index 0 sudah diisi sebelumnya
-                    $i = 1;
-                    // $i = 0;
+                    //reset index jadi row selanjutnya dari row yang sudah terisi
+                    $i = count($final_result[$page])-1;
                     $last_index_parent = 0;
-                } 
-                // else {
-                    $i++;
-                // }
-            }
-
-            //jika page terakhir hanya ada kurang dari 3 data, maka pindahkan ke halaman sebelumnya
-            if($page > 1 && count($final_result[$page]) <= 2){
-                foreach($final_result[$page] as $dt){
-                    $final_result[$page-1][] = $dt;
                 }
-
-                //hapus semua data di page terakhir
-                unset($final_result[$page]);
-
-                //jumlah halaman dikurang 1
-                $page--;
+                $i++;
             }
+
+            // jika page terakhir hanya ada kurang dari 4 data dan page sebelumnya masih cukup untuk tambah data, 
+            // maka pindahkan ke halaman sebelumnya
+
+            // $sisaData = floatval(ROW_PER_PAGE_CETAK_TAGIHAN_NEW) - floatval(count($final_result[$page-1]));
+            // // dd(count($final_result[$page-1]));
+            // if($page > 1 && count($final_result[$page]) < 4 && ($sisaData < 4)){
+            //     foreach($final_result[$page] as $dt){
+            //         $final_result[$page-1][] = $dt;
+            //     }
+
+            //     //hapus semua data di page terakhir
+            //     unset($final_result[$page]);
+
+            //     //jumlah halaman dikurang 1
+            //     $page--;
+            // }
+            // dd($final_result);
+            if(count($final_result[$page]) < ROW_PER_PAGE_CETAK_TAGIHAN_NEW){
+                $i = count($final_result[$page]);
+                // dd($final_result[$page]);
+                $dummy['nama_tindakan'] = '.';
+                $dummy['padding-left'] = '0';
+                for($i = count($final_result[$page]) ; $i < ROW_PER_PAGE_CETAK_TAGIHAN_NEW ; $i++){
+                    $final_result[$page][$i] = $dummy;
+                }
+            }
+            // dd($final_result);
             return [$final_result, $page];
         }
 	}
