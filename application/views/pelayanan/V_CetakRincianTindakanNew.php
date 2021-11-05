@@ -57,6 +57,13 @@
             }
             .pagebreak{
                 padding-top: 150px;
+                padding-left: 50px;
+                padding-right: 50px;
+            }
+
+            .footer_table_cetak_tindakan{
+                padding-left: 50px;
+                padding-right: 50px;
             }
         </style>
     </head>
@@ -114,13 +121,12 @@
                 </table>
             </div>
         <?php } ?>
-        <table style="width: 100%; margin-top: 20px;">
+        <table class="footer_table_cetak_tindakan" style="width: 100%; margin-top: 20px;">
             <tr>
                 <td style="width: 20%;"></td>
                 <td style="width: 20%;"></td>
                 <td style="width: 20%;"></td>
-                <td style="width: 20%;"></td>
-                <td style="width: 20%; text-align: center;">
+                <td style="width: 40%; text-align: center;">
                     <span class="span_pemeriksa_cetak_tindakan">Lab. Klinik PATRA</span><br>
                     <span class="span_pemeriksa_cetak_tindakan">Pemeriksa:</span>
                 </td>
