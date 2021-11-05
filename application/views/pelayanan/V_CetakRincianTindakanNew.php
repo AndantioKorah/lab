@@ -55,6 +55,9 @@
             .span_pemeriksa_cetak_tindakan{
                 font-size: 20px;
             }
+            .pagebreak{
+                padding-top: 150px;
+            }
         </style>
     </head>
     <body style="font-family: <?=FONT_CETAKAN?> !important; ">
