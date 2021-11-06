@@ -4,7 +4,7 @@
             .thead_rincian_tindakan_cetakan{
                 font-weight: bold;
                 text-align: center;
-                font-size: 20px;
+                font-size: 16px;
                 border-left: 1px solid black;
                 border-right: 1px solid black;
                 border-bottom: 1px solid black;

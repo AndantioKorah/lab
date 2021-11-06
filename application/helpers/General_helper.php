@@ -21,7 +21,7 @@ function throwException($e){
     // $CI->mgeneral->catchErrorException($e);
 }
 
-function formatTextHasil($hasil_input, $nilai_normal){
+function formatTextHasilbu($hasil_input, $nilai_normal){
     $nn = explode(" ",$nilai_normal);
 
     $hasil = removeTitikFromRibuan($hasil_input);
@@ -62,6 +62,85 @@ function formatTextHasil($hasil_input, $nilai_normal){
         } else {
             $hasil = removeTitikFromRibuan($hasil_input);
             $hasil = komaGantiTitik($hasil);
+            if($hasil < $min || $hasil > $max){
+                return '<strong>'.$hasil_input.'*</strong>';
+            }
+        }
+    } else if($nn[0] == 'Positif'){
+        $hasil = explode(" ", $hasil_input);
+        if(isset($hasil[0]) && strcasecmp($hasil[0], $nn[0]) != 0){
+            return '<strong>'.$hasil_input.'*</strong>';
+        }
+    } else if($nn[0] == 'Negatif'){
+        $hasil = explode(" ", $hasil_input);
+        if(isset($hasil[0]) && strcasecmp($hasil[0], $nn[0]) != 0){
+            return '<strong>'.$hasil_input.'*</strong>';
+        }
+    } else if($nn[0] == 'Reaktif'){
+        $hasil = explode(" ", $hasil_input);
+        if(isset($hasil[0]) && strcasecmp($hasil[0], $nn[0]) != 0){
+            return '<strong>'.$hasil_input.'*</strong>';
+        }
+    } else if($nn[0] == 'Non Reaktif'){
+        $hasil = explode(" ", $hasil_input);
+        if(isset($hasil[0]) && strcasecmp($hasil[0], $nn[0]) != 0){
+            return '<strong>'.$hasil_input.'*</strong>';
+        }
+    }
+
+    return $hasil_input;
+}
+
+function formatTextHasil($hasil_input, $nilai_normal){
+    $nn = explode(" ",$nilai_normal);
+
+    // $hasil = removeTitikFromRibuan($hasil_input);
+    // $hasil = komaGantiTitik($hasil);
+    $hasil = $hasil_input;
+    
+    if($nn[0] == '<' && isset($nn[1])){
+        $max = $nn[1];
+        // $max = removeTitikFromRibuan($nn[1]);
+        // $max = clearString($max);
+        if($hasil > $max && $hasil_input != $nilai_normal){
+            return '<strong>'.$hasil_input.'*</strong>';
+        }
+    } else if($nn[0] == '>' && isset($nn[1])){
+        // $min = removeTitikFromRibuan($nn[1]);
+        // $min = clearString($min);
+        $min = $nn[1];
+        if($hasil < $min && $hasil_input != $nilai_normal){
+            return '<strong>'.$hasil_input.'*</strong>';
+        }
+    } else if(isset($nn[1]) && $nn[1] == '-' && isset($nn[2])){
+        // $min = removeTitikFromRibuan($nn[0]);
+        // $min = komaGantiTitik($min);
+        $min = $nn[0];
+        
+        // $max = removeTitikFromRibuan($nn[2]);
+        // $max = komaGantiTitik($max);
+        $max = $nn[2];
+
+        $hasil = explode(" ",$hasil_input);
+        if(isset($hasil[1]) && $hasil[1] == '-' && isset($hasil[2])){
+            // $hasil_min = removeTitikFromRibuan($hasil[0]);
+            // $hasil_min = komaGantiTitik($hasil_min);
+            $hasil_min = $hasil[0];
+
+            // $hasil_max = removeTitikFromRibuan($hasil[2]);
+            // $hasil_max = komaGantiTitik($hasil_max);
+            $hasil_max = $hasil[2];
+            // echo $hasil_min.' ; '.$min.'     '.$hasil_max.' ; '.$max;
+            // echo $hasil_min < $min;
+            // dd((floatval($hasil_max) > floatval($max)));
+            if((floatval($hasil_min) < floatval($min)) || (floatval($hasil_max) > floatval($max))){
+                return '<strong>'.$hasil_input.'*</strong>';
+            }
+        } else {
+            // $hasil = removeTitikFromRibuan($hasil_input);
+            // $hasil = komaGantiTitik($hasil);
+            $hasil = $hasil_input;
+
             if($hasil < $min || $hasil > $max){
                 return '<strong>'.$hasil_input.'*</strong>';
             }
