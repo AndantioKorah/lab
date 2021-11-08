@@ -4,7 +4,7 @@
             .thead_rincian_tindakan_cetakan{
                 font-weight: bold;
                 text-align: center;
-                font-size: 20px;
+                font-size: 16px;
                 border-left: 1px solid black;
                 border-right: 1px solid black;
                 border-bottom: 1px solid black;
@@ -49,6 +49,23 @@
                 font-size: 18px;
                 font-family: Verdana;
             }
+            .td_detail_tindakan_detail_hasil{
+                vertical-align: top;
+                text-align: right;
+                border-left: 1px solid black;
+                /* border-right: 1px solid black; */
+                font-size: 18px;
+                font-family: Verdana;
+            }
+
+            .td_detail_tindakan_detail_hasil_ket{
+                vertical-align: top;
+                text-align: left;
+                /* border-left: 1px solid black; */
+                border-right: 1px solid black;
+                font-size: 18px;
+                font-family: Verdana;
+            }
             .div_pemeriksa{
                 width: 100%;
             }
@@ -80,7 +97,7 @@
                     <thead>
                         <tr>
                             <th class="thead_rincian_tindakan_cetakan">JENIS PEMERIKSAAN</th>
-                            <th class="thead_rincian_tindakan_cetakan">HASIL</th>
+                            <th class="thead_rincian_tindakan_cetakan" colspan=2>HASIL</th>
                             <th class="thead_rincian_tindakan_cetakan">NILAI NORMAL</th>
                             <th class="thead_rincian_tindakan_cetakan">SATUAN</th>
                             <th class="thead_rincian_tindakan_cetakan">CATATAN</th>
@@ -99,19 +116,24 @@
                             } 
 
                             $hasil = isset($rt['hasil']) ? $rt['hasil'] : '';
+                            $hasil_ket = null;
                             $nilai_normal = isset($rt['nilai_normal']) ? $rt['nilai_normal'] : '';
                             $satuan = isset($rt['satuan']) ? $rt['satuan'] : '';
                             $catatan = isset($rt['keterangan']) ? $rt['keterangan'] : '';
                             $class_tr = '';
                             $class_tr_detail = '';
                             if($hasil != ''){
-                                $hasil = formatTextHasil($rt['hasil'], $rt['nilai_normal']);
+                                $hasil_ket = formatTextHasilNew($rt['hasil'], $rt['nilai_normal']);
+                                if($hasil_ket != ''){
+                                    $hasil = '<strong>'.$hasil.'</strong>';
+                                }
                             }
 
                         ?>
                             <tr>
-                                <td style="width: 35%; font-size: 16px; <?=$style_rincian_tindakan?>"><?=$rt['nama_tindakan']?></td>
-                                <td style="width: 20%; font-size: 16px;" class="td_detail_tindakan_detail" style="text-align:center"><?=$hasil?></td>
+                                <td style="width: 35%; font-size: 16px; <?=$style_rincian_tindakan?>"><?=$rt['nama_tindakan'].''?></td>
+                                <td style="width: 14%; font-size: 16px;" class="td_detail_tindakan_detail_hasil" style="text-align:right"><?=$hasil?></td>
+                                <td style="width: 6%; font-size: 16px;" class="td_detail_tindakan_detail_hasil_ket" style="text-align:right"><?=$hasil_ket?></td>
                                 <td style="width: 20%; font-size: 16px;" class="td_detail_tindakan_detail" style="text-align:center"><?=$nilai_normal?></td>
                                 <td style="width: 10%; font-size: 16px;" class="td_detail_tindakan_detail" style="text-align:center"><?=$satuan?></td>
                                 <td style="width: 15%; font-size: 16px; padding-left: 5px;"><?=$catatan?></td>
