@@ -80,7 +80,7 @@
                     <tr>
                         <td class="set_font header_element_label">Nama</td>
                         <td class="set_font header_element_colon">:</td>
-                        <td class="set_font header_element_value"><?=strtoupper($dokter_pengirim)?></td>
+                        <td class="set_font header_element_value"><?=$dokter_pengirim?></td>
                     </tr>
                     <tr>
                         <td class="set_font header_element_label">Alamat</td>
