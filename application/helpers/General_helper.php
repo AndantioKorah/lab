@@ -133,6 +133,10 @@ function formatTextHasilNew($hasil_input, $nilai_normal){
             // echo $hasil_min < $min;
             // dd((floatval($hasil_max) > floatval($max)));
             if((floatval($hasil_min) < floatval($min)) || (floatval($hasil_max) > floatval($max))){
+                // if((floatval($has)))
+                // if($hasil_input == "0 - 1"){
+                //     dd($min);
+                // }
                 return '<strong>*</strong>';
             }
         } else {

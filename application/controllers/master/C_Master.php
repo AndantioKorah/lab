@@ -123,6 +123,24 @@ class C_Master extends CI_Controller
         echo json_encode($this->master->deleteMasterNilaiNormal($id));
     }
 
+    public function masterCaraBayar(){
+        $data['cara_bayar'] = $this->general->getAll('m_cara_bayar');
+        render('master/V_MasterCaraBayar', 'master', 'carabayar', $data);
+    }
+
+    public function createMasterCaraBayarDetail(){
+        $this->master->insert('m_cara_bayar_detail', $this->input->post());
+    }
+
+    public function loadCaraBayarDetail(){
+        $data['result'] = $this->master->getAllCaraBayarDetail();
+        $this->load->view('master/V_MasterCaraBayarItem', $data);
+    }
+
+    public function deleteMasterCaraBayar($id){
+        echo json_encode($this->master->deleteMasterCaraBayar($id));
+    }
+
     public function tes(){
         echo json_encode($this->master->tes());
     }

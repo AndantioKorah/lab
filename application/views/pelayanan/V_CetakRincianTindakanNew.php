@@ -17,7 +17,7 @@
                 border: 1px solid black;
                 border-collapse: collapse;
                 font-family: Verdana;
-                /* margin-top: 10px; */
+                margin-top: 5px;
             }
             .td_jns_tindakan{
                border-left: 1px solid black;
