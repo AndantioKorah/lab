@@ -70,7 +70,7 @@
                 width: 100%;
             }
             .span_pemeriksa_cetak_tindakan{
-                font-size: 20px;
+                font-size: 18px;
             }
             .pagebreak{
                 padding-top: 150px;
@@ -145,10 +145,20 @@
         <?php } ?>
         <table class="footer_table_cetak_tindakan" style="width: 100%; margin-top: 20px;">
             <tr>
+                <td style="width: 40%; text-align: center; vertical-align: top;">
+                    <span class="span_pemeriksa_cetak_tindakan">Penanggung-jawab</span><br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <span class="span_pemeriksa_cetak_tindakan"><?=$pendaftaran['nama_dokter_dpjp']?></span>
+                </td>
                 <td style="width: 20%;"></td>
-                <td style="width: 20%;"></td>
-                <td style="width: 20%;"></td>
-                <td style="width: 40%; text-align: center;">
+                <td style="width: 40%; text-align: center; vertical-align: top;">
                     <span class="span_pemeriksa_cetak_tindakan">Lab. Klinik PATRA</span><br>
                     <span class="span_pemeriksa_cetak_tindakan">Pemeriksa:</span>
                 </td>
