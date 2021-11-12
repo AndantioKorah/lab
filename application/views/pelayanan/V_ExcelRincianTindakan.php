@@ -58,10 +58,10 @@
         </style>
     </head>
     <?php 
-    $filename = 'Excel Hasil '.formatDateNamaBulan(date('Y-m-d H:i:s')).'.xls';
+    $filename = 'Hasil '.$pendaftaran['nama_pasien'].' '.formatDateNamaBulan(date('Y-m-d H:i:s')).'.xls';
     header("Content-type: application/vnd-ms-excel");
     header("Content-Disposition: attachment; filename=$filename"); 
-?>
+?> efes <?= $pendaftaran['nama_pasien']?>
     <body style="font-family: <?=FONT_CETAKAN?> !important; ">
         <?php for($i = 1; $i <= $page_count; $i++){ ?>
             <div class="">
