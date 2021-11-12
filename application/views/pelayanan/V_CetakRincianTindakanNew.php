@@ -96,7 +96,7 @@
                 <table class="content_rincian_tagihan" >
                     <thead>
                         <tr>
-                            <th class="thead_rincian_tindakan_cetakan">JENIS PEMERIKSAAN</th>
+                            <th class="thead_rincian_tindakan_cetakan">JENIS PEMERIKSAAN </th>
                             <th class="thead_rincian_tindakan_cetakan" colspan=2>HASIL</th>
                             <th class="thead_rincian_tindakan_cetakan">NILAI NORMAL</th>
                             <th class="thead_rincian_tindakan_cetakan">SATUAN</th>
@@ -134,9 +134,15 @@
                                 $style_nilai_normal_kosong = "";
                             }
 
+                            if($rt['id_m_nm_tindakan'] == 987){
+                                $style_pj = "";
+                            } else {
+                                $style_pj = "display:none";
+                            }
+
                         ?>
                             <tr>
-                                <td style="width: 35%; font-size: 16px; <?=$style_rincian_tindakan?>"><?=$rt['nama_tindakan'].''?></td>
+                                <td style="width: 35%; font-size: 16px; <?=$style_rincian_tindakan?>"><?=$rt['nama_tindakan'].''?> </td>
                                 <td style="width: 14%; font-size: 16px;" class="td_detail_tindakan_detail_hasil" style="text-align:right"><?=$hasil?></td>
                                 <td style="width: 6%; font-size: 16px;" class="td_detail_tindakan_detail_hasil_ket" style="text-align:right"><?=$hasil_ket?></td>
                                 <td style="width: 20%; font-size: 16px; <?=$style_nilai_normal_kosong?>" class="td_detail_tindakan_detail" style="text-align:center"><?=$nilai_normal?></td>
@@ -150,8 +156,8 @@
         <?php } ?>
         <table class="footer_table_cetak_tindakan" style="width: 100%; margin-top: 20px;">
             <tr>
-                <td style="width: 40%; text-align: center; vertical-align: top;">
-                    <span class="span_pemeriksa_cetak_tindakan">Penanggung-jawab</span><br>
+                <td style="width: 40%; text-align: center; vertical-align: top; <?=$style_pj;?>">
+                    <span class="span_pemeriksa_cetak_tindakan">Penanggung-jawab </span><br>
                     <br>
                     <br>
                     <br>
