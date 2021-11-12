@@ -102,6 +102,9 @@
                             if($hasil != ''){
                                 $hasil = formatTextHasil($rt['hasil'], $rt['nilai_normal']);
                             }
+                            if($nilai_normal == "-"){
+                                $nilai_normal = "";
+                            } 
 
                         ?>
                             <tr>
