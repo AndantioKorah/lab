@@ -4,6 +4,8 @@
             @page{
                 /* size: A4; */
                 /* margin-top: 150px; */
+                height: 13.97cm;
+                width: 21.00cm;
             }
             .body_kwitansi_pembayaran{
                 font-family: Verdana !important;

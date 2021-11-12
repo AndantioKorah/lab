@@ -7,7 +7,7 @@
                 }
 
                 body{
-                    height: 13.97cm;
+                    height: 13.57cm;
                     width: 21.00cm;
                 }
             }
@@ -20,7 +20,7 @@
                 font-size: 12px;
                 vertical-align: top;
                 font-family: Verdana;
-                line-height: 8pt;
+                /* line-height: 8pt; */
             }
 
             .th_cetakan_rincian_tagihan{
@@ -30,7 +30,7 @@
                 border-bottom: 1px solid black;
                 padding: 3px;
                 font-family: Verdana;
-                line-height: 8pt;
+                /* line-height: 8pt; */
             }
 
             .td_jns_tindakan{
@@ -49,7 +49,7 @@
             }
 
             .table_perincian{
-                font-size: 12px;
+                font-family: Verdana;
             }
 
             .td_tagihan_biaya{
@@ -74,17 +74,18 @@
 
             .set_font_perincian{
                 font-family: Verdana;
-                line-height: 7pt;
+                
+                /* line-height: 7pt; */
             }
 
             set_font_perincian_footer{
                 font-family: Verdana;
-                line-height: 7pt;
+                /* line-height: 7pt; */
             }
 
             .td_perincian{
                 vertical-align: top;
-                font-size: 11px;
+                font-size: 12px;
             }
 
             .text_footer{
@@ -94,7 +95,7 @@
 
             .smaller_font{
                 font-size: 9px !important;
-                line-height: 2pt !important;
+                /* line-height: 2pt !important; */
             }
 
             .first_row{
@@ -104,16 +105,21 @@
             .last_row{
                 padding-bottom: 5px;
             }
+
+            .not_first_page{
+                padding-top: 10px;
+            }
         </style>
     </head>
     <body style="font-family: <?=FONT_CETAKAN?>">
         <?php for($p = 1; $p <= $page_count; $p++){
         $isPageEven = 0;
+        $isNotFirstPage = $p != 1 ? 1 : 0 ;
         if(fmod($p, 2) == 0){
             $isPageEven = 1;
         }
         ?>
-        <div class="pagebreak <?=$isPageEven ? 'page_even' : 'page_odd' ?>">
+        <div class="pagebreak <?=$isPageEven ? 'page_even' : 'page_odd' ?> <?=$isNotFirstPage ? 'not_first_page' : '' ?>">
             <table style="width:100%" border="0">
                 <td style="width:62%"><span class="set_font_header">Lab. Klinik PATRA</span><br><span class="set_font_header" style="font-size:14px;">Kompleks Wanea Plaza</span><br>
                 <span class="set_font_header" style="font-size:14px;">JL. Sam Ratulangi Blok A No.3</span><br>
@@ -198,7 +204,8 @@
                 <tbody>
                     <?php $i = 0; if($rincian_tagihan[$p]) { foreach($rincian_tagihan[$p] as $rt){
                         $nama_tindakan = isset($rt['nama_tindakan']) ? $rt['nama_tindakan'] : $rt['nama_tagihan'];
-                        $biaya = isset($rt['biaya']) && $rt['biaya'] ? formatCurrencyWithoutRp($rt['biaya']) : '';
+                        $biaya = '';
+
                         $class_tr = '';
                         $smaller_font = 'set_font';
                         $class_row = '';
@@ -216,15 +223,17 @@
                             $biaya = formatCurrencyWithoutRp($rt['biaya']);
                             $class_tr = 'td_tagihan set_font';
                         }
-                        // if(count($rincian_tagihan) > 15){
-                        //     $smaller_font = 'smaller_font';
-                        //     $class_tr = $class_tr.' '.$smaller_font;
-                        // }
+
+                        if($nama_tindakan != '.'){
+                            $biaya = isset($rt['biaya']) && $rt['biaya'] ? formatCurrencyWithoutRp($rt['biaya']) : '';
+                        } else {
+                            $nama_tindakan = "&nbsp;";
+                        }
                     ?>
                         <tr>
-                            <td style="width: 35%; vertical-align: top; padding-left: <?=$rt['padding-left'].'px'?>" class="<?=$class_tr.' '.$class_row?>"><?=$nama_tindakan?></td>
+                            <td style="width: 35%; vertical-align: top; padding-left: <?=$rt['padding-left'].'px'?>;" class="<?=$class_tr.' '.$class_row?>"><?=$nama_tindakan?></td>
                             <td style="width: 10%; vertical-align: top; text-align: right;" class="td_tagihan_biaya <?=$smaller_font?>"><?=$biaya?></td>
-                            <?php if($i == 0){ ?>
+                            <?php if($i == 0 && $p == $page_count){ ?>
                                 <td style="width: 55%;" rowspan=<?=count($rincian_tagihan[$p])?>>
                                     <table class="table_perincian" style="width: 100%; padding-left: 30px; padding-right: 30px;">
                                         <tr>
@@ -278,6 +287,9 @@
                                             <td class="set_font_perincian_footer td_perincian" colspan=4 style="width: 100%; text-align: center;">Pembayaran ini sah apabila dibubuhi tanda tangan dan stempel kasir</td>
                                         </tr>
                                     </table>
+                                </td>
+                            <?php } else { ?>
+                                <td>
                                 </td>
                             <?php } ?>
                         </tr>

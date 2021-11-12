@@ -11,6 +11,23 @@
             $this->db->insert($tablename, $data);
         }
 
+        public function getAllCaraBayarDetail(){
+            return $this->db->select('a.nama_cara_bayar, b.nama_cara_bayar_detail, b.id')
+                            ->from('m_cara_bayar a')
+                            ->join('m_cara_bayar_detail b', 'a.id = b.id_m_cara_bayar')
+                            ->where('b.flag_active', 1)
+                            ->order_by('b.nama_cara_bayar_detail')
+                            ->get()->result_array();
+        }
+
+        public function deleteMasterCaraBayar($id){
+            $this->db->where('id', $id)
+                    ->update('m_cara_bayar_detail', [
+                        'flag_active' => 0,
+                        'updated_by' => $this->general_library->getId()
+                    ]);
+        }
+
         public function insertJenisPemeriksaan(){
             $data = array(
                 'nm_jns_tindakan' => $this->input->post('nm_jns_tindakan'),
