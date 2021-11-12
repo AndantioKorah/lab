@@ -57,9 +57,14 @@
             }
         </style>
     </head>
+    <?php 
+    $filename = 'Excel Hasil '.formatDateNamaBulan(date('Y-m-d H:i:s')).'.xls';
+    header("Content-type: application/vnd-ms-excel");
+    header("Content-Disposition: attachment; filename=$filename"); 
+?>
     <body style="font-family: <?=FONT_CETAKAN?> !important; ">
         <?php for($i = 1; $i <= $page_count; $i++){ ?>
-            <div class="pagebreak">
+            <div class="">
                 <?php
                     $data['pendaftaran'] = $pendaftaran;    
                     $data['page_number'] = $i;    
@@ -97,17 +102,12 @@
                             if($hasil != ''){
                                 $hasil = formatTextHasil($rt['hasil'], $rt['nilai_normal']);
                             }
-                            if($nilai_normal == "-"){
-                                $style = "color: rgba(0, 0, 0, 0);";
-                            } else {
-                                $style = "";
-                            }
 
                         ?>
                             <tr>
                                 <td style="width: 35%; font-size: 16px; <?=$style_rincian_tindakan?>"><?=$rt['nama_tindakan']?></td>
                                 <td style="width: 20%; font-size: 16px;" class="td_detail_tindakan_detail" style="text-align:center"><?=$hasil?></td>
-                                <td style="width: 20%; font-size: 16px; <?=$style?>" class="td_detail_tindakan_detail" style="text-align:center;"><?=$nilai_normal?></td>
+                                <td style="width: 20%; font-size: 16px;" class="td_detail_tindakan_detail" style="text-align:center"><?=$nilai_normal?></td>
                                 <td style="width: 10%; font-size: 16px;" class="td_detail_tindakan_detail" style="text-align:center"><?=$satuan?></td>
                                 <td style="width: 15%; font-size: 16px; padding-left: 5px;"><?=$catatan?></td>
                             </tr>

@@ -86,7 +86,7 @@ $database = DB_NAME;
 $hostname = 'localhost';
 $username = 'root';
 $password = '';
-$database = 'db_lab';
+$database = 'db_lab_2';
 
 $db['default'] = array(
 	'dsn'	=> '',

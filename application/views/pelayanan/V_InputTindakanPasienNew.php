@@ -28,10 +28,15 @@
 
     
     </form>
+
+    <form action="<?=base_url('pelayanan/C_Pelayanan/saveExcelHasil/'.$id_pendaftaran.'')?>" target="_blank">
+    <button type="submit" class="btn btn-sm btn-success mt-2"><b><i class="fa fa-download"></i> Save as Excel</b></button>
     <button
-        <?php if($id_tagihan[0]->id_m_status_tagihan == 3) echo "style='display:none'" ;?>
-        onclick="cetakHasil()" class="btn btn-sm btn-navy mt-2" ><i class="fa fa-print"></i> Cetak Hasil</button> 
-       
+    <?php if($id_tagihan[0]->id_m_status_tagihan == 3) echo "style='display:none'" ;?>
+    type="button" class="btn btn-sm btn-navy mt-2" onclick="cetakHasil()"><b><i class="fa fa-print"></i> Cetak Hasil</b></button>
+    </form>
+
+
         <div id="tabel_tindakan_pasien" class="row p-2 mt-4" style="border-radius: 10px; border: 1px solid #001f3f;   background-color: #white;font-color: #000000;">
                 <div class="col-12" style="border-bottom: 1px solid #001f3f;">
                     <span style="font-size: 15px; font-weight: bold;">TINDAKAN PASIEN</span>
