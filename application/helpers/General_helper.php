@@ -96,10 +96,6 @@ function formatTextHasilNew($hasil_input, $nilai_normal, $satuan = ''){
     $hasil = $hasil_input;
     // $hasil = removeTitikFromRibuan($hasil_input);
     // $hasil = komaGantiTitik($hasil); 
-    // if(strcasecmp($satuan, 'menit') != 0){
-
-    // }
-
     if($nn[0] == '<' && isset($nn[1])){
         $max = $nn[1];
         // $max = removeTitikFromRibuan($nn[1]);
@@ -144,6 +140,9 @@ function formatTextHasilNew($hasil_input, $nilai_normal, $satuan = ''){
             }
         } else {
             $hasil = $hasil_input;
+            if($satuan == 'menit'){
+                $hasil = clearString($hasil_input);
+            }
             // $hasil = removeTitikFromRibuan($hasil_input);
             // $hasil = komaGantiTitik($hasil);
             if($hasil < $min || $hasil > $max){
