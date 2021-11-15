@@ -91,12 +91,11 @@ function formatTextHasil($hasil_input, $nilai_normal){
     return $hasil_input;
 }
 
-function formatTextHasilNew($hasil_input, $nilai_normal){
+function formatTextHasilNew($hasil_input, $nilai_normal, $satuan = ''){
     $nn = explode(" ",$nilai_normal);
     $hasil = $hasil_input;
     // $hasil = removeTitikFromRibuan($hasil_input);
     // $hasil = komaGantiTitik($hasil); 
-    
     if($nn[0] == '<' && isset($nn[1])){
         $max = $nn[1];
         // $max = removeTitikFromRibuan($nn[1]);
@@ -141,6 +140,9 @@ function formatTextHasilNew($hasil_input, $nilai_normal){
             }
         } else {
             $hasil = $hasil_input;
+            if($satuan == 'menit'){
+                $hasil = clearString($hasil_input);
+            }
             // $hasil = removeTitikFromRibuan($hasil_input);
             // $hasil = komaGantiTitik($hasil);
             if($hasil < $min || $hasil > $max){
@@ -164,9 +166,9 @@ function formatTextHasilNew($hasil_input, $nilai_normal){
         if(isset($hasil[0]) && strcasecmp($hasil[0], $nn[0]) != 0){
             return '<strong>*</strong>';
         }
-    } else if($nn[0] == 'Non Reaktif'){
+    } else if($nilai_normal == 'Non Reaktif'){
         $hasil = explode(" ", $hasil_input);
-        if(isset($hasil[0]) && strcasecmp($hasil[0], $nn[0]) != 0){
+        if(isset($hasil[0]) && isset($hasil[1]) && strcasecmp($hasil[0], $nn[0]) != 0 && strcasecmp($hasil[1], $nn[1]) != 0){
             return '<strong>*</strong>';
         }
     }

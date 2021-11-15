@@ -123,7 +123,7 @@
                             $class_tr = '';
                             $class_tr_detail = '';
                             if($hasil != ''){
-                                $hasil_ket = formatTextHasilNew($rt['hasil'], $rt['nilai_normal']);
+                                $hasil_ket = formatTextHasilNew($rt['hasil'], $rt['nilai_normal'], $satuan);
                                 if($hasil_ket != ''){
                                     $hasil = '<strong>'.$hasil.'</strong>';
                                 }
