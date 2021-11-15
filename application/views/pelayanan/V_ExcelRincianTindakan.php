@@ -4,7 +4,7 @@
             .thead_rincian_tindakan_cetakan{
                 font-weight: bold;
                 text-align: center;
-                font-size: 16px;
+                font-size: 20px;
                 border-left: 1px solid black;
                 border-right: 1px solid black;
                 border-bottom: 1px solid black;
@@ -17,7 +17,7 @@
                 border: 1px solid black;
                 border-collapse: collapse;
                 font-family: Verdana;
-                margin-top: 5px;
+                /* margin-top: 10px; */
             }
             .td_jns_tindakan{
                border-left: 1px solid black;
@@ -49,44 +49,22 @@
                 font-size: 18px;
                 font-family: Verdana;
             }
-            .td_detail_tindakan_detail_hasil{
-                vertical-align: top;
-                text-align: right;
-                border-left: 1px solid black;
-                /* border-right: 1px solid black; */
-                font-size: 18px;
-                font-family: Verdana;
-            }
-
-            .td_detail_tindakan_detail_hasil_ket{
-                vertical-align: top;
-                text-align: left;
-                /* border-left: 1px solid black; */
-                border-right: 1px solid black;
-                font-size: 18px;
-                font-family: Verdana;
-            }
             .div_pemeriksa{
                 width: 100%;
             }
             .span_pemeriksa_cetak_tindakan{
-                font-size: 18px;
-            }
-            .pagebreak{
-                padding-top: 150px;
-                padding-left: 50px;
-                padding-right: 50px;
-            }
-
-            .footer_table_cetak_tindakan{
-                padding-left: 50px;
-                padding-right: 50px;
+                font-size: 20px;
             }
         </style>
     </head>
+    <?php 
+    $filename = 'Hasil '.$pendaftaran['nama_pasien'].' '.formatDateNamaBulan(date('Y-m-d H:i:s')).'.xls';
+    header("Content-type: application/vnd-ms-excel");
+    header("Content-Disposition: attachment; filename=$filename"); 
+?> 
     <body style="font-family: <?=FONT_CETAKAN?> !important; ">
         <?php for($i = 1; $i <= $page_count; $i++){ ?>
-            <div class="pagebreak">
+            <div class="">
                 <?php
                     $data['pendaftaran'] = $pendaftaran;    
                     $data['page_number'] = $i;    
@@ -96,8 +74,8 @@
                 <table class="content_rincian_tagihan" >
                     <thead>
                         <tr>
-                            <th class="thead_rincian_tindakan_cetakan">JENIS PEMERIKSAAN </th>
-                            <th class="thead_rincian_tindakan_cetakan" colspan=2>HASIL</th>
+                            <th class="thead_rincian_tindakan_cetakan">JENIS PEMERIKSAAN</th>
+                            <th class="thead_rincian_tindakan_cetakan">HASIL</th>
                             <th class="thead_rincian_tindakan_cetakan">NILAI NORMAL</th>
                             <th class="thead_rincian_tindakan_cetakan">SATUAN</th>
                             <th class="thead_rincian_tindakan_cetakan">CATATAN</th>
@@ -116,36 +94,23 @@
                             } 
 
                             $hasil = isset($rt['hasil']) ? $rt['hasil'] : '';
-                            $hasil_ket = null;
                             $nilai_normal = isset($rt['nilai_normal']) ? $rt['nilai_normal'] : '';
                             $satuan = isset($rt['satuan']) ? $rt['satuan'] : '';
                             $catatan = isset($rt['keterangan']) ? $rt['keterangan'] : '';
                             $class_tr = '';
                             $class_tr_detail = '';
                             if($hasil != ''){
-                                $hasil_ket = formatTextHasilNew($rt['hasil'], $rt['nilai_normal'], $satuan);
-                                if($hasil_ket != ''){
-                                    $hasil = '<strong>'.$hasil.'</strong>';
-                                }
+                                $hasil = formatTextHasil($rt['hasil'], $rt['nilai_normal']);
                             }
                             if($nilai_normal == "-"){
-                                $style_nilai_normal_kosong = "color: rgba(0, 0, 0, 0);";
-                            } else {
-                                $style_nilai_normal_kosong = "";
-                            }
-
-                            if($rt['id_m_nm_tindakan'] == 987){
-                                $style_pj = "";
-                            } else {
-                                $style_pj = "display:none";
-                            }
+                                $nilai_normal = "";
+                            } 
 
                         ?>
                             <tr>
-                                <td style="width: 35%; font-size: 16px; <?=$style_rincian_tindakan?>"><?=$rt['nama_tindakan'].''?> </td>
-                                <td style="width: 14%; font-size: 16px;" class="td_detail_tindakan_detail_hasil" style="text-align:right"><?=$hasil?></td>
-                                <td style="width: 6%; font-size: 16px;" class="td_detail_tindakan_detail_hasil_ket" style="text-align:right"><?=$hasil_ket?></td>
-                                <td style="width: 20%; font-size: 16px; <?=$style_nilai_normal_kosong?>" class="td_detail_tindakan_detail" style="text-align:center"><?=$nilai_normal?></td>
+                                <td style="width: 35%; font-size: 16px; <?=$style_rincian_tindakan?>"><?=$rt['nama_tindakan']?></td>
+                                <td style="width: 20%; font-size: 16px;" class="td_detail_tindakan_detail" style="text-align:center"><?=$hasil?></td>
+                                <td style="width: 20%; font-size: 16px;" class="td_detail_tindakan_detail" style="text-align:center"><?=$nilai_normal?></td>
                                 <td style="width: 10%; font-size: 16px;" class="td_detail_tindakan_detail" style="text-align:center"><?=$satuan?></td>
                                 <td style="width: 15%; font-size: 16px; padding-left: 5px;"><?=$catatan?></td>
                             </tr>
@@ -154,22 +119,13 @@
                 </table>
             </div>
         <?php } ?>
-        <table class="footer_table_cetak_tindakan" style="width: 100%; margin-top: 20px;">
+        <table style="width: 100%; margin-top: 20px;">
             <tr>
-                <td style="width: 40%; text-align: center; vertical-align: top; <?=$style_pj;?>">
-                    <span class="span_pemeriksa_cetak_tindakan">Penanggung-jawab </span><br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <span class="span_pemeriksa_cetak_tindakan"><?=$pendaftaran['nama_dokter_dpjp']?></span>
-                </td>
                 <td style="width: 20%;"></td>
-                <td style="width: 40%; text-align: center; vertical-align: top;">
+                <td style="width: 20%;"></td>
+                <td style="width: 20%;"></td>
+                <td style="width: 20%;"></td>
+                <td style="width: 20%; text-align: center;">
                     <span class="span_pemeriksa_cetak_tindakan">Lab. Klinik PATRA</span><br>
                     <span class="span_pemeriksa_cetak_tindakan">Pemeriksa:</span>
                 </td>
