@@ -361,7 +361,11 @@
                     ->where('a.flag_active', 1)
                     ->limit(1);
                     $masterNilaiNormalJK =  $this->db->get()->result();
-                    $nilai_normal = $masterNilaiNormalJK[0]->nilai_normal;
+                    if($masterNilaiNormalJK){
+                        $nilai_normal = $masterNilaiNormalJK[0]->nilai_normal;
+                    } else {
+                        $nilai_normal = $dataTindakan[0]->nilai_normal;
+                    }
                 }  else {
                     $nilai_normal = $dataTindakan[0]->nilai_normal;
                 }
