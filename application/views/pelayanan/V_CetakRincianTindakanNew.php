@@ -85,7 +85,7 @@
         </style>
     </head>
     <body style="font-family: <?=FONT_CETAKAN?> !important; ">
-        <?php if($rincian_tindakan){ ?>
+        <?php $style_pj = ""; if($rincian_tindakan){ ?>
             <?php for($i = 1; $i <= $page_count; $i++){ ?>
                 <div class="pagebreak">
                     <?php
