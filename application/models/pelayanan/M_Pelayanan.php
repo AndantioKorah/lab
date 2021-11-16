@@ -1326,8 +1326,7 @@
         $i = 0;
         $flag_tidak_print = 0;
         foreach($data as $d){
-            $flag_tidak_print = 0;
-            if(isset($d['flag_tidak_print']) && $d['flag_tidak_print'] != 0){
+            if(isset($d['parent_id']) && $d['parent_id'] == 0){
                 $flag_tidak_print = $d['flag_tidak_print'];
             }
             if($flag_tidak_print == 0){
