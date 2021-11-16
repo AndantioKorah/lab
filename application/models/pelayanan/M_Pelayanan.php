@@ -1341,6 +1341,9 @@
         $last_jns_index = 0;
         $current_page = 0;
         $final_result = null;
+        if(!$result){
+            return [$final_result, $current_page];
+        }
         foreach($result as $rs){
             if(isset($result[$i]['id_m_jns_tindakan']) && $result[$i]['id_m_jns_tindakan'] == 0){
                 $last_jns_index = $i;
