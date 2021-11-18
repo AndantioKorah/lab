@@ -58,7 +58,8 @@
         </style>
     </head>
     <?php 
-    $filename = 'Rincian Tindakan '.$pendaftaran['nomor_pendaftaran'].' '.formatDateNamaBulan(date('Y-m-d H:i:s')).'.xls';
+    $nama = str_replace(",","",$pendaftaran['nama_pasien']); 
+    $filename = 'Rincian Tindakan '.$nama.' '.formatDateNamaBulan(date('Y-m-d H:i:s')).'.xls';
     header("Content-type: application/vnd-ms-excel");
     header("Content-Disposition: attachment; filename=$filename"); 
 ?> 

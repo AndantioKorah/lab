@@ -189,7 +189,6 @@ class C_Pelayanan extends CI_Controller
     public function saveExcelHasil($id_pendaftaran){
         list($data['rincian_tindakan'],  $data['page_count']) = $this->pelayanan->buildDataExcelTindakan($this->session->userdata('list_tindakan_pasien'));
         $data['pendaftaran'] = $this->pendaftaran->getDataPendaftaran($id_pendaftaran);
-        dd( $data['pendaftaran']);
         $this->load->view('pelayanan/V_ExcelRincianTindakan', $data);        
         // $this->load->view('pelayanan/V_CetakRincianTindakan', $data);        
     }
