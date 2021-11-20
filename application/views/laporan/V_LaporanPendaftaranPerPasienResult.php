@@ -17,6 +17,7 @@
                     <th class="text-center">NAMA PASIEN</th>
                     <th class="text-center">TGL. PENDAFTARAN</th>
                     <th class="text-center">NO. PENDAFTARAN</th>
+                    <th class="text-center">DOKTER PENGIRIM</th>
                     <th class="text-center">TOTAL TAGIHAN</th>
                     <th class="text-center">STATUS TAGIHAN</th>
                 </thead>
@@ -27,6 +28,7 @@
                         <td class="text-center"><?=$rs['nama_pasien']?></td>
                         <td class="text-center"><?=formatDate($rs['tanggal_pendaftaran'])?></td>
                         <td class="text-center"><?=$rs['nomor_pendaftaran']?></td>
+                        <td class="text-center"><?=$rs['nama_dokter_pengirim']?></td>
                         <td class="text-center"><?=formatCurrency($rs['total_tagihan'])?></td>
                         <td class="text-center"><?=$rs['flag_active'] == 0 ? 'Dihapus' : $rs['status_tagihan']?></td>
                     </tr>
