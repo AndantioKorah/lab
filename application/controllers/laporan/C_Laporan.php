@@ -18,7 +18,8 @@ class C_Laporan extends CI_Controller
     }
 
     public function laporanPendaftaranPerPasien(){
-        render('laporan/V_LaporanPendaftaranPerPasien', null, null, null);
+        $data['dokter'] = $this->general->getAllWithOrder('m_dokter', 'nama_dokter', 'asc');
+        render('laporan/V_LaporanPendaftaranPerPasien', null, null, $data);
     }
 
     public function searchLaporanPendaftaranPerPasien(){
@@ -27,6 +28,7 @@ class C_Laporan extends CI_Controller
         $this->session->set_userdata([
             'result_laporan_pendaftaran_per_pasien' => json_encode($data)
         ]);
+        
         $this->load->view('laporan/V_LaporanPendaftaranPerPasienResult', $data);
     }
 

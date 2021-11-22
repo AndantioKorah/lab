@@ -83,10 +83,10 @@ $username = DB_USERNAME;
 $password = DB_PASSWORD;
 $database = DB_NAME;
 
-// $hostname = 'localhost';
-// $username = 'root';
-// $password = '';
-// $database = 'db_lab_2';
+$hostname = 'localhost';
+$username = 'root';
+$password = '';
+$database = 'db_lab_2';
 
 $db['default'] = array(
 	'dsn'	=> '',

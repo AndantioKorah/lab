@@ -92,6 +92,7 @@ function formatTextHasil($hasil_input, $nilai_normal){
 }
 
 function formatTextHasilNew($hasil_input, $nilai_normal, $satuan = ''){
+    $hasil_input = trim($hasil_input);
     $nn = explode(" ",$nilai_normal);
     $hasil = $hasil_input;
     // $hasil = removeTitikFromRibuan($hasil_input);

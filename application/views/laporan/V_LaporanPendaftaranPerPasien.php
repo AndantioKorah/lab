@@ -7,9 +7,19 @@
             <div class="card-body">
                 <form id="form_search_laporan">
                     <div class="row">
-                        <div class="col-12">
+                        <div class="col-6">
                             <label>Pilih Range Tanggal</label>
                             <input class="form-control form-control-sm datepicker" autocomplete="off" name="range_tanggal" id="range_tanggal"/>
+                        </div>
+                        <div class="col-6">
+                            <label>Pilih Dokter</label>
+                            <Select class="form-control select2_this select2-navy form-control-sm" autocomplete="off" name="dokter" id="dokter" required>
+                        <option value="0">Semua</option>   
+                            <?php foreach($dokter as $d) { ?>
+                                <option value="<?php echo $d['id'];?>"><?php echo $d['nama_dokter'];?></option>
+                            <?php } ?>
+
+                        </Select>
                         </div>
                         <div class="col-12 mt-2 text-right">
                             <button type="submit" class="btn btn-sm btn-navy"><i class="fa fa-search"></i> CARI LAPORAN</button>
