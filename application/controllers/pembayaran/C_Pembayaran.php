@@ -72,4 +72,27 @@ class C_Pembayaran extends CI_Controller
         $this->load->view('pembayaran/V_PelunasanMassalItem', $data);
     }
 
+    public function submitPelunasanMassal(){
+        echo json_encode($this->pembayaran->submitPelunasanMassal($this->input->post()));
+    }
+
+    public function loadHistoryPelunasanMassal(){
+        $this->load->view('pembayaran/V_HistoryPelunasanMassal', null);
+    }
+
+    public function loadHistoryPelunasanMassalItem($bulan){
+        $data['history'] = $this->pembayaran->loadHistoryPelunasanMassal($bulan);
+        $this->load->view('pembayaran/V_HistoryPelunasanMassalItem', $data);
+    }
+
+    public function deleteHistoryPelunasanMassal($id){
+        echo json_encode($this->pembayaran->deleteHistoryPelunasanMassal($id));
+    }
+
+    public function detailHistoryPelunasanMassal($id){
+        $data['result'] = $this->pembayaran->detailHistoryPelunasanMassal($id);
+        $data['id'] = $id;
+        $this->load->view('pembayaran/V_DetailHistoryPelunasanMassal', $data);
+    }
+
 }

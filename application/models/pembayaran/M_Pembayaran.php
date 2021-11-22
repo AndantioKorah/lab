@@ -197,5 +197,162 @@
                             ->group_by('a.id')
                             ->get()->result_array();
         }
+
+        public function submitPelunasanMassal($data){
+            // dd($data);
+            $rs['code'] = 0;
+            $rs['message'] = 'ok';
+            
+            if(!$data){
+                $rs['code'] = 1;
+                $rs['message'] = 'Tidak Ada Data Untuk Pelunasan';
+                return $rs;
+            }
+
+            $this->db->trans_begin();
+
+            $only_date = explode("-", date('Y-m-d'));
+            $nopem = KODE_TRANSAKSI_UANG_MUKA.$only_date[2].$only_date[1].$only_date[0];
+            $counter_nopem = 1;
+            $exist = $this->db->select('*')
+                            ->from('t_uang_muka')
+                            ->where('DATE(tanggal_pembayaran)', date('Y-m-d'))
+                            ->order_by('tanggal_pembayaran', 'desc')
+                            ->limit(1)
+                            ->get()->row_array();
+            if($exist){
+                $last_nopem = substr($exist['nomor_pembayaran'], 10, 4);
+                $counter_nopem = floatval(ltrim($last_nopem, '0')) + 1;
+            }
+            $nopem = $nopem.str_pad($counter_nopem, 4, '0', STR_PAD_LEFT);
+
+            $pendaftaran = $this->db->select('a.*, b.id as id_t_tagihan, b.total_tagihan')
+                                    ->from('t_pendaftaran a')
+                                    ->join('t_tagihan b', 'a.id = b.id_t_pendaftaran')
+                                    ->where_in('a.id', $data['id_pelunasan_massal'])
+                                    ->get()->result_array();
+            if($pendaftaran){
+                $pembayaran = null;
+                $i = 0;
+                $total_tagihan = 0;
+                foreach($pendaftaran as $p){
+                    $total_tagihan += floatval($p['total_tagihan']);
+                    $pembayaran[$i]['id_t_pendaftaran'] = $p['id'];
+                    $pembayaran[$i]['tanggal_pembayaran'] = date('Y-m-d H:i:s');
+                    $pembayaran[$i]['nama_pembayar'] = $p['nama_cara_bayar_detail'];
+                    $pembayaran[$i]['cara_pembayaran'] = 'tunai';
+                    $pembayaran[$i]['jumlah_pembayaran'] = 0;
+                    $pembayaran[$i]['nomor_pembayaran'] = $nopem;
+                    $pembayaran[$i]['created_by'] = $this->general_library->getId();
+                    $i++;
+                }
+                $this->db->insert_batch('t_pembayaran', $pembayaran);
+                
+                $this->db->where_in('id_t_pendaftaran', $data['id_pelunasan_massal'])
+                        ->update('t_tagihan',
+                        [
+                            'updated_by' => $this->general_library->getId(),
+                            'status_tagihan' => 'Lunas',
+                            'id_m_status_tagihan' => 2
+                        ]);
+                
+                $this->db->insert('t_pelunasan_massal', 
+                [
+                    'list_id_t_pendaftaran' => json_encode($data['id_pelunasan_massal']),
+                    'nomor_pembayaran' => $nopem,
+                    'id_m_cara_bayar_detail' => $pendaftaran[0]['id_m_cara_bayar_detail'],
+                    'nama_cara_bayar_detail' => $pendaftaran[0]['nama_cara_bayar_detail'],
+                    'total_tagihan' => $total_tagihan,
+                    'created_by' => $this->general_library->getId()
+                ]);
+            } else {
+                $rs['code'] = 1;
+                $rs['message'] = 'Tagihan Tidak Ditemukan';
+            }
+
+            if($this->db->trans_status() == FALSE){
+                $this->db->trans_rollback();
+                $rs['code'] = 1;
+                $rs['message'] = 'Terjadi Kesalahan';
+            } else {
+                $this->db->trans_commit();
+            }
+            return $rs;
+        }
+
+        public function loadHistoryPelunasanMassal($bulan){
+            return $this->db->select('a.*, b.nama as nama_user')
+                            ->from('t_pelunasan_massal a')
+                            ->join('m_user b', 'a.created_by = b.id')
+                            ->where('MONTH(a.created_date)', $bulan)
+                            ->where('a.flag_active', 1)
+                            ->get()->result_array();
+        }
+
+        public function deleteHistoryPelunasanMassal($id){
+            $rs['code'] = 0;
+            $rs['message'] = 'ok';
+
+            $this->db->trans_begin();
+
+            $data = $this->db->select('*')
+                            ->from('t_pelunasan_massal')
+                            ->where('id', $id)
+                            ->where('flag_active', 1)
+                            ->get()->row_array();
+            if($data){
+                $this->db->where_in('id_t_pendaftaran', json_decode($data['list_id_t_pendaftaran']))
+                    ->update('t_pembayaran', 
+                [
+                    'updated_by' => $this->general_library->getId(),
+                    'flag_active' => 0
+                ]);
+
+                $this->db->where_in('id_t_pendaftaran', json_decode($data['list_id_t_pendaftaran']))
+                    ->update('t_tagihan', 
+                [
+                    'updated_by' => $this->general_library->getId(),
+                    'status_tagihan' => 'Belum Lunas',
+                    'id_m_status_tagihan' => 1
+                ]);
+
+                $this->db->where('id', $id)
+                        ->update('t_pelunasan_massal',
+                        [
+                            'flag_active' => 0,
+                            'updated_by' => $this->general_library->getId()
+                        ]);
+            } else {
+                $rs['code'] = 1;
+                $rs['message'] = 'Data Tidak Ditemukan';
+            }
+
+            if($this->db->trans_status() == FALSE){
+                $this->db->trans_rollback();
+                $rs['code'] = 1;
+                $rs['message'] = 'Terjadi Kesalahan';
+            } else {
+                $this->db->trans_commit();
+            }
+            return $rs;
+        }
+
+        public function detailHistoryPelunasanMassal($id){
+            $result = null;
+            $data_pm = $this->db->select('*')
+                                ->from('t_pelunasan_massal')
+                                ->where('id', $id)
+                                ->get()->row_array();
+            if($data_pm){
+                $result = $this->db->select('a.*, b.total_tagihan, c.nama_pasien')
+                                ->from('t_pendaftaran a')
+                                ->join('t_tagihan b', 'a.id = b.id_t_pendaftaran')
+                                ->join('m_pasien c', 'a.norm = c.norm')
+                                ->where_in('a.id', json_decode($data_pm['list_id_t_pendaftaran']))
+                                ->where('a.flag_active', 1)
+                                ->get()->result_array();
+            }
+            return $result;
+        }
 	}
 ?>

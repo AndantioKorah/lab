@@ -35,6 +35,7 @@
                 <div style="width:15%;" class="text-center">Total Tagihan</div>
                 <div style="width:15%;" class="text-center">Status Tagihan</div>
             </div>
+            <form id="pelunasanMassalForm">
             <?php $no=1; $total_tagihan = 0; $jumlah_pendaftaran = 0; foreach($list_pendaftaran as $l){
             $bg_color = '#ce0000';
             $status_tagihan = $l['status_tagihan'];
@@ -47,15 +48,14 @@
                 $status_tagihan = 'DIHAPUS';
             }
             ?>
-                <div class="row pt-2 pb-2 pelunasan_item" 
-                >
+                <div class="row pt-2 pb-2 pelunasan_item">
                     <div style="width:5%; cursor: pointer;" class="text-center">
                         <?php if($l['id_m_status_tagihan'] == 1 && $l['flag_active'] == 1){
                             $total_tagihan += $l['total_tagihan'];
                             $jumlah_pendaftaran++;
                         ?>
                             <input class="form-check-input" onclick="countTotalPelunasan('<?=$l['total_tagihan']?>', '<?=$l['id']?>')"
-                            style="width:25px; height: 25px; margin-top: -3px;" 
+                            style="width:25px; height: 25px; margin-top: -3px;" name="id_pelunasan_massal[]" 
                             type="checkbox" value="<?=$l['id']?>" id="checkbox_<?=$l['id']?>" checked>
                         <?php } ?>
                     </div>
@@ -68,6 +68,7 @@
                     <div style="width:15%;" class="text-center"><strong class="span_status_tagihan" style="background-color: <?=$bg_color?>"><?=strtoupper($status_tagihan)?></strong></div>
                 </div>
             <?php } ?>
+            </form>
         </div>
         <script>
             total_tagihan = parseInt('<?=$total_tagihan?>')
@@ -87,6 +88,30 @@
             //     }
             //     countTotalPelunasan(tagihan, id)
             // }
+
+            $('#pelunasanMassalForm').on('submit', function(e){
+                e.preventDefault()
+                $('#btn_submit_pm').hide()
+                $('#btn_loading_pm').show()
+                $.ajax({
+                    url: "<?=base_url('pembayaran/C_Pembayaran/submitPelunasanMassal')?>",
+                    method: "post",
+                    data: $(this).serialize(),
+                    success: function(data){
+                        let rs = JSON.parse(data)
+                        if(rs.code != 0){
+                            errortoast(rs.message)
+                        } else {
+                            successtoast('Pelunasan Berhasil')
+                            submitFormSearchMenuListPendaftaran()
+                        }
+                        $('#btn_submit_pm').show()
+                        $('#btn_loading_pm').hide()
+                    }, error: function(e){
+                        errortoast('Terjadi Kesalahan')
+                    }
+                })
+            })
 
             function countTotalPelunasan(tagihan, id){
                 if($('#checkbox_'+id).prop("checked")){

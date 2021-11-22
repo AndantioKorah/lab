@@ -3,8 +3,12 @@
         <div class="card card-default" style="height: 170px;">
             <div class="card-header">
                 <div class="row">
-                    <div class="col-12" style="top: 50%;">
+                    <div class="col-6" style="top: 50%;">
                         <h3 class="card-title"><strong>PELUNASAN MASSAL</strong></h3>
+                    </div>
+                    <div class="col-6 text-right">
+                        <button href="#modalHistoryPelunasanMassal" data-toggle="modal" class="btn btn-sm btn-navy" onclick="openModalHistory()">
+                        <i class="fa fa-clock"></i> History</button>
                     </div>
                 </div>
             </div>
@@ -49,7 +53,8 @@
                     </div>
                     <div class="col-4">
                         <br>
-                        <button type="button" class="btn btn-sm btn-navy text-center">Submit Pelunasan</button>
+                        <button id="btn_submit_pm" onclick="submitPelunasanMassal()" type="button" class="btn btn-sm btn-navy text-center">Submit Pelunasan</button>
+                        <button id="btn_loading_pm" style="display: none;" disabled type="button" class="btn btn-sm btn-navy text-center"><i class="fa fa-spin fa-spinner"></i> Loading...</button>
                     </div>
                 </div>
             </div>
@@ -66,6 +71,22 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="modalHistoryPelunasanMassal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div id="modal-dialog" class="modal-dialog modal-xl">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h6 class="modal-title">History Pelunasan Massal</h6>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div id="modalHistoryPelunasanMassalContent">
+          </div>
+      </div>
+  </div>
+</div>
+
 <script>
     let id_m_pasien = 0;
     let total_tagihan = parseInt(0)
@@ -81,6 +102,14 @@
         // submitFormSearchMenuListPendaftaran()
     }) 
 
+    function openModalHistory(){
+        $('#modalHistoryPelunasanMassalContent').html('')
+        $('#modalHistoryPelunasanMassalContent').append(divLoaderNavy)
+        $('#modalHistoryPelunasanMassalContent').load('<?=base_url("pembayaran/C_Pembayaran/loadHistoryPelunasanMassal")?>', function(){
+            $('#loader').hide()
+        })
+    }
+
     $('#cara_bayar').on('change', function(){
         submitFormSearchMenuListPendaftaran()
     })
@@ -88,6 +117,10 @@
     $('#range_tanggal').on('change', function(){
         submitFormSearchMenuListPendaftaran()
     })
+
+    function submitPelunasanMassal(){
+        $('#pelunasanMassalForm').submit()
+    }
 
     function loadListPendaftaranPasien(){
         $('#label_card_header').html('LIST PENDAFTARAN')
