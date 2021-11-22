@@ -62,4 +62,14 @@ class C_Pembayaran extends CI_Controller
         $this->load->view('pembayaran/V_KwitansiUangMuka', $data);
     }
 
+    public function pelunasanMassal(){
+        $data['cara_bayar'] = $this->general->get('m_cara_bayar_detail', 'id_m_cara_bayar', 2, 1);
+        render('pembayaran/V_PelunasanMassal', '', '', $data);
+    }
+
+    public function searchPendaftaranPelunasanMassal(){
+        $data['list_pendaftaran'] = $this->pembayaran->searchPendaftaranPelunasanMassal($this->input->post());
+        $this->load->view('pembayaran/V_PelunasanMassalItem', $data);
+    }
+
 }

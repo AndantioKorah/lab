@@ -180,5 +180,22 @@
             return $detail_tagihan;
 
         }
+
+        public function searchPendaftaranPelunasanMassal($data){
+            list($tanggal_awal, $tanggal_akhir) = explodeRangeDate($data['range_tanggal']);
+            return $this->db->select('a.*, c.status_tagihan, a.id as id_t_pendaftaran, c.id_m_status_tagihan, b.nama_pasien, c.total_tagihan, b.id as id_m_pasien')
+                            ->from('t_pendaftaran a')
+                            ->join('m_pasien b', 'a.norm = b.norm')
+                            ->join('t_tagihan c', 'a.id = c.id_t_pendaftaran')
+                            // ->where('a.flag_active', 1)
+                            ->where('b.flag_active', 1)
+                            // ->where('c.flag_active', 1)
+                            ->where('a.tanggal_pendaftaran > ', $tanggal_awal.' 00:00:00')
+                            ->where('a.tanggal_pendaftaran < ', $tanggal_akhir.' 23:59:59')
+                            ->where('a.id_m_cara_bayar_detail', $data['cara_bayar'])
+                            ->order_by('a.tanggal_pendaftaran', 'desc')
+                            ->group_by('a.id')
+                            ->get()->result_array();
+        }
 	}
 ?>
