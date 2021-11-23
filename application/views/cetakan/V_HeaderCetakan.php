@@ -85,7 +85,7 @@
                     <tr>
                         <td class="set_font header_element_label">Alamat</td>
                         <td class="set_font header_element_colon">:</td>
-                        <td class="set_font header_element_value"><?=strtoupper($pendaftaran['alamat_dokter_pengirim'])?></td>
+                        <td class="set_font header_element_value"><?=strtoupper($pendaftaran['alamat_dokter'])?></td>
                     </tr>
                     <tr>
                         <td class="set_font header_element_label">No. Telp</td>
