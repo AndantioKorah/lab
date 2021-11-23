@@ -14,3 +14,4 @@ $route['maintenance/database/backup'] = 'maintenance/C_Maintenance/indexBackupDa
 $route['preview/file/(:any)'] = 'maintenance/C_Maintenance/previewFile/$1';
 $route['tindakan/nilai-normal'] = 'master/C_Master/nilaiNormal';
 $route['pendaftaran/list'] = 'pendaftaran/C_Pendaftaran/menuListPendaftaran';
+$route['pelunasan/massal'] = 'pembayaran/C_Pembayaran/pelunasanMassal';
