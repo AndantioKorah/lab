@@ -9,7 +9,7 @@
         font-size: 12px;
         font-family: Verdana;
         font-weight: normal;
-        padding: 5px;
+        padding: 3px;
         border: 1px solid black;
     }
 
@@ -36,30 +36,41 @@
         <tbody>
             <tr>
                 <td>
-                <table class="table" style="width: 100%; border-collapse: collapse; border: 1px solid black;">
-                <thead>
-                    <th class="format_str text-center">NO</th>
-                    <th class="format_str text-center">NAMA DOKTER</th>
-                    <th class="format_str text-center">TOTAL</th>
-                    <th class="format_str text-center">%</th>
-                    <th class="format_str text-center">FEE</th>
-                </thead>
-                <tbody>
-                    <?php $no = 1; foreach($result as $rs){ ?>
-                        <tr>
-                            <td class="format_str" style="text-align: center;"><?=$no++;?></td>
-                            <td class="format_str" style="text-align: left;"><?=$rs['nama_dokter']?></td>
-                            <td class="format_str" style="text-align: center;"><?=formatCurrency($rs['total'])?><a style="display: none; color: white">.</a></td>
-                            <td class="format_str" style="text-align: center;"><?=$rs['fee']?>%<a style="display: none; color: white">.</a></td>
-                            <td class="format_str" style="text-align: center;"><?=formatCurrency($rs['total'] * $rs['fee'] / 100)?><a style="display: none; color: white">.</a></td>
-                            
-                        </tr>
-                    <?php } ?>
-                </tbody>
-            </table>
+                    <table class="table" style="width: 100%; border-collapse: collapse; border: 1px solid black;">
+                        <thead>
+                            <th class="format_str text-center">NO</th>
+                            <th class="format_str text-center">NAMA PASIEN</th>
+                            <th class="format_str text-center">NO. LAB</th>
+                            <th class="format_str text-center">TGL. PENDAFTARAN</th>
+                            <th class="format_str text-center">TOT. TAGIHAN</th>
+                            <th class="format_str text-center">%</th>
+                            <th class="format_str text-center">FEE</th>
+                        </thead>
+                        <tbody>
+                            <?php $no = 1; foreach($result as $rs){ ?>
+                                <tr>
+                                    <td class="format_str" style="text-align: center; font-weight: bold;"><?=$no?></td>
+                                    <td colspan=3 class="format_str" style="text-align: left; font-weight: bold;"><?=$rs['nama_dokter']?></td>
+                                    <td class="format_str" style="text-align: right; font-weight: bold;;"><?=formatCurrencyWithoutRp($rs['total_tagihan'])?><a style="display: none; color: white">.</a></td>
+                                    <td class="format_str" style="text-align: center; font-weight: bold;"><?=$rs['fee']?>%<a style="display: none; color: white">.</a></td>
+                                    <td class="format_str" style="text-align: right; font-weight: bold;"><?=formatCurrencyWithoutRp($rs['total_tagihan'] * $rs['fee'] / 100)?><a style="display: none; color: white">.</a></td>
+                                </tr>
+                                <?php $no_list_pasien = 1; foreach($rs['list_pasien'] as $lp){ ?>
+                                    <tr>
+                                        <td class="format_str" style="text-align: center;"><?=$no.'.'.$no_list_pasien?></td>
+                                        <td class="format_str" style="text-align: left;"><?=$lp['nama_pasien']?></td>
+                                        <td class="format_str" style="text-align: center;"><?=$lp['nomor_pendaftaran']?></td>
+                                        <td class="format_str" style="text-align: center;"><?=formatDate($lp['tanggal_pendaftaran'])?></td>
+                                        <td class="format_str" style="text-align: right;"><?=formatCurrencyWithoutRp($lp['total_tagihan'])?></td>
+                                        <td class="format_str" style="text-align: center;"><?=$rs['fee']?>%<a style="display: none; color: white">.</a></td>
+                                        <td class="format_str" style="text-align: right;"><?=formatCurrencyWithoutRp($lp['total_tagihan'] * $rs['fee'] / 100)?><a style="display: none; color: white">.</a></td>
+                                    </tr>
+                                <?php $no_list_pasien++; } ?>
+                            <?php $no++; } ?>
+                        </tbody>
+                    </table>
                 </td>
             </tr>
         </tbody>
     </table>
-    
 <?php } ?>
