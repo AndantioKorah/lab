@@ -85,7 +85,7 @@
                     <tr>
                         <td class="set_font header_element_label">Alamat</td>
                         <td class="set_font header_element_colon">:</td>
-                        <td class="set_font header_element_value"><?=strtoupper($pendaftaran['alamat_dokter_pengirim'])?></td>
+                        <td class="set_font header_element_value"><?=strtoupper($pendaftaran['alamat_dokter'])?></td>
                     </tr>
                     <tr>
                         <td class="set_font header_element_label">No. Telp</td>
@@ -128,7 +128,13 @@
                         <?php
                             $umur = countDiffDateLengkap($pendaftaran['tanggal_lahir'], date('Y-m-d'), ['tahun']);
                             $jenis_kelamin = $pendaftaran['jenis_kelamin'] == 1 ? 'Laki-laki' : 'Perempuan';
-                        ?>
+                            $today = date("Y-m-d");
+                            $diff = date_diff(date_create($pendaftaran['tanggal_lahir']), date_create($today));
+                            $umurAngka = (int)$diff->format('%y');
+                            if($umurAngka < 13){
+                                $jenis_kelamin = "Anak-anak";
+                            } 
+                       ?>
                         <td class="set_font header_element_label">Umur/Kel.</td>
                         <td class="set_font header_element_colon">:</td>
                         <td class="set_font header_element_value"><?=strtoupper($umur.' / '.$jenis_kelamin)?></td>

@@ -209,7 +209,8 @@
         }
 
         public function getDataPendaftaran($id){
-            return $this->db->select('a.*, b.id as id_m_pasien, a.id as id_t_pendaftaran, b.nama_pasien, b.alamat, b.nomor_telepon, b.tanggal_lahir, b.jenis_kelamin')
+            return $this->db->select('a.*, b.id as id_m_pasien, a.id as id_t_pendaftaran, b.nama_pasien, b.alamat, b.nomor_telepon, b.tanggal_lahir, b.jenis_kelamin,
+            (select alamat from m_dokter where a.id_m_dokter_pengirim = m_dokter.id and m_dokter.flag_active = 1 limit 1) as alamat_dokter')
                             ->from('t_pendaftaran a')
                             ->join('m_pasien b', 'a.norm = b.norm')
                             ->where('a.id', $id)
