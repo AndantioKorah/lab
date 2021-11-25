@@ -14,8 +14,9 @@
             <table class="table table-sm table-hover table-striped datatable">
                 <thead>
                     <th class="text-center">NO</th>
-                    <th class="text-center">NAMA DOKTER</th>
-                    <th class="text-center">TOTAL</th>
+                    <th class="text-center">NAMA DOKTER PENGIRIM</th>
+                    <!-- <th class="text-center">NAMA PASIEN</th> -->
+                    <th class="text-center">TOTAL TAGIHAN</th>
                     <th class="text-center">%</th>
                     <th class="text-center">FEE</th>
                 </thead>
@@ -24,9 +25,10 @@
                     <tr>
                         <td class="text-center"><?=$no++;?></td>
                         <td class="text-center"><?=$rs['nama_dokter']?></td>
-                        <td class="text-center"><?=formatCurrency($rs['total'])?></td>
+                        <!-- <td class="text-center"><?=$rs['nama_pasien']?></td> -->
+                        <td class="text-center"><?=formatCurrency($rs['total_tagihan'])?></td>
                         <td class="text-center"><?=$rs['fee']?>%</td>
-                        <td class="text-center"><?=formatCurrency($rs['total'] * $rs['fee'] / 100)?></td>
+                        <td class="text-center"><?=formatCurrency($rs['total_tagihan'] * $rs['fee'] / 100)?></td>
                 
                     </tr>
                 <?php } ?>
