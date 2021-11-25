@@ -140,8 +140,7 @@ function formatTextHasilNew($hasil_input, $nilai_normal, $satuan = ''){
             if(isset($hasil[0]) && strcasecmp($hasil[0], 'Reaktif') == 0){
                 return '<strong>*</strong>';
             }
-        }
-        if(isset($hasil[0]) && strcasecmp($hasil[0], $nn[0]) != 0){
+        } else if(isset($hasil[0]) && strcasecmp($hasil[0], $nn[0]) != 0){
             return '<strong>*</strong>';
         }
     } else if($nilai_normal == 'Non Reaktif'){
