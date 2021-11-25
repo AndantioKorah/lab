@@ -114,8 +114,8 @@
         $(function(){
             diskon_nominal_counter = 1
             if($('#id_m_cara_bayar_hidden').val() == 2){
-                $('#jumlah_pembayaran').prop('readonly', true)
-                $('#div_row_diskon').hide()
+                // $('#jumlah_pembayaran').prop('readonly', true)
+                // $('#div_row_diskon').hide()
             }
 
             $('.select2_pembayaran').select2()
