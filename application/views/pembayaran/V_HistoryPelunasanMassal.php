@@ -1,5 +1,5 @@
+<form id="formPilihBulan">
 <div class="row p-3">
-    <form id="formPilihBulan">
         <div class="col-6">
             <label>Bulan</label>
             <select class="form-control form-control-sm select2_pilih_bulan select2-navy" style="width: 100%" id="pilih_bulan" data-dropdown-css-class="select2-navy">
@@ -20,24 +20,23 @@
         <div class="col-6">
             <label>Tahun</label>
             <select class="form-control form-control-sm select2_pilih_bulan select2-navy" style="width: 100%" id="pilih_tahun" data-dropdown-css-class="select2-navy">
-                <option value="2020" <?=date('Y') == 2020 ? 'selected': ''?>>Januari</option>
-                <option value="2021" <?=date('Y') == 2021 ? 'selected': ''?>>Februari</option>
-                <option value="2022" <?=date('Y') == 2022 ? 'selected': ''?>>Maret</option>
-                <option value="2023" <?=date('Y') == 2023 ? 'selected': ''?>>April</option>
-                <option value="2024" <?=date('Y') == 2024 ? 'selected': ''?>>Mei</option>
-                <option value="2025" <?=date('Y') == 2025 ? 'selected': ''?>>Juni</option>
-                <option value="2026" <?=date('Y') == 2026 ? 'selected': ''?>>Juli</option>
-                <option value="2027" <?=date('Y') == 2027 ? 'selected': ''?>>Agustus</option>
-                <option value="2028" <?=date('Y') == 2028 ? 'selected': ''?>>September</option>
-                <option value="2029" <?=date('Y') == 2029 ? 'selected': ''?>>Oktober</option>
-                <option value="2030" <?=date('Y') == 2030 ? 'selected': ''?>>November</option>
+                <option value="2021" <?=date('Y') == 2021 ? 'selected': ''?>>2021</option>
+                <option value="2022" <?=date('Y') == 2022 ? 'selected': ''?>>2022</option>
+                <option value="2023" <?=date('Y') == 2023 ? 'selected': ''?>>2023</option>
+                <option value="2024" <?=date('Y') == 2024 ? 'selected': ''?>>2024</option>
+                <option value="2025" <?=date('Y') == 2025 ? 'selected': ''?>>2025</option>
+                <option value="2026" <?=date('Y') == 2026 ? 'selected': ''?>>2026</option>
+                <option value="2027" <?=date('Y') == 2027 ? 'selected': ''?>>2027</option>
+                <option value="2028" <?=date('Y') == 2028 ? 'selected': ''?>>2028</option>
+                <option value="2029" <?=date('Y') == 2029 ? 'selected': ''?>>2029</option>
+                <option value="2030" <?=date('Y') == 2030 ? 'selected': ''?>>2030</option>
             </select>
         </div>
-    </form>
     <div id="div_result" class="col-12 mt-3">
     
     </div>
 </div>
+</form>
 <script>
     $(function(){
         searchHistoryPelunasan()
