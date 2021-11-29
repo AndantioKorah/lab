@@ -189,9 +189,9 @@
                                             <label>Dokter Pengirim</label>
                                             <select class="form-control form-control-sm select2-navy" data-dropdown-css-class="select2-navy" id="dokter_pengirim" name="dokter_pengirim">
                                                 <option value="0" selected>Atas Permintaan Sendiri</option>
-                                                <!-- <?php foreach($dokter as $d){ ?>
-                                                    <option value="<?=$d['id'].';'.$d['nama_dokter'].';'.$d['alamat'].';'.$d['nomor_telepon']?>"><?=$d['nama_dokter']?></option>
-                                                <?php } ?> -->
+                                                 <?php foreach($dokter as $d){ ?>
+                                                    <option value="<?=$d['id']?>"><?=$d['nama_dokter']?></option>
+                                                <?php } ?> 
                                             </select>
                                         </div>
                                     </div>

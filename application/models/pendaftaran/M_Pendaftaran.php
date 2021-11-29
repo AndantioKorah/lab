@@ -105,7 +105,7 @@
                                     ->from('m_dokter')
                                     ->like('nama_dokter', $this->input->post('search_param'))
                                     ->where('flag_active', 1)
-                                    ->limit(20)
+                                    // ->limit(20)
                                     ->get()->result_array();
             }
             return $result;            
