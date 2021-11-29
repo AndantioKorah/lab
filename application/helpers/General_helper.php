@@ -147,6 +147,8 @@ function formatTextHasilNew($hasil_input, $nilai_normal, $satuan = ''){
         $hasil = explode(" ", $hasil_input);
         if(isset($hasil[0]) && isset($hasil[1]) && strcasecmp($hasil[0], $nn[0]) != 0 && strcasecmp($hasil[1], $nn[1]) != 0){
             return '<strong>*</strong>';
+        } else if(isset($hasil[0]) && strcasecmp($hasil[0], $nn[0]) != 0){
+            return '<strong>*</strong>';
         }
     } else if($nn[0] == 'Normal'){
         $hasil = explode(" ", $hasil_input);
