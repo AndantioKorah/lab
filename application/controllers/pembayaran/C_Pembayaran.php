@@ -80,8 +80,8 @@ class C_Pembayaran extends CI_Controller
         $this->load->view('pembayaran/V_HistoryPelunasanMassal', null);
     }
 
-    public function loadHistoryPelunasanMassalItem($bulan){
-        $data['history'] = $this->pembayaran->loadHistoryPelunasanMassal($bulan);
+    public function loadHistoryPelunasanMassalItem($bulan, $tahun){
+        $data['history'] = $this->pembayaran->loadHistoryPelunasanMassal($bulan, $tahun);
         $this->load->view('pembayaran/V_HistoryPelunasanMassalItem', $data);
     }
 

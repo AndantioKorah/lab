@@ -280,11 +280,12 @@
             return $rs;
         }
 
-        public function loadHistoryPelunasanMassal($bulan){
+        public function loadHistoryPelunasanMassal($bulan, $tahun){
             return $this->db->select('a.*, b.nama as nama_user')
                             ->from('t_pelunasan_massal a')
                             ->join('m_user b', 'a.created_by = b.id')
                             ->where('MONTH(a.created_date)', $bulan)
+                            ->where('YEAR(a.created_date)', $tahun)
                             ->where('a.flag_active', 1)
                             ->get()->result_array();
         }
