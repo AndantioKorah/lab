@@ -42,7 +42,7 @@
     .td-table-rekap-harian{
         padding: 5px;
         border: 1px solid black;
-        font-size: 14px;
+        font-size: 13px;
         vertical-align: top;
     }
 </style>
