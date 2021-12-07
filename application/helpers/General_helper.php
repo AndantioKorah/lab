@@ -91,7 +91,8 @@ function formatTextHasil($hasil_input, $nilai_normal){
     return $hasil_input;
 }
 
-function formatTextHasilNew($hasil_input, $nilai_normal, $satuan = ''){
+function formatTextHasilNew($hasil_input, $nilai_normal, $satuan = '', $id_m_nm_tindakan =''){
+   
     $hasil_input = trim($hasil_input);
     $nn = explode(" ",$nilai_normal);
     $hasil = $hasil_input;
@@ -130,10 +131,17 @@ function formatTextHasilNew($hasil_input, $nilai_normal, $satuan = ''){
             return '<strong>*</strong>';
         }
     } else if($nn[0] == 'Negatif'){
+        if($id_m_nm_tindakan == 589){
+          $hsl = substr($hasil_input, 0, 3);
+          if($hsl == "Pos"){
+            return '<strong>*</strong>';
+          }
+        } else {
         $hasil = explode(" ", $hasil_input);
         if(isset($hasil[0]) && strcasecmp($hasil[0], $nn[0]) != 0){
             return '<strong>*</strong>';
         }
+    }
     } else if($nn[0] == 'Reaktif'){
         $hasil = explode(" ", $hasil_input);
         if(isset($nn[1]) && $nn[1] == 'OD'){
@@ -156,7 +164,7 @@ function formatTextHasilNew($hasil_input, $nilai_normal, $satuan = ''){
             return '<strong>*</strong>';
         }
     }
-
+   
     return null;
 }
 

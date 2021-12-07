@@ -935,7 +935,7 @@
         $parents = null;
         
         if($id_tindakan == 0){
-            $parents = $this->db->select('a.*, b.parent_id, b.id_m_jns_tindakan, b.id as id_m_tindakan, a.nilai_normal, b.biaya')
+            $parents = $this->db->select('a.*, b.parent_id, b.id_m_jns_tindakan, b.id as id_m_tindakan, a.nilai_normal, b.biaya,b.ket')
                                 ->from('t_tindakan a')
                                 ->join('m_tindakan b', 'a.id_m_nm_tindakan = b.id')
                                 ->where('a.id_t_pendaftaran', $id_pendaftaran)
