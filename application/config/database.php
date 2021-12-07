@@ -86,7 +86,11 @@ $query_builder = TRUE;
 $hostname = 'localhost';
 $username = 'root';
 $password = '';
+<<<<<<< HEAD
 $database = 'db_lab_1_des';
+=======
+$database = 'db_lab';
+>>>>>>> dce6f98f173050799499c00d6ff02113a3a45bfc
 
 $db['default'] = array(
 	'dsn'	=> '',

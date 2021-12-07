@@ -1350,8 +1350,11 @@
                     unset($result[$i]);
                 }
             }
-           
-            if(isset($result[$i]['id_t_pendaftaran']) && $result[$i]['parent_id_tindakan'] == '0'){
+        //    if($result[$i]['id'] == 2){
+        //        dd($result[$i]);
+        //    }
+            // if(isset($result[$i]['id_t_pendaftaran']) && $result[$i]['parent_id_tindakan'] == '0'){
+            if(isset($result[$i]['parent_id']) && $result[$i]['parent_id'] == '0'){
                 $last_parent_index = $i;
                 if($result[$i]['id_m_jns_tindakan'] == 27){
                     unset($result[$i]);
