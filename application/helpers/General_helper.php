@@ -91,7 +91,7 @@ function formatTextHasil($hasil_input, $nilai_normal){
     return $hasil_input;
 }
 
-function formatTextHasilNew($hasil_input, $nilai_normal, $satuan = '', $id_m_nm_tindakan =''){
+function formatTextHasilNew($hasil_input, $nilai_normal, $satuan = ''){
    
     $hasil_input = trim($hasil_input);
     $nn = explode(" ",$nilai_normal);
