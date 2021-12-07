@@ -131,17 +131,15 @@ function formatTextHasilNew($hasil_input, $nilai_normal, $satuan = '', $id_m_nm_
             return '<strong>*</strong>';
         }
     } else if($nn[0] == 'Negatif'){
-        if($id_m_nm_tindakan == 589){
-          $hsl = substr($hasil_input, 0, 3);
-          if($hsl == "Pos"){
-            return '<strong>*</strong>';
-          }
-        } else {
         $hasil = explode(" ", $hasil_input);
-        if(isset($hasil[0]) && strcasecmp($hasil[0], $nn[0]) != 0){
+        if(isset($nn[1]) && $nn[1] == 'OD'){
+            if(isset($hasil[0]) && strcasecmp($hasil[0], 'Negatif') == 0){
+                return '<strong>*</strong>';
+            }
+        } else if(isset($hasil[0]) && strcasecmp($hasil[0], $nn[0]) != 0){
             return '<strong>*</strong>';
         }
-    }
+    
     } else if($nn[0] == 'Reaktif'){
         $hasil = explode(" ", $hasil_input);
         if(isset($nn[1]) && $nn[1] == 'OD'){

@@ -148,7 +148,7 @@
                                     <td style="width: 5%; font-size: 16px;" class="td_detail_tindakan_detail_hasil_ket" style="text-align:right"><?=$hasil_ket?></td>
                                     <td style="width: 20%; font-size: 16px; <?=$style_nilai_normal_kosong?>" class="td_detail_tindakan_detail" style="text-align:center"><?=$nilai_normal?></td>
                                     <td style="width: 10%; font-size: 16px;" class="td_detail_tindakan_detail" style="text-align:center"><?=$satuan?></td>
-                                    <td style="width: 15%; font-size: 12px; padding-left: 5px;"><?=$catatan == "" ? $rt['ket'] : ""?></td>
+                                    <td style="width: 15%; font-size: 12px; padding-left: 5px;"><?=$catatan?></td>
                                 </tr>
                             <?php } ?>
                         </tbody>
