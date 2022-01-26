@@ -86,7 +86,7 @@ $query_builder = TRUE;
 $hostname = 'localhost';
 $username = 'root';
 $password = '';
-$database = 'db_lab_1_des';
+$database = 'db_efort';
 
 $db['default'] = array(
 	'dsn'	=> '',
