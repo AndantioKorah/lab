@@ -96,6 +96,7 @@ function formatTextHasilNew($hasil_input, $nilai_normal, $satuan = ''){
     $hasil_input = trim($hasil_input);
     $nn = explode(" ",$nilai_normal);
     $hasil = $hasil_input;
+   ;
     if($nn[0] == '<' && isset($nn[1])){
         $max = $nn[1];
         if($hasil > $max && $hasil_input != $nilai_normal){
@@ -127,7 +128,11 @@ function formatTextHasilNew($hasil_input, $nilai_normal, $satuan = ''){
         }
     } else if($nn[0] == 'Positif'){
         $hasil = explode(" ", $hasil_input);
-        if(isset($hasil[0]) && strcasecmp($hasil[0], $nn[0]) != 0){
+        if(isset($nn[1]) && $nn[1] == 'OD'){
+            if(isset($hasil[0]) && strcasecmp($hasil[0], 'Positif') == 0){
+                return '<strong>*</strong>';
+            }
+        } else if(isset($hasil[0]) && strcasecmp($hasil[0], $nn[0]) != 0){
             return '<strong>*</strong>';
         }
     } else if($nn[0] == 'Negatif'){
@@ -141,6 +146,7 @@ function formatTextHasilNew($hasil_input, $nilai_normal, $satuan = ''){
         }
     
     } else if($nn[0] == 'Reaktif'){
+        
         $hasil = explode(" ", $hasil_input);
         if(isset($nn[1]) && $nn[1] == 'OD'){
             if(isset($hasil[0]) && strcasecmp($hasil[0], 'Reaktif') == 0){
@@ -150,6 +156,7 @@ function formatTextHasilNew($hasil_input, $nilai_normal, $satuan = ''){
             return '<strong>*</strong>';
         }
     } else if($nilai_normal == 'Non Reaktif'){
+        
         $hasil = explode(" ", $hasil_input);
         if(isset($hasil[0]) && isset($hasil[1]) && strcasecmp($hasil[0], $nn[0]) != 0 && strcasecmp($hasil[1], $nn[1]) != 0){
             return '<strong>*</strong>';
@@ -162,6 +169,7 @@ function formatTextHasilNew($hasil_input, $nilai_normal, $satuan = ''){
             return '<strong>*</strong>';
         }
     }
+   
    
     return null;
 }
