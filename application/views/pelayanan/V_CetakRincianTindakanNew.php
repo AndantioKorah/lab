@@ -117,35 +117,81 @@
                                 } 
 
                                 $hasil = isset($rt['hasil']) ? $rt['hasil'] : '';
+                                $car = substr($hasil, 0, 3);
                                 $hasil_ket = null;
                                 $nilai_normal = isset($rt['nilai_normal']) ? $rt['nilai_normal'] : '';
                                 $satuan = isset($rt['satuan']) ? $rt['satuan'] : '';
                                 $catatan = isset($rt['keterangan']) ? $rt['keterangan'] : '';
                                 $class_tr = '';
                                 $class_tr_detail = '';
+                                $bold = 0;
+
                                 if($hasil != ''){
                                     $hasil_ket = formatTextHasilNew($rt['hasil'], $rt['nilai_normal'], $satuan);
                                     if($hasil_ket != ''){
-                                        $hasil = '<strong>'.$hasil.'</strong>';
+                                        $hasil = '<strong>'.$hasil.'</strong>'; 
+                                        $bold = 1;
                                     }
                                 }
+                              
                                 if($nilai_normal == "-"){
                                     $style_nilai_normal_kosong = "color: rgba(0, 0, 0, 0);";
                                 } else {
                                     $style_nilai_normal_kosong = "";
                                 }
+                               
+                                
+                                $word = "OD";
+                                $nilai = substr($hasil, strpos($hasil, "=") + 1);
+                               
+                                if(strpos($hasil, $word) !== false){
+                                    if($hasil == ""){
+                                        $hasil = $hasil;
+                                    } else {
+                                        if($car == "Non"){
+                                            $hasil = "Non Reaktif <br> OD = ".$nilai."";
+                                            if($bold == 1){
+                                                $hasil = "<strong>Non Reaktif <br> OD = ".$nilai."</stron>";
+                                            }
+                                        } else if($car == "Pos") {
+                                            $hasil =" Positif <br> OD =".$nilai."";
+                                            if($bold == 1){
+                                                $hasil ="<strong>Positif <br> OD =".$nilai."</strong>";
+                                            }
+                                        } else if($car == "Neg"){
+                                            $hasil = "Negatif <br> OD =".$nilai."";
+                                            if($bold == 1){
+                                                $hasil = "<strong>Negatif <br> OD =".$nilai."</strong>";
+                                            }
+                                        } else if($car == "Rea") {
+                                            $hasil = " Reaktif <br> OD =".$nilai."";
+                                            if($bold == 1){
+                                                $hasil = "<strong>Reaktif <br> OD =".$nilai."</strong>";
+                                            }
+                                        }
+                                       
+                                        $hasil = $hasil;
 
+                                    }
+                                } else{
+                                    if($hasil == ""){
+                                        $hasil = $hasil;
+                                    } else {
+                                        $hasil = $hasil;
+                                    }
+                                }
                                 if($rt['id_m_nm_tindakan'] == 987){
                                     $style_pj = "";
                                 } else {
                                     $style_pj = "display:none";
                                 }
+                               
 
                             ?>
                                 <tr>
                                     <td style="width: 33%; font-size: 16px; <?=$style_rincian_tindakan?>"><?=$rt['nama_tindakan'].''?> </td>
-                                    <td style="width: 14%; font-size: 16px;" class="td_detail_tindakan_detail_hasil" style="text-align:right"><?=$hasil?></td>
-                                    <td style="width: 5%; font-size: 16px;" class="td_detail_tindakan_detail_hasil_ket" style="text-align:right"><?=$hasil_ket?></td>
+                                    <td style="width: 16%; font-size: 16px;" class="td_detail_tindakan_detail_hasil" style="text-align:right"><?=$hasil?></td>
+                                    <td style="width: 5%; font-size: 16px;"  class="td_detail_tindakan_detail_hasil_ket" ><?=$hasil_ket?></td>
                                     <td style="width: 20%; font-size: 16px; <?=$style_nilai_normal_kosong?>" class="td_detail_tindakan_detail" style="text-align:center"><?=$nilai_normal?></td>
                                     <td style="width: 10%; font-size: 16px;" class="td_detail_tindakan_detail" style="text-align:center"><?=$satuan?></td>
                                     <td style="width: 15%; font-size: 12px; padding-left: 5px;"><?=$catatan?></td>

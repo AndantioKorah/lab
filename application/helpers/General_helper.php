@@ -96,7 +96,6 @@ function formatTextHasilNew($hasil_input, $nilai_normal, $satuan = ''){
     $hasil_input = trim($hasil_input);
     $nn = explode(" ",$nilai_normal);
     $hasil = $hasil_input;
-   ;
     if($nn[0] == '<' && isset($nn[1])){
         $max = $nn[1];
         if($hasil > $max && $hasil_input != $nilai_normal){
