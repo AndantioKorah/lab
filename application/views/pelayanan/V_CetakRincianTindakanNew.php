@@ -154,7 +154,7 @@
                                                 $hasil = "<strong>Non Reaktif <br> OD = ".$nilai."</stron>";
                                             }
                                         } else if($car == "Pos") {
-                                            $hasil =" Positif <br> OD =".$nilai."";
+                                            $hasil ="Positif <br> OD =".$nilai."";
                                             if($bold == 1){
                                                 $hasil ="<strong>Positif <br> OD =".$nilai."</strong>";
                                             }
@@ -164,7 +164,7 @@
                                                 $hasil = "<strong>Negatif <br> OD =".$nilai."</strong>";
                                             }
                                         } else if($car == "Rea") {
-                                            $hasil = " Reaktif <br> OD =".$nilai."";
+                                            $hasil = "Reaktif <br> OD =".$nilai."";
                                             if($bold == 1){
                                                 $hasil = "<strong>Reaktif <br> OD =".$nilai."</strong>";
                                             }
