@@ -19,7 +19,7 @@
         <input  class="col-12" type='hidden'  id='id_tagihan' value=<?php echo $id_tagihan['0']->id;?>>
         <input  class="col-12" type='hidden'  id='id_pendaftaran' value=<?php echo $id_pendaftaran;?>>
         <input  class="col-12" type='hidden'  id='jenis_kelamin' value=<?php echo $pasien[0]->jenis_kelamin;?>>
-        <input  class="col-12" type='hidden'  id='tanggal_lahir' value=<?php echo $pasien[0]->tanggal_lahir;?>>
+        <input  class="col-12" type=''  id='tanggal_lahir' value=<?php echo $pasien[0]->tanggal_lahir;?>>
         
         <?php if($id_tagihan['0']->id_m_status_tagihan == 1){ ?>
             <select class='col-12' id="cari_tindakan" type='text' placeholder="Cari Tindakan...">Cari Tindakan...</select>
