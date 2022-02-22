@@ -673,7 +673,7 @@
                                  if($masterNilaiNormal[0]->umur == null){
                                     $nilai_normal = $masterNilaiNormal[0]->nilai_normal;
                                  } else {
-                                    if($umur == 1 || $umur == 0){
+                                    if($umur <= 1){
                                         $umur = 2;
                                     }
                                     $this->db->select('a.nilai_normal, a.umur')
