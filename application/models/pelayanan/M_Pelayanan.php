@@ -194,7 +194,7 @@
             $diff = date_diff(date_create($dateOfBirth), date_create($today));
             $umur = (int)$diff->format('%y');
             $jenis_kelamin = $this->input->post('jenis_kelamin');
-            // dd($umur);
+            
             if($umur < 5){
                 $kategori_pasien = "Anak 2 - 4 Tahun";
             } else if($umur == 5){
@@ -204,6 +204,7 @@
             } else {
                 $kategori_pasien = null;
             }
+          
             
         
 
@@ -239,6 +240,9 @@
                                  if($masterNilaiNormal[0]->umur == null){
                                     $nilai_normal = $masterNilaiNormal[0]->nilai_normal;
                                  } else {
+                                     if($umur == 0){
+                                     $umur = 2;
+                                     }
                                     $this->db->select('a.nilai_normal, a.umur')
                                      ->from('m_nilai_normal as a')
                                      ->where('a.id_m_nm_tindakan', $tindakan->id)
