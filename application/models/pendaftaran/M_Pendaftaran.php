@@ -673,9 +673,9 @@
                                  if($masterNilaiNormal[0]->umur == null){
                                     $nilai_normal = $masterNilaiNormal[0]->nilai_normal;
                                  } else {
-                                    if($umur == 0){
+                                    if($umur == 1 || $umur == 0){
                                         $umur = 2;
-                                        }
+                                    }
                                     $this->db->select('a.nilai_normal, a.umur')
                                      ->from('m_nilai_normal as a')
                                      ->where('a.id_m_nm_tindakan', $tindakan->id)
@@ -685,7 +685,6 @@
                                      ->order_by('a.umur', 'desc')
                                      ->limit(1);
                                 $masterNilaiNormalUmur =  $this->db->get()->result();
-                             
                                 $nilai_normal = $masterNilaiNormalUmur[0]->nilai_normal;
                                  }
                             } else {
