@@ -189,7 +189,7 @@
                             ->join('m_jns_tindakan b', 'a.id_m_jns_tindakan = b.id')
                             ->where('a.id', $id)
                             ->where('a.flag_active', 1)
-                            ->where('b.flag_active', 1)
+                            // ->where('b.flag_active', 1)
                             ->limit(1)
                             ->get()->row_array();
         }
