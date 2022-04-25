@@ -21,8 +21,11 @@
     <div class="col-12"><hr></div>
     <div class="col-12">
         <ul class="nav nav-tabs">
-            <li class="nav-item">
-                <a data-toggle="tab" class="nav-link active" onclick="loadRincianTagihan('<?=$id_pendaftaran?>')" href="#rincian_tagihan_tab"><span class="text_tab">Rincian Tagihan</span></a>
+            <li class="nav-item" id="rincian_tagihan_nav">
+                <a id="rincian_tagihan_navlink" data-toggle="tab" class="nav-link active" onclick="loadRincianTagihan('<?=$id_pendaftaran?>')" href="#rincian_tagihan_tab"><span class="text_tab">Rincian Tagihan</span></a>
+            </li>
+            <li style="display: <?=$tagihan['flag_diskon'] == 0 ? 'block' : 'none'?>" class="nav-item" id="diskon_tagihan_nav">
+                <a data-toggle="tab" class="nav-link" onclick="loadDiskonTagihan('<?=$id_pendaftaran?>')" href="#diskon_tagihan_tab"><span class="text_tab">Diskon Tagihan</span></a>
             </li>
             <li class="nav-item">
                 <a data-toggle="tab" class="nav-link" onclick="loadPembayaran('<?=$id_pendaftaran?>')" href="#pembayaran_tab"><span class="text_tab">Pembayaran</span></a>
@@ -33,7 +36,8 @@
         </ul>
         <div class="tab-content">
             <div id="rincian_tagihan_tab" class="tab-pane active">
-                
+            </div>
+            <div id="diskon_tagihan_tab" class="tab-pane">
             </div>
             <div id="pembayaran_tab" class="tab-pane">
             </div>
@@ -60,6 +64,14 @@
         $('#rincian_tagihan_tab').html('')
         $('#rincian_tagihan_tab').append(divLoaderNavy)
         $('#rincian_tagihan_tab').load('<?=base_url("tagihan/C_Tagihan/loadRincianTagihan")?>'+'/'+id, function(){
+            $('#loader').hide()
+        })
+    }
+
+    function loadDiskonTagihan(id){
+        $('#diskon_tagihan_tab').html('')
+        $('#diskon_tagihan_tab').append(divLoaderNavy)
+        $('#diskon_tagihan_tab').load('<?=base_url("tagihan/C_Tagihan/loadDiskonTagihan")?>'+'/'+id, function(){
             $('#loader').hide()
         })
     }

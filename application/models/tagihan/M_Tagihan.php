@@ -48,6 +48,9 @@
                         $new_total_tagihan += floatval($dt['biaya']);
                     }
                 }
+                if($tagihan['flag_diskon'] == 1){
+                    $new_total_tagihan = $new_total_tagihan - floatval($tagihan['diskon_nominal']);
+                }
                 $this->db->where('id_t_pendaftaran', $id_t_pendaftaran)
                             ->update('t_tagihan', 
                         [
@@ -432,6 +435,71 @@
             }
             // dd($final_result);
             return [$final_result, $page];
+        }
+
+        public function createDiskonTagihan($id, $data){
+            $res['code'] = 0;
+            $res['message'] = '';
+
+            $this->db->trans_begin();
+
+            // $tagihan = $this->db->select('*')
+            //                     ->from('t_tagihan')
+            //                     ->where('id', $id)
+            //                     ->where('flag_active', 1)
+            //                     ->get()->row_array();
+            // if($tagihan){
+            //     $new_tagihan = floatval($tagihan['total_tagihan']) - floatval(clearString($data['diskon_tagihan_nominal']));
+
+                $this->db->where('id', $id)
+                        ->update('t_tagihan',
+                        [
+                            // 'total_tagihan' => $new_tagihan,
+                            'flag_diskon' => 1,
+                            'diskon_nominal' => clearString($data['diskon_tagihan_nominal']),
+                            'diskon_presentase' => $data['diskon_tagihan_presentase'],
+                            'updated_by' => $this->general_library->getId()
+                        ]);
+            // } else {
+            //     $res['code'] = 1;
+            //     $res['message'] = 'Terjadi Kesalahan';
+            // }
+
+            if($this->db->trans_status() == FALSE){
+                $res['code'] = 1;
+                $res['message'] = 'Terjadi Kesalahan';
+                $this->db->trans_rollback();
+            } else {
+                $this->db->trans_commit();
+            }
+            return $res;
+        }
+
+        public function deleteDiskonTagihan($id){
+            $res['code'] = 0;
+            $res['message'] = '';
+
+            $this->db->trans_begin();
+
+            $this->db->where('id', $id)
+                        ->update('t_tagihan',
+                        [
+                            // 'total_tagihan' => $new_tagihan,
+                            'flag_diskon' => 0,
+                            'diskon_nominal' => 0,
+                            'diskon_presentase' => 0,
+                            'updated_by' => $this->general_library->getId()
+                        ]);
+            
+            if($this->db->trans_status() == FALSE){
+                $res['code'] = 1;
+                $res['message'] = 'Terjadi Kesalahan';
+                $this->db->trans_rollback();
+            } else {
+                $this->db->trans_commit();
+            }
+            
+            return $res;
         }
 	}
 ?>
