@@ -17,7 +17,23 @@ class C_Tagihan extends CI_Controller
     public function loadTagihan($id_pendaftaran){
         $data['id_pendaftaran'] = $id_pendaftaran;
         $data['pendaftaran'] = $this->general->getOne('t_pendaftaran', 'id', $id_pendaftaran, 1);
+        $data['tagihan'] = $this->general->getOne('t_tagihan', 'id_t_pendaftaran', $id_pendaftaran, 1);
         $this->load->view('tagihan/V_Tagihan', $data);
+    }
+
+    public function loadDiskonTagihan($id_pendaftaran){
+        $data['id_pendaftaran'] = $id_pendaftaran;
+        // $data['pendaftaran'] = $this->general->getOne('t_pendaftaran', 'id', $id_pendaftaran, 1);
+        $data['tagihan'] = $this->general->getOne('t_tagihan', 'id_t_pendaftaran', $id_pendaftaran, 1);
+        $this->load->view('tagihan/V_DiskonTagihan', $data);
+    }
+
+    public function createDiskonTagihan($id){
+        echo json_encode($this->tagihan->createDiskonTagihan($id, $this->input->post()));
+    }
+
+    public function deleteDiskonTagihan($id){
+        echo json_encode($this->tagihan->deleteDiskonTagihan($id));
     }
 
     public function loadTagihanHeader($id_pendaftaran){
