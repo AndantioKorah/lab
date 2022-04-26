@@ -11,6 +11,9 @@
     $kewarganegaraan = $pasien['kewarganegaraan'] ? $pasien['kewarganegaraan'] : '-';
     $nomor_telepon = $pasien['nomor_telepon'] ? $pasien['nomor_telepon'] : '-';
     $umur = countDiffDateLengkap($pasien['tanggal_lahir'], date('Y-m-d H:i:s'), ['tahun']);
+    if($umur == 'Hari Ini'){
+        $umur = countDiffDateLengkap($pasien['tanggal_lahir'], date('Y-m-d H:i:s'), ['bulan']);
+    }
 ?>
 <style>
     #div_detail_pendaftaran{
