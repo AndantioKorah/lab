@@ -50,6 +50,7 @@
                             ->join('t_tagihan c', 'a.id = c.id_t_pendaftaran')
                             ->join('t_pembayaran d', 'd.id_t_pendaftaran = a.id AND d.flag_active = 1', 'left')
                             ->join('t_uang_muka e', 'e.id_t_pendaftaran = a.id AND e.flag_active = 1', 'left')
+                            ->where('a.flag_active', 1)
                             ->where('a.tanggal_pendaftaran >=', $tanggal_awal.' 00:00:00')
                             ->where('a.tanggal_pendaftaran <=', $tanggal_akhir.' 23:59:59')
                             ->order_by('a.tanggal_pendaftaran', 'desc')
